@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "FENATEVI — Festival Nacional de Teatro de Vitória",
+    "description": "El Festival Nacional de Teatro de Vitória reúne espectáculos, encuentros y memoria escénica en la capital de Espírito Santo, Brasil.",
+    "localeLabel": "Español"
+  },
+  "common": {
+    "skipToContent": "Saltar al contenido",
+    "backToTop": "Volver arriba",
+    "festivalName": "FENATEVI",
+    "festivalFullName": "Festival Nacional de Teatro de Vitória"
+  },
+  "localeSwitcher": {
+    "label": "Elegir idioma",
+    "current": "Idioma actual"
+  },
+  "header": {
+    "navigationLabel": "Navegación principal",
+    "about": "Sobre el festival"
+  },
+  "home": {
+    "eyebrow": "Edición {edition}",
+    "title": "FENATEVI",
+    "subtitle": "Festival Nacional de Teatro de Vitória",
+    "tagline": "Se está preparando una nueva experiencia.",
+    "seed": "Basta una semilla...",
+    "dates": "Del {start} al {end}",
+    "city": "Vitória, Espírito Santo, Brasil",
+    "cta": "Conocer el festival",
+    "aboutTitle": "Sobre el festival",
+    "aboutBody": "El FENATEVI ocupa teatros, plazas y centros culturales de Vitória con espectáculos, formación y encuentros entre artistas y público. Este sitio está en construcción: la programación completa, la memoria de las ediciones anteriores y la información de accesibilidad se publicarán aquí.",
+    "accessibilityTitle": "Accesibilidad en escena",
+    "accessibilityIntro": "La edición vigente prevé los siguientes recursos:",
+    "sceneTitle": "Ensayo de luz",
+    "sceneDescription": "Composición abstracta en movimiento lento que evoca un reflector sobre el escenario.",
+    "sceneFallback": "Tu dispositivo no muestra la escena tridimensional. Todo el contenido del festival sigue disponible."
+  },
+  "accessibilityFeatures": {
+    "audioDescription": "Audiodescripción",
+    "signLanguage": "Interpretación en lengua de señas brasileña",
+    "captions": "Subtitulado descriptivo",
+    "wheelchairAccess": "Acceso para sillas de ruedas",
+    "relaxedPerformance": "Función relajada"
+  },
+  "footer": {
+    "rights": "FENATEVI — Festival Nacional de Teatro de Vitória",
+    "note": "Sitio en desarrollo."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o ha sido movida.",
+    "backHome": "Volver a la página de inicio"
+  },
+  "error": {
+    "title": "Algo se salió del guion",
+    "description": "No se pudo mostrar esta página. Inténtalo de nuevo.",
+    "retry": "Intentar de nuevo"
+  }
+}

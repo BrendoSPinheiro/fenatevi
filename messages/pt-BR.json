@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "FENATEVI — Festival Nacional de Teatro de Vitória",
+    "description": "O Festival Nacional de Teatro de Vitória reúne espetáculos, encontros e memória cênica na capital do Espírito Santo.",
+    "localeLabel": "Português (Brasil)"
+  },
+  "common": {
+    "skipToContent": "Pular para o conteúdo",
+    "backToTop": "Voltar ao topo",
+    "festivalName": "FENATEVI",
+    "festivalFullName": "Festival Nacional de Teatro de Vitória"
+  },
+  "localeSwitcher": {
+    "label": "Escolher idioma",
+    "current": "Idioma atual"
+  },
+  "header": {
+    "navigationLabel": "Navegação principal",
+    "about": "Sobre o festival"
+  },
+  "home": {
+    "eyebrow": "Edição {edition}",
+    "title": "FENATEVI",
+    "subtitle": "Festival Nacional de Teatro de Vitória",
+    "tagline": "Uma nova experiência está sendo preparada.",
+    "seed": "Basta uma semente...",
+    "dates": "De {start} a {end}",
+    "city": "Vitória, Espírito Santo",
+    "cta": "Conhecer o festival",
+    "aboutTitle": "Sobre o festival",
+    "aboutBody": "O FENATEVI ocupa teatros, praças e centros culturais de Vitória com espetáculos, formação e encontros entre artistas e público. Este site está em construção: a programação completa, a memória das edições anteriores e as informações de acessibilidade serão publicadas aqui.",
+    "accessibilityTitle": "Acessibilidade em cena",
+    "accessibilityIntro": "A edição vigente prevê os seguintes recursos:",
+    "sceneTitle": "Ensaio de luz",
+    "sceneDescription": "Composição abstrata em movimento lento, evocando um refletor sobre o palco.",
+    "sceneFallback": "Seu dispositivo não exibe a cena tridimensional. O conteúdo do festival permanece integralmente disponível."
+  },
+  "accessibilityFeatures": {
+    "audioDescription": "Audiodescrição",
+    "signLanguage": "Tradução em Libras",
+    "captions": "Legendagem descritiva",
+    "wheelchairAccess": "Acesso para cadeirantes",
+    "relaxedPerformance": "Sessão relaxada"
+  },
+  "footer": {
+    "rights": "FENATEVI — Festival Nacional de Teatro de Vitória",
+    "note": "Site em desenvolvimento."
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "description": "A página que você procura não existe ou foi movida.",
+    "backHome": "Voltar para a página inicial"
+  },
+  "error": {
+    "title": "Algo saiu do roteiro",
+    "description": "Não foi possível exibir esta página. Tente novamente.",
+    "retry": "Tentar novamente"
+  }
+}

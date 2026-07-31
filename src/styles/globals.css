@@ -1,0 +1,144 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens do FENATEVI.
+ *
+ * Fonte única da verdade: CSS Custom Properties. O bloco `@theme` do Tailwind v4
+ * gera automaticamente as variáveis em `:root` e as utilidades correspondentes
+ * (`bg-background`, `text-foreground`, `border-border`, `rounded-md`, `ease-stage`...).
+ *
+ * Este é um tema inicial escuro e propositalmente neutro: ele valida a
+ * infraestrutura e o contraste, não a identidade visual definitiva do festival.
+ */
+@theme {
+  /* Superfícies e texto */
+  --color-background: #0b0a0c;
+  --color-foreground: #f4f1ec;
+  --color-surface: #16141a;
+  --color-surface-raised: #201d27;
+  --color-border: #322d3b;
+  --color-muted: #a9a3b2;
+
+  /* Cor de destaque: luz de palco */
+  --color-accent: #e8b04b;
+  --color-accent-strong: #f5c76d;
+  --color-on-accent: #0b0a0c;
+
+  /* Estados */
+  --color-focus: #8ec7ff;
+  --color-error: #ff8a8a;
+  --color-success: #7fd6a1;
+
+  /* Raios */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+
+  /* Easings de cena */
+  --ease-stage: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-curtain: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* Tipografia */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/*
+ * Tokens que não pertencem a um namespace do Tailwind e são consumidos
+ * diretamente por CSS e por bibliotecas de animação (GSAP, Lenis).
+ */
+:root {
+  /* Durações de animação (segundos para o GSAP, ms para CSS via calc) */
+  --duration-instant: 0.12s;
+  --duration-fast: 0.24s;
+  --duration-normal: 0.48s;
+  --duration-slow: 0.9s;
+  --duration-curtain: 1.6s;
+
+  /* Camadas */
+  --z-base: 0;
+  --z-scene: 10;
+  --z-content: 20;
+  --z-header: 50;
+  --z-overlay: 80;
+  --z-skip-link: 100;
+
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    /* O smooth scroll é responsabilidade do Lenis; o nativo é o fallback. */
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Estado de foco visível e consistente em todo o site (WCAG 2.2 — 2.4.11/2.4.13). */
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    line-height: 1.15;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /*
+   * Quando o Lenis está ativo ele assume o controle do scroll do documento.
+   * Sem essas regras a página fica presa caso o script falhe ao carregar.
+   */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+}
+
+/*
+ * Movimento reduzido: nenhuma animação essencial para a compreensão do conteúdo.
+ * As bibliotecas JS também consultam essa media query (ver use-reduced-motion.ts).
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

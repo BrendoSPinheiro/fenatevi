@@ -1,0 +1,45 @@
+# dependências
+node_modules/
+.pnpm-store/
+
+# build
+.next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+
+# testes
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# ambiente
+.env
+.env.local
+.env.*.local
+
+# sistema operacional / editores
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# ferramentas locais de IA
+.claude/settings.local.json
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# gerenciadores de pacote não suportados neste projeto
+package-lock.json
+yarn.lock
+bun.lockb
+bun.lock

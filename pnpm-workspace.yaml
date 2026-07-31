@@ -1,0 +1,9 @@
+# Arquivo de configuração do PNPM (não é um monorepo: não há a chave `packages`).
+# A partir do PNPM 11 as configurações antes lidas do campo `pnpm` do package.json
+# vivem aqui. `allowBuilds` autoriza explicitamente os scripts de build de
+# dependências nativas, evitando instalações incompletas no CI.
+allowBuilds:
+  '@parcel/watcher': true # watcher nativo usado pelo Tailwind CSS
+  '@swc/core': true # transformações do Next.js
+  sharp: true # otimização de imagens do next/image
+  unrs-resolver: true # resolver do eslint-plugin-import

@@ -1,0 +1,59 @@
+{
+  "metadata": {
+    "title": "FENATEVI — Vitória National Theatre Festival",
+    "description": "The Vitória National Theatre Festival brings together performances, gatherings and stage memory in the capital of Espírito Santo, Brazil.",
+    "localeLabel": "English"
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "backToTop": "Back to top",
+    "festivalName": "FENATEVI",
+    "festivalFullName": "Vitória National Theatre Festival"
+  },
+  "localeSwitcher": {
+    "label": "Choose language",
+    "current": "Current language"
+  },
+  "header": {
+    "navigationLabel": "Main navigation",
+    "about": "About the festival"
+  },
+  "home": {
+    "eyebrow": "{edition} edition",
+    "title": "FENATEVI",
+    "subtitle": "Vitória National Theatre Festival",
+    "tagline": "A new experience is being prepared.",
+    "seed": "All it takes is a seed...",
+    "dates": "From {start} to {end}",
+    "city": "Vitória, Espírito Santo, Brazil",
+    "cta": "Discover the festival",
+    "aboutTitle": "About the festival",
+    "aboutBody": "FENATEVI takes over theatres, squares and cultural centres across Vitória with performances, training and encounters between artists and audiences. This site is under construction: the full programme, the memory of past editions and accessibility information will be published here.",
+    "accessibilityTitle": "Accessibility on stage",
+    "accessibilityIntro": "The current edition plans for the following features:",
+    "sceneTitle": "Lighting rehearsal",
+    "sceneDescription": "A slowly moving abstract composition evoking a spotlight over the stage.",
+    "sceneFallback": "Your device does not display the three-dimensional scene. All festival content remains fully available."
+  },
+  "accessibilityFeatures": {
+    "audioDescription": "Audio description",
+    "signLanguage": "Brazilian Sign Language interpretation",
+    "captions": "Descriptive captions",
+    "wheelchairAccess": "Wheelchair access",
+    "relaxedPerformance": "Relaxed performance"
+  },
+  "footer": {
+    "rights": "FENATEVI — Vitória National Theatre Festival",
+    "note": "Site under development."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for does not exist or has been moved.",
+    "backHome": "Back to the home page"
+  },
+  "error": {
+    "title": "Something went off script",
+    "description": "This page could not be displayed. Please try again.",
+    "retry": "Try again"
+  }
+}
