@@ -80,8 +80,21 @@ qualquer erro. Trate-o como portão, não como ruído.
 
 - Título e descrição vêm de `generateMetadata` com traduções; ao criar uma rota,
   adicione as chaves nos três arquivos de mensagens.
-- Ao publicar, defina `metadataBase` antes de usar URLs relativas em Open Graph,
-  e mantenha `alternates.languages` coerente com `routing.locales`.
+- O layout de `[locale]` define `metadataBase`, o `title.template`, o canonical,
+  o `hreflang` e o cartão social. Uma rota nova só precisa declarar o próprio
+  `title` e `description` — o sufixo `— FENATEVI` vem do template.
+- **`alternates`, `openGraph` e `robots` são substituídos, não mesclados.** A
+  rota que declarar `alternates.canonical` precisa repetir `alternates.languages`
+  junto, ou perde o `hreflang`. Mesma regra ao redeclarar `openGraph`.
+- Toda URL absoluta (canonical, `hreflang`, `og:image`, `robots.txt` e o futuro
+  sitemap) deriva de `SITE_URL`, em `src/lib/seo/site.ts`. O valor é provisório;
+  não repita o domínio em outro arquivo.
+- A imagem de compartilhamento é gerada por `[locale]/opengraph-image.tsx` com
+  `next/og`. Ela renderiza no Satori, que aceita só um subconjunto de CSS e
+  **não** lê CSS Custom Properties nem classes do Tailwind — daí o estilo inline
+  e as cores de `OG_COLORS`.
+- A rota da imagem não tem extensão, então `src/proxy.ts` precisa excluí-la do
+  matcher; sem isso o idioma padrão responde 307 e o card fica sem figura.
 - Imagens relevantes usam `next/image` com `width`/`height` (ou `fill` sobre
   contêiner com proporção fixa) e `alt` significativo. Decorativas: `alt=""`.
 - A tipografia hoje é a pilha de sistema (`--font-sans`). Se uma fonte própria
