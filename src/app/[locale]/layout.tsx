@@ -6,6 +6,7 @@ import { SiteFooter } from '@/components/layout/site-footer';
 import { SiteHeader } from '@/components/layout/site-header';
 import { SkipLink } from '@/components/ui/skip-link';
 import { localeHtmlLang, routing, type Locale } from '@/lib/i18n/routing';
+import { SITE_URL } from '@/lib/seo/site';
 import { SmoothScrollProvider } from '@/providers/smooth-scroll-provider';
 import '@/styles/globals.css';
 
@@ -26,15 +27,55 @@ export async function generateMetadata({
 }: Pick<LocaleLayoutProps, 'params'>): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
+  const tCommon = await getTranslations({ locale, namespace: 'common' });
+
+  // Caminho desta versão de idioma: `pt-BR` mora na raiz (`localePrefix: 'as-needed'`).
+  const path = locale === routing.defaultLocale ? '/' : `/${locale}`;
 
   return {
-    title: t('title'),
+    /*
+     * Base para toda URL relativa desta árvore. Sem ela o Next não consegue
+     * gerar as URLs absolutas que canonical, hreflang e `og:image` exigem.
+     */
+    metadataBase: new URL(SITE_URL),
+    title: {
+      default: t('title'),
+      // Rotas futuras informam só o próprio título; o sufixo vem daqui.
+      template: `%s — ${tCommon('festivalName')}`,
+    },
     description: t('description'),
-    // Sinaliza aos buscadores as versões equivalentes em cada idioma.
+    /*
+     * Canonical consolida as variações de URL da mesma página — sobretudo os
+     * parâmetros de campanha (`?utm_source=...`), que de outro modo o buscador
+     * trataria como endereços distintos.
+     *
+     * Atenção ao criar rota nova: o Next **substitui** `alternates` inteiro em
+     * vez de mesclá-lo, então a rota que declarar `canonical` precisa declarar
+     * `languages` junto.
+     */
     alternates: {
+      canonical: path,
+      // Sinaliza aos buscadores as versões equivalentes em cada idioma.
       languages: Object.fromEntries(
         routing.locales.map((item) => [item, item === routing.defaultLocale ? '/' : `/${item}`]),
       ),
+    },
+    /*
+     * Open Graph e Twitter Card definem como o link aparece ao ser colado em
+     * rede social ou mensageiro. `openGraph` também é substituído, não mesclado.
+     * A imagem é resolvida pelo arquivo `opengraph-image.tsx` deste segmento.
+     */
+    openGraph: {
+      type: 'website',
+      siteName: tCommon('festivalName'),
+      title: t('title'),
+      description: t('description'),
+      url: path,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('title'),
+      description: t('description'),
     },
   };
 }

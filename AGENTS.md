@@ -67,6 +67,7 @@ src/content/             Conteúdo do festival, tipado
 src/hooks/               Hooks reutilizáveis
 src/lib/animation/       gsap/, lenis/, three/
 src/lib/i18n/            Rotas, navegação, configuração do next-intl
+src/lib/seo/             Domínio canônico e constantes da imagem de compartilhamento
 src/lib/utils/           Funções puras
 src/providers/           Providers globais (hoje: smooth scroll)
 src/styles/              globals.css e design tokens
