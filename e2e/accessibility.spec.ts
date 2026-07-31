@@ -43,14 +43,33 @@ test.describe('Acessibilidade', () => {
     ).toBeVisible();
   });
 
-  test('não apresenta violações detectáveis pelo axe (WCAG 2.2 AA)', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
+  /*
+   * A varredura roda com movimento reduzido — cenário suportado pelo site, em que
+   * `respectReducedMotion` não cria nenhuma timeline.
+   *
+   * Com a animação de entrada ativa, o axe podia medir a página no meio da
+   * interpolação de opacidade dos `[data-animate="hero-item"]`: o CTA `bg-accent`
+   * mesclado com o fundo chegava a #947133 (4.39:1) e a regra `color-contrast`
+   * falhava de forma intermitente. Esperar o fim da animação não resolveria de
+   * verdade — antes de o GSAP aplicar o estado inicial, os elementos já estão no
+   * estado final, e a espera passaria cedo demais.
+   *
+   * Nada é perdido em cobertura: com ou sem movimento o DOM e as classes são os
+   * mesmos, e as cores transitórias não correspondem a nenhum estado em que o
+   * usuário lê o conteúdo.
+   */
+  test.describe('varredura do axe', () => {
+    test.use({ contextOptions: { reducedMotion: 'reduce' } });
 
-    const results = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
-      .analyze();
+    test('não apresenta violações detectáveis pelo axe (WCAG 2.2 AA)', async ({ page }) => {
+      await page.goto('/');
+      await page.waitForLoadState('networkidle');
 
-    expect(results.violations).toEqual([]);
+      const results = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+        .analyze();
+
+      expect(results.violations).toEqual([]);
+    });
   });
 });
