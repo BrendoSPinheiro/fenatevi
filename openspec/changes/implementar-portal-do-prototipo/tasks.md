@@ -27,8 +27,8 @@
 - [ ] 1.6 Criar `src/components/ui/text.tsx` com as variantes da escala do `DESIGN.md`
       (`display-lg`, `display-md`, `headline-lg`, `body-lg`, `body-md`, `label-md`,
       `caption`), traduzidas para `clamp()` com o valor do `DESIGN.md` como teto e
-      `headline-lg-mobile` como piso onde declarado. Seguir o padrão `Record<Variant,
-      string>` de `button.tsx`. Teste ao lado.
+      `headline-lg-mobile` como piso onde declarado. Seguir o padrão de variantes já
+      usado em `button.tsx`. Teste ao lado.
 - [ ] 1.7 Reescrever as variantes de `src/components/ui/button.tsx` conforme o
       `DESIGN.md`: primária bordô sólida com brilho no hover, secundária com contorno
       ivory de 1px preenchendo a 10% no hover, ghost com sublinhado no hover. Atualizar o
@@ -282,7 +282,7 @@
 - [ ] 13.5 Registrar em `docs/riscos-conhecidos.md` as divergências deliberadas em
       relação ao protótipo: cortina que revela em vez de bloquear, ausência do controle
       "A11y", mapa esquemático sem base geográfica, e o acervo histórico não traduzido.
-- [ ] 13.6 Rodar `pnpm format:check && pnpm lint && pnpm typecheck && pnpm test &&
-      pnpm build && pnpm test:e2e` e revisar o diff inteiro: nenhum `any`, nenhum
-      `eslint-disable`, nenhuma pasta vazia, nenhuma chave de tradução faltando em algum
-      dos três arquivos, nenhum texto visível no JSX.
+- [ ] 13.6 Rodar o checklist completo de conclusão do `CLAUDE.md`, mais `pnpm build` e
+      `pnpm test:e2e`, e revisar o diff inteiro: nenhum `any`, nenhum `eslint-disable`,
+      nenhuma pasta vazia, nenhuma chave de tradução faltando em algum dos três arquivos,
+      nenhum texto visível no JSX.

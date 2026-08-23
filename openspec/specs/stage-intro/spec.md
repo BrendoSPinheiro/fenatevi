@@ -1,11 +1,14 @@
 # stage-intro Specification
 
 ## Purpose
+
 A abertura teatral que recebe o visitante na página inicial do FENATEVI: um momento
 narrativo curto — escuro de palco, luz, a frase da semente e a abertura das cortinas —
 que estabelece a identidade do festival antes do conteúdo, sem jamais se tornar um
 obstáculo para chegar até ele.
+
 ## Requirements
+
 ### Requirement: Exibição na entrada da página inicial
 
 A abertura SHALL ser exibida a cada carregamento completo da página inicial, em qualquer
@@ -216,4 +219,3 @@ durante a abertura.
   está em cena
 - **THEN** as cortinas continuam cobrindo o viewport inteiro, sem deformação evidente
 - **AND** a sequência prossegue sem reiniciar
-

@@ -72,11 +72,11 @@ uma das 1.884 linhas. Os hexes soltos da prosa são resíduo e são ignorados.
 α = 0,4 dá ≈ 3,6:1 e α = 0,45 dá ≈ 4,2:1 — os dois reprovam em AA para texto normal. Em
 vez de corrigir caso a caso, define-se uma escala fechada:
 
-| Token                   | Valor proposto | Contraste sobre `#131312` | Uso                                |
-| ----------------------- | -------------- | ------------------------- | ---------------------------------- |
-| `--color-foreground`    | `#e5e2df`      | ≈ 13,9:1                  | títulos, texto principal           |
-| `--color-foreground-muted`  | `#a6a3a0`  | ≈ 7,4:1                   | texto secundário, descrições       |
-| `--color-foreground-subtle` | `#8a8785`  | ≈ 5,3:1                   | rótulos, metadados, texto pequeno  |
+| Token                       | Valor proposto | Contraste sobre `#131312` | Uso                               |
+| --------------------------- | -------------- | ------------------------- | --------------------------------- |
+| `--color-foreground`        | `#e5e2df`      | ≈ 13,9:1                  | títulos, texto principal          |
+| `--color-foreground-muted`  | `#a6a3a0`      | ≈ 7,4:1                   | texto secundário, descrições      |
+| `--color-foreground-subtle` | `#8a8785`      | ≈ 5,3:1                   | rótulos, metadados, texto pequeno |
 
 Abaixo disso, só elemento decorativo (`aria-hidden`), separador ou traço. Os valores são
 verificados na implementação; a regra é o piso de 4,5:1, não o hex.

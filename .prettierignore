@@ -7,3 +7,8 @@ test-results/
 blob-report/
 pnpm-lock.yaml
 next-env.d.ts
+
+# Material de origem exportado do Claude Design: é a referência visual que a change
+# `implementar-portal-do-prototipo` cita linha a linha. Reformatá-lo o afastaria do
+# artefato original sem nenhum ganho — não é código do projeto.
+prototipo-fenatevi/
