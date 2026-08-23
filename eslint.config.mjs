@@ -13,6 +13,8 @@ const config = [
       'playwright-report/**',
       'test-results/**',
       'next-env.d.ts',
+      // Material de origem exportado do Claude Design, não código do projeto.
+      'prototipo-fenatevi/**',
     ],
   },
 
