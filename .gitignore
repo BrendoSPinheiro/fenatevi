@@ -32,6 +32,11 @@ Thumbs.db
 # ferramentas locais de IA
 .claude/settings.local.json
 
+# material de origem do protótipo: os programas impressos digitalizados somam ~30 MB e
+# entrariam no histórico para sempre. O conteúdo deles já está transcrito no acervo
+# tipado; quem precisar do original pede à organização.
+prototipo-fenatevi/uploads/*.pdf
+
 # logs
 *.log
 npm-debug.log*

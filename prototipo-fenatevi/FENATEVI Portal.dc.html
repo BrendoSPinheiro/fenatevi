@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Hanken+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  html { scroll-behavior: smooth; }
+  body { margin:0; background:#131312; color:#e5e2df; -webkit-font-smoothing:antialiased; }
+  * { box-sizing: border-box; }
+  a { color:#ffb3b5; text-decoration:none; }
+  a:hover { color:#ffdb9d; }
+  ::selection { background:#800020; color:#fff; }
+  :focus-visible { outline:2px solid #ffdb9d; outline-offset:3px; }
+  button { font-family:'Hanken Grotesk', sans-serif; cursor:pointer; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+</style>
+</helmet>
+<div style="background:#131312;min-height:100vh;font-family:'Hanken Grotesk',system-ui,sans-serif">
+
+  <div aria-hidden="true" style="position:fixed;inset:0;background:#800020;z-index:90;pointer-events:none;transform:scaleY(0);transform-origin:top;transition:transform 300ms cubic-bezier(.7,0,.3,1)" data-curtain="1"></div>
+
+  <header style="position:sticky;top:0;z-index:60;backdrop-filter:blur(0px);transition:background 400ms ease, backdrop-filter 400ms ease, border-color 400ms ease;border-bottom:1px solid rgba(88,65,65,0)" data-header="1">
+    <div style="max-width:1280px;margin:0 auto;padding:22px 24px;display:flex;align-items:center;gap:32px">
+      <button onClick="{{ goHome }}" aria-label="FENATEVI — início" style="background:none;border:0;padding:0;font-family:'Bodoni Moda',serif;font-size:26px;letter-spacing:3px;color:#e5e2df;text-transform:uppercase">FENATEVI</button>
+      <nav aria-label="Principal" style="display:flex;flex:1;flex-wrap:wrap;justify-content:center;gap:clamp(14px,2.4vw,38px)">
+        <button onClick="{{ goProgramacao }}" style="background:none;border:0;padding:8px 2px;font-size:13px;font-weight:400;letter-spacing:1.6px;text-transform:uppercase;color:#e5e2df" style-hover="color:#ffb3b5">Programação</button>
+        <button onClick="{{ goFestival }}" style="background:none;border:0;padding:8px 2px;font-size:13px;font-weight:400;letter-spacing:1.6px;text-transform:uppercase;color:#e5e2df" style-hover="color:#ffb3b5">O Festival</button>
+        <button onClick="{{ goMemoria }}" style="background:none;border:0;padding:8px 2px;font-size:13px;font-weight:400;letter-spacing:1.6px;text-transform:uppercase;color:#e5e2df" style-hover="color:#ffb3b5">Linha do tempo</button>
+        <button onClick="{{ goNoticias }}" style="background:none;border:0;padding:8px 2px;font-size:13px;font-weight:400;letter-spacing:1.6px;text-transform:uppercase;color:#e5e2df" style-hover="color:#ffb3b5">Notícias</button>
+      </nav>
+      <div style="display:flex;align-items:center;gap:18px">
+        <span style="font-size:12px;letter-spacing:1.4px;color:rgba(229,226,223,0.7)">PT-BR</span>
+        <button aria-label="Recursos de acessibilidade" onClick="{{ toggleA11y }}" style="width:44px;height:44px;border-radius:9999px;border:1px solid rgba(255,179,181,0.45);background:none;color:#ffb3b5;font-size:15px;display:flex;align-items:center;justify-content:center">A11y</button>
+        <button onClick="{{ toggleMenu }}" aria-label="Abrir menu de áreas" style="min-height:44px;display:flex;align-items:center;gap:10px;background:none;border:0;color:#e5e2df;font-size:13px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase">Menu
+          <span aria-hidden="true" style="display:flex;flex-direction:column;gap:4px">
+            <span style="display:block;width:22px;height:1px;background:#e5e2df"></span>
+            <span style="display:block;width:22px;height:1px;background:#e5e2df"></span>
+            <span style="display:block;width:14px;height:1px;background:#ffb3b5"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+    <sc-if value="{{ a11yOpen }}">
+      <div style="border-top:1px solid rgba(88,65,65,0.5);background:#0e0e0d">
+        <div style="max-width:1280px;margin:0 auto;padding:18px 24px;display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <span style="font-size:11px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:#ffb3b5">Acessibilidade</span>
+          <sc-for list="{{ a11yOptions }}" as="opt" hint-placeholder-count="4">
+            <button onClick="{{ opt.onClick }}" aria-pressed="{{ opt.on }}" style="min-height:44px;padding:10px 16px;border-radius:9999px;border:1px solid rgba(229,226,223,0.25);background:none;color:#e5e2df;font-size:12px;letter-spacing:1.4px;text-transform:uppercase">{{ opt.label }}</button>
+          </sc-for>
+          <span style="font-size:12px;color:rgba(229,226,223,0.55)">Estado de demonstração — integração real na implementação.</span>
+        </div>
+      </div>
+    </sc-if>
+  </header>
+
+  <sc-if value="{{ menuOpen }}">
+    <div role="dialog" aria-label="Áreas do portal" style="position:fixed;inset:0;z-index:80;background:rgba(14,14,13,0.94);backdrop-filter:blur(18px);padding:clamp(24px,6vw,80px);overflow:auto">
+      <div style="max-width:1280px;margin:0 auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;padding-bottom:48px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:2.6px;text-transform:uppercase;color:#ffb3b5">Áreas do portal</span>
+          <button onClick="{{ toggleMenu }}" style="min-height:44px;padding:10px 20px;border:1px solid rgba(229,226,223,0.3);border-radius:2px;background:none;color:#e5e2df;font-size:12px;letter-spacing:2px;text-transform:uppercase">Fechar</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;background:rgba(88,65,65,0.35)">
+          <sc-for list="{{ menuItems }}" as="m" hint-placeholder-count="8">
+            <button onClick="{{ m.onClick }}" style="text-align:left;background:#131312;border:0;padding:32px 28px;display:flex;flex-direction:column;gap:10px;min-height:150px" style-hover="background:#1c1c1a">
+              <span style="font-family:'Bodoni Moda',serif;font-size:20px;color:rgba(255,179,181,0.7)">{{ m.num }}</span>
+              <span style="font-family:'Bodoni Moda',serif;font-size:28px;line-height:1.1;color:#e5e2df">{{ m.label }}</span>
+              <span style="font-size:13px;line-height:1.5;color:rgba(229,226,223,0.55)">{{ m.desc }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <main>
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="Home">
+
+    <section aria-label="Abertura" style="position:relative;min-height:min(92vh,860px);overflow:hidden;background:#131312;display:flex;flex-direction:column;justify-content:flex-end;padding:112px 0">
+      <div aria-hidden="true" style="position:absolute;left:-32px;top:-20px;right:-32px;bottom:-20px">
+        <div style="position:absolute;inset:0;background-image:url(assets/stage-hero.jpg);background-size:cover;background-position:50% 45%;opacity:0.85"></div>
+        <div style="position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 0%, rgba(255,219,157,0.16) 0%, rgba(19,19,18,0) 55%)"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg, rgba(19,19,18,0.35) 0%, rgba(19,19,18,0.1) 35%, rgba(19,19,18,0.92) 88%, #131312 100%)"></div>
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg, rgba(19,19,18,0.9) 0%, rgba(19,19,18,0.25) 45%, rgba(19,19,18,0.75) 100%)"></div>
+      </div>
+      <div aria-hidden="true" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;mix-blend-mode:overlay;overflow:hidden">
+        <span style="font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(120px,19vw,240px);line-height:1;letter-spacing:-0.05em;color:#fff;opacity:0.4;text-transform:uppercase;white-space:nowrap">FENATEVI</span>
+      </div>
+      <div style="position:relative;max-width:1280px;width:100%;margin:0 auto;padding:0 clamp(20px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:48px;align-items:center">
+        <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
+          <div style="display:flex;align-items:center;gap:16px;opacity:0.9;flex-wrap:wrap">
+            <span aria-hidden="true" style="display:block;width:48px;height:1px;background:#ffb3b5"></span>
+            <span style="font-size:14px;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">22ª edição · 2026</span>
+            <span style="font-size:10px;letter-spacing:1px;color:rgba(229,226,223,0.4);padding-left:16px">NO. 022/VIX</span>
+          </div>
+          <h1 style="margin:0;padding:16px 0 0;font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(56px,11vw,110px);line-height:0.85;letter-spacing:-0.05em;color:#e5e2df;text-transform:uppercase;text-shadow:0 15px 30px rgba(0,0,0,0.9)">FENATEVI</h1>
+          <p style="margin:0;max-width:672px;font-family:'Bodoni Moda',serif;font-size:clamp(24px,3.4vw,40px);line-height:1.2;letter-spacing:-0.025em;color:#e0bfbf">Festival Nacional de Teatro de Vitória</p>
+          <p style="margin:16px 0 0;font-family:'Bodoni Moda',serif;font-style:italic;font-weight:600;font-size:clamp(30px,5vw,56px);line-height:1.14;letter-spacing:-0.01em;color:#ffdb9d;opacity:0.9">Vitória entra em cena.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:40px;max-width:400px;position:relative;padding-left:clamp(0px,3vw,48px)">
+          <div aria-hidden="true" style="position:absolute;left:0;top:8px;bottom:8px;width:1px;background:linear-gradient(180deg,rgba(229,226,223,0.2) 0%,rgba(229,226,223,0) 100%)"></div>
+          <div style="display:flex;flex-direction:column;gap:32px">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="border:1px solid rgba(255,179,181,0.5);border-left-width:2px;padding:0 12px">
+                <span style="font-size:12px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(229,226,223,0.7)">Data</span>
+              </div>
+              <div style="padding:4px 12px;display:flex;flex-direction:column;gap:7px">
+                <span style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:30px;line-height:1.2;color:#e5e2df">13 — 21 OUT</span>
+                <span style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:20px;line-height:1.4;color:#e0bfbf">2026</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="border:1px solid rgba(255,179,181,0.5);border-left-width:2px;padding:0 12px">
+                <span style="font-size:12px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(229,226,223,0.7)">Local</span>
+              </div>
+              <div style="padding:4px 12px;display:flex;flex-direction:column;gap:8px">
+                <span style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:30px;line-height:1.2;color:#e5e2df">Vitória</span>
+                <span style="font-family:'Bodoni Moda',serif;font-weight:600;font-size:18px;line-height:1.4;color:#e0bfbf">Espírito Santo, Brasil</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:16px;align-items:flex-start">
+            <button onClick="{{ goProgramacao }}" style="min-height:52px;padding:16px 32px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:14px;font-weight:700;letter-spacing:2.1px;text-transform:uppercase;transition:box-shadow 300ms ease" style-hover="box-shadow:0 0 32px rgba(128,0,32,0.9)">Ver programação</button>
+            <button onClick="{{ goEdicao }}" style="min-height:54px;padding:16px 32px;border-radius:2px;border:0;box-shadow:inset 0 0 0 1px rgba(229,226,223,0.4);background:rgba(229,226,223,0);backdrop-filter:blur(4px);color:#e5e2df;font-size:14px;font-weight:700;letter-spacing:2.1px;text-transform:uppercase;transition:background 300ms ease" style-hover="background:rgba(229,226,223,0.1)">Conhecer a edição</button>
+          </div>
+        </div>
+      </div>
+      <div aria-hidden="true" style="position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:16px;opacity:0.7">
+        <span style="writing-mode:vertical-rl;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(229,226,223,0.8)">Desça para entrar em cena</span>
+        <span style="display:block;width:1px;height:36px;background:linear-gradient(180deg,#e5e2df 0%,rgba(229,226,223,0.15) 100%)"></span>
+      </div>
+    </section>
+
+    <div style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px)">
+      <sc-if value="{{ notas }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:20px 0 0">
+        <span style="display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid rgba(255,219,157,0.45);border-radius:9999px;font-family:ui-monospace,monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#ffdb9d">
+          <span aria-hidden="true" style="width:5px;height:5px;border-radius:9999px;background:#feb700"></span>Conteúdo demonstrativo
+        </span>
+        <span style="font-size:12px;line-height:1.5;color:rgba(229,226,223,0.5)">A programação abaixo reproduz a edição FENATEVI 2024 e será substituída pelos dados da edição vigente quando enviados pela organização.</span>
+      </div>
+      </sc-if>
+    </div>
+
+    <section aria-labelledby="ato02" data-reveal="1" style="position:relative;max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,5vw,64px) 0">
+      <span aria-hidden="true" style="position:absolute;left:-4px;top:180px;writing-mode:vertical-rl;transform:rotate(180deg);font-family:'Bodoni Moda',serif;font-size:40px;letter-spacing:14px;color:rgba(229,226,223,0.07);text-transform:uppercase">Cena 02</span>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <span aria-hidden="true" style="display:block;width:48px;height:1px;background:#e0bfbf"></span>
+        <span style="font-size:13px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffdb9d">Ato II — o festival agora</span>
+      </div>
+      <h2 id="ato02" style="margin:24px 0 0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6.4vw,76px);line-height:0.98;letter-spacing:-0.02em;color:#e5e2df">O que está acontecendo<br><span style="font-style:italic">neste instante.</span></h2>
+      <p style="margin:24px 0 0;max-width:620px;font-size:17px;line-height:1.65;color:rgba(229,226,223,0.72);text-wrap:pretty">Durante os dias de festival esta área muda sozinha: mostra o que está em cena agora, o que começa a seguir e a programação completa do dia.</p>
+
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;padding:48px 0 20px">
+        <span style="font-size:11px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:#ffb3b5">Em cena agora</span>
+        <span style="font-size:12px;letter-spacing:1px;color:rgba(229,226,223,0.45)">{{ nowLabel }}</span>
+      </div>
+
+      <sc-if value="{{ hasAgora }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px">
+          <sc-for list="{{ agora }}" as="ev" hint-placeholder-count="2">
+            <article style="position:relative;border:1px solid rgba(255,219,157,0.35);background:linear-gradient(180deg,rgba(254,183,0,0.07) 0%,rgba(28,28,26,1) 60%);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:16px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <span aria-hidden="true" style="width:7px;height:7px;border-radius:9999px;background:#feb700;box-shadow:0 0 14px rgba(255,219,157,0.8)"></span>
+                <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffdb9d">Acontecendo agora · termina {{ ev.endsAt }}</span>
+              </div>
+              <h3 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(26px,3vw,36px);line-height:1.05;color:#e5e2df">{{ ev.t }}</h3>
+              <p style="margin:0;font-size:14px;line-height:1.6;color:rgba(229,226,223,0.7)">{{ ev.group }} · {{ ev.venueName }}</p>
+              <div style="display:flex;flex-wrap:wrap;gap:8px">
+                <sc-for list="{{ ev.tags }}" as="tag" hint-placeholder-count="2">
+                  <span style="padding:6px 10px;border:1px solid rgba(229,226,223,0.22);border-radius:9999px;font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.8)">{{ tag }}</span>
+                </sc-for>
+              </div>
+              <button onClick="{{ ev.open }}" style="align-self:flex-start;margin-top:4px;min-height:44px;padding:12px 22px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Conhecer o espetáculo</button>
+            </article>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ noAgora }}">
+        <div style="border:1px dashed rgba(229,226,223,0.2);border-radius:8px;padding:40px 28px;display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+          <span style="font-family:'Bodoni Moda',serif;font-size:26px;color:#e5e2df">Nenhum espetáculo em cena neste horário.</span>
+          <span style="font-size:14px;line-height:1.6;color:rgba(229,226,223,0.6)">Estado vazio: a área passa a destacar a próxima sessão do dia.</span>
+        </div>
+      </sc-if>
+
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:16px;padding:64px 0 20px">
+        <span style="font-size:11px;font-weight:700;letter-spacing:2.4px;text-transform:uppercase;color:#ffb3b5">{{ aSeguirTitle }}</span>
+        <button onClick="{{ goHoje }}" style="background:none;border:0;padding:8px 0;font-size:12px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;color:#e5e2df;border-bottom:1px solid rgba(229,226,223,0.35)">Ver programação de hoje</button>
+      </div>
+      <sc-if value="{{ hasSeguir }}" hint-placeholder-val="{{ true }}">
+      <ul style="list-style:none;margin:0;padding:0;border-top:1px solid rgba(88,65,65,0.5)">
+        <sc-for list="{{ aSeguir }}" as="ev" hint-placeholder-count="3">
+          <li style="border-bottom:1px solid rgba(88,65,65,0.5)">
+            <button onClick="{{ ev.open }}" style="width:100%;text-align:left;background:none;border:0;padding:22px 8px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;align-items:center;transition:background 250ms ease" style-hover="background:rgba(229,226,223,0.04)">
+              <span style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-family:'Bodoni Moda',serif;font-size:28px;color:#ffdb9d">{{ ev.time }}</span>
+                <span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.45)">{{ ev.whenLabel }}</span>
+              </span>
+              <span style="font-family:'Bodoni Moda',serif;font-size:24px;line-height:1.15;color:#e5e2df;grid-column:span 2">{{ ev.t }}</span>
+              <span style="font-size:13px;line-height:1.5;color:rgba(229,226,223,0.65)">{{ ev.venueName }}</span>
+              <span style="font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.45)">{{ ev.cat }}</span>
+            </button>
+          </li>
+        </sc-for>
+      </ul>
+      </sc-if>
+      <sc-if value="{{ noSeguir }}">
+        <div style="border:1px dashed rgba(229,226,223,0.2);border-radius:8px;padding:32px 26px;display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:'Bodoni Moda',serif;font-size:24px;color:#e5e2df">A edição chegou ao fim.</span>
+          <span style="font-size:14px;line-height:1.6;color:rgba(229,226,223,0.6)">Estado final: a Home passa a convidar para o acervo desta edição.</span>
+          <button onClick="{{ goEdicao }}" style="align-self:flex-start;margin-top:8px;min-height:44px;padding:12px 20px;border:1px solid rgba(229,226,223,0.3);border-radius:2px;background:none;color:#e5e2df;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase">Ver a edição no acervo</button>
+        </div>
+      </sc-if>
+    </section>
+
+    <div aria-hidden="true" style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:clamp(56px,8vw,104px) 0 0">
+      <span style="display:block;width:1px;height:110px;background:linear-gradient(180deg,rgba(229,226,223,0) 0%,rgba(255,219,157,0.6) 100%)"></span>
+      <span style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(229,226,223,0.4)">Próximo ato — o que está em cartaz</span>
+    </div>
+
+    <section aria-labelledby="ato03" data-reveal="1" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center">
+        <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffdb9d">Ato III — programação em destaque</span>
+        <h2 id="ato03" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(42px,7vw,84px);line-height:0.95;letter-spacing:-0.02em;color:#e5e2df">O que está<br><span style="font-style:italic">em cartaz</span></h2>
+        <p style="margin:0;max-width:560px;font-size:16px;line-height:1.6;color:rgba(229,226,223,0.65)">Descubra algumas das histórias que entram em cena nesta edição.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;padding:56px 0 0">
+        <article style="grid-column:span 2;min-width:0;position:relative;border-radius:8px;overflow:hidden;border:1px solid rgba(88,65,65,0.6);background:#1c1c1a;display:flex;flex-direction:column;justify-content:flex-end;min-height:440px">
+          <div aria-hidden="true" style="position:absolute;inset:0;background-image:url(assets/2024/corpo-que-eu-habito.png);background-size:cover;background-position:50% 30%;filter:saturate(0.85);transition:filter 500ms ease"></div>
+          <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(19,19,18,0.96) 8%,rgba(19,19,18,0.55) 45%,rgba(19,19,18,0.2) 100%)"></div>
+          <div style="position:relative;padding:clamp(24px,3vw,40px);display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#ffdb9d">{{ destaque.dayLabel }} — {{ destaque.time }} · {{ destaque.venueName }}</span>
+            <h3 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(34px,4.6vw,56px);line-height:0.98;color:#e5e2df">{{ destaque.t }}</h3>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+              <span style="font-size:14px;color:rgba(229,226,223,0.8)">{{ destaque.group }}</span>
+              <span style="padding:6px 10px;border:1px solid rgba(255,219,157,0.6);border-radius:2px;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#ffdb9d">Classificação {{ destaque.rating }}</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:14px;padding:2px 0 4px">
+              <sc-for list="{{ destaque.access }}" as="a" hint-placeholder-count="2">
+                <span style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:#e5e2df">
+                  <span aria-hidden="true" style="width:16px;height:1px;background:#ffb3b5"></span>{{ a }}
+                </span>
+              </sc-for>
+            </div>
+            <button onClick="{{ destaque.open }}" style="align-self:flex-start;min-height:48px;padding:14px 26px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:12px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Ver espetáculo →</button>
+          </div>
+        </article>
+
+        <sc-for list="{{ cartaz }}" as="ev" hint-placeholder-count="3">
+          <article style="min-width:0;border:1px solid rgba(88,65,65,0.55);border-radius:8px;background:#1c1c1a;overflow:hidden;display:flex;flex-direction:column">
+            <div style="position:relative;aspect-ratio:4/3;overflow:hidden;background:#0e0e0d">
+              <div aria-hidden="true" style="position:absolute;inset:0;background-image:{{ ev.bg }};background-size:cover;background-position:50% 35%;filter:saturate(0.8)"></div>
+              <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(19,19,18,0.7) 0%,rgba(19,19,18,0) 60%)"></div>
+              <span style="position:absolute;left:12px;bottom:10px;font-family:ui-monospace,monospace;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.6)">Imagem em baixa resolução — solicitar original</span>
+            </div>
+            <div style="padding:22px;display:flex;flex-direction:column;gap:12px;flex:1">
+              <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                <span style="font-size:12px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#e5e2df">{{ ev.dayLabel }} — {{ ev.time }}</span>
+                <span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:#ffdb9d">{{ ev.city }}</span>
+              </div>
+              <h3 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:26px;line-height:1.08;color:#e5e2df">{{ ev.t }}</h3>
+              <span style="font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.6)">{{ ev.venueName }}</span>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:12px">
+                <span style="padding:6px 10px;border:1px solid rgba(229,226,223,0.22);border-radius:2px;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.75)">Entrada franca</span>
+                <button onClick="{{ ev.open }}" style="min-height:44px;padding:10px 14px;background:none;border:1px solid rgba(229,226,223,0.3);border-radius:2px;color:#e5e2df;font-size:10px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase">Ver detalhes</button>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:20px;padding:clamp(48px,6vw,80px) 0 0">
+        <p style="margin:0;font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(22px,3vw,30px);line-height:1.3;color:#e5e2df;text-align:center">Há mais histórias esperando para entrar em cena.</p>
+        <button onClick="{{ goProgramacao }}" style="min-height:52px;padding:16px 32px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:13px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Ver programação completa</button>
+        <button onClick="{{ goGrade }}" style="background:none;border:0;padding:6px 0;font-size:13px;color:#e0bfbf;border-bottom:1px solid rgba(224,191,191,0.35)">Consultar grade diária</button>
+      </div>
+    </section>
+
+    <div aria-hidden="true" style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:clamp(56px,8vw,104px) 0 0">
+      <span style="display:block;width:1px;height:110px;background:linear-gradient(180deg,rgba(229,226,223,0) 0%,rgba(255,219,157,0.6) 100%)"></span>
+      <span style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(229,226,223,0.4)">Próximo ato — oito dias em cena</span>
+    </div>
+
+    <section aria-labelledby="ato04" data-reveal="1" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
+        <div>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <span aria-hidden="true" style="display:block;width:48px;height:1px;background:#e0bfbf"></span>
+            <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffdb9d">Ato IV — explore por dia</span>
+          </div>
+          <h2 id="ato04" style="margin:22px 0 0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(38px,5.6vw,68px);line-height:0.98;letter-spacing:-0.02em;color:#e5e2df">Oito dias, <span style="font-style:italic">oito casas cheias</span></h2>
+        </div>
+        <button onClick="{{ goGrade }}" style="min-height:48px;padding:14px 24px;background:none;border:1px solid rgba(229,226,223,0.3);border-radius:2px;color:#e5e2df;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Ver grade diária</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:2px;margin-top:48px;background:rgba(88,65,65,0.4)">
+        <sc-for list="{{ dias }}" as="d" hint-placeholder-count="8">
+          <button onClick="{{ d.onClick }}" style="position:relative;background:#131312;border:0;padding:26px 20px 24px;min-height:190px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;transition:background 350ms ease" style-hover="background:#1c1c1a">
+            <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:{{ d.accent }}">{{ d.dow }}</span>
+            <span style="font-family:'Bodoni Moda',serif;font-size:clamp(48px,5vw,64px);line-height:0.9;color:#e5e2df">{{ d.n }}</span>
+            <span style="font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.45)">Outubro</span>
+            <span style="margin-top:auto;font-size:13px;color:#e0bfbf">{{ d.countLabel }}</span>
+            <span style="font-size:11px;line-height:1.4;color:rgba(229,226,223,0.4)">{{ d.venuesLabel }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-labelledby="ato05" data-reveal="1" style="margin:clamp(72px,10vw,130px) 0 0;background:#0e0e0d;border-top:1px solid rgba(88,65,65,0.35);border-bottom:1px solid rgba(88,65,65,0.35)">
+      <div style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,96px) clamp(20px,5vw,64px);display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,72px);align-items:center">
+        <div style="min-width:0;display:flex;flex-direction:column;gap:20px">
+          <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffdb9d">Ato V — capa editorial</span>
+          <h2 id="ato05" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6vw,76px);line-height:0.95;letter-spacing:-0.02em;color:#e5e2df">{{ editorial.t }}</h2>
+          <p style="margin:0;font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(20px,2.4vw,28px);line-height:1.3;color:#e0bfbf">{{ editorial.group }} · {{ editorial.city }}</p>
+          <p style="margin:0;max-width:560px;font-size:16px;line-height:1.7;color:rgba(229,226,223,0.7);text-wrap:pretty">{{ editorial.releaseShort }}</p>
+          <dl style="margin:8px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:20px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <dt style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Data</dt>
+              <dd style="margin:0;font-family:'Bodoni Moda',serif;font-size:22px;color:#e5e2df">{{ editorial.dayLabel }} · {{ editorial.time }}</dd>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <dt style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Local</dt>
+              <dd style="margin:0;font-size:15px;line-height:1.4;color:#e5e2df">{{ editorial.venueName }}</dd>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <dt style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Duração</dt>
+              <dd style="margin:0;font-size:15px;color:#e5e2df">{{ editorial.durLabel }} · {{ editorial.ratingLabel }}</dd>
+            </div>
+          </dl>
+          <button onClick="{{ editorial.open }}" style="align-self:flex-start;margin-top:12px;min-height:52px;padding:16px 30px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:13px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Conhecer o espetáculo</button>
+        </div>
+        <figure style="margin:0;min-width:0;display:flex;flex-direction:column;gap:12px">
+          <div style="position:relative;aspect-ratio:3/4;max-height:620px;overflow:hidden;border-radius:8px;border:1px solid rgba(88,65,65,0.6);background:#131312">
+            <div aria-hidden="true" style="position:absolute;inset:0;background-image:{{ editorial.bg }};background-size:cover;background-position:50% 40%"></div>
+            <div aria-hidden="true" style="position:absolute;inset:0;background:radial-gradient(70% 50% at 50% 0%, rgba(255,219,157,0.18) 0%, rgba(19,19,18,0) 60%)"></div>
+          </div>
+          <figcaption style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.45)">Registro da edição 2024 em baixa resolução — solicitar arquivo original em alta à companhia.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section aria-labelledby="ato06" data-reveal="1" style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,5vw,64px) 0">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <span aria-hidden="true" style="display:block;width:48px;height:1px;background:#e0bfbf"></span>
+        <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffdb9d">Ato VI — mostras e experiências</span>
+      </div>
+      <h2 id="ato06" style="margin:22px 0 0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(38px,5.6vw,68px);line-height:0.98;letter-spacing:-0.02em;color:#e5e2df">O festival tem <span style="font-style:italic">várias frentes</span></h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2px;margin-top:44px;background:rgba(88,65,65,0.4)">
+        <sc-for list="{{ frentes }}" as="f" hint-placeholder-count="6">
+          <button onClick="{{ f.onClick }}" style="background:#131312;border:0;padding:32px 28px 30px;min-height:230px;display:flex;flex-direction:column;gap:14px;text-align:left;transition:background 350ms ease" style-hover="background:#1c1c1a">
+            <span style="font-family:'Bodoni Moda',serif;font-size:20px;color:rgba(255,179,181,0.65)">{{ f.num }}</span>
+            <span style="font-family:'Bodoni Moda',serif;font-size:30px;line-height:1.06;color:#e5e2df">{{ f.label }}</span>
+            <span style="font-size:14px;line-height:1.6;color:rgba(229,226,223,0.6)">{{ f.desc }}</span>
+            <span style="margin-top:auto;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#ffdb9d">{{ f.count }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-labelledby="ato07" data-reveal="1" style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,5vw,64px) 0">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center">
+        <span style="font-size:11px;letter-spacing:2.4px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Ato VII</span>
+        <h2 id="ato07" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6.4vw,76px);line-height:0.98;letter-spacing:-0.02em;color:#e5e2df">A cidade vira <span style="font-style:italic">palco</span></h2>
+        <p style="margin:0;max-width:520px;font-size:16px;line-height:1.6;color:rgba(229,226,223,0.65)">Teatros, salas, praças e espaços independentes espalhados por Vitória. Onde a arte encontra a cidade.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:52px">
+        <div style="min-width:0;border:1px solid rgba(88,65,65,0.6);border-radius:8px;background:#1c1c1a;padding:24px;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+            <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffb3b5">Mapa cultural</span>
+            <span style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:1.2px;color:#ffdb9d"><span aria-hidden="true" style="width:6px;height:6px;border-radius:9999px;background:#feb700"></span>7 espaços</span>
+          </div>
+          <div role="img" aria-label="Prévia do mapa cultural com sete espaços do festival em Vitória" style="position:relative;aspect-ratio:4/3;border-radius:4px;background:radial-gradient(120% 100% at 20% 10%, rgba(128,0,32,0.25) 0%, rgba(14,14,13,1) 60%);overflow:hidden;border:1px solid rgba(88,65,65,0.5)">
+            <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(229,226,223,0.05) 1px, transparent 1px),linear-gradient(90deg, rgba(229,226,223,0.05) 1px, transparent 1px);background-size:40px 40px"></div>
+            <sc-for list="{{ mapDots }}" as="p" hint-placeholder-count="7">
+              <span aria-hidden="true" style="position:absolute;left:{{ p.left }};top:{{ p.top }};width:10px;height:10px;border-radius:9999px;background:{{ p.color }};box-shadow:0 0 16px {{ p.glow }}"></span>
+            </sc-for>
+            <span style="position:absolute;left:12px;bottom:10px;font-family:ui-monospace,monospace;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Prévia — base geográfica na implementação</span>
+          </div>
+          <button onClick="{{ goMapa }}" style="min-height:48px;padding:14px 22px;border:0;border-radius:2px;background:#ffb3b5;color:#680018;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Explorar mapa cultural</button>
+        </div>
+        <sc-for list="{{ venuesHome }}" as="v" hint-placeholder-count="3">
+          <button onClick="{{ v.onClick }}" style="min-width:0;text-align:left;border:1px solid rgba(88,65,65,0.55);border-radius:8px;background:#131312;padding:24px;display:flex;flex-direction:column;gap:14px;transition:background 350ms ease" style-hover="background:#1c1c1a">
+            <div style="display:flex;align-items:baseline;gap:12px">
+              <span style="font-family:'Bodoni Moda',serif;font-size:26px;color:#ffdb9d">{{ v.num }}</span>
+              <span style="font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(229,226,223,0.5)">{{ v.kind }}</span>
+            </div>
+            <span style="font-family:'Bodoni Moda',serif;font-size:26px;line-height:1.08;color:#e5e2df">{{ v.name }}</span>
+            <span style="font-size:13px;line-height:1.55;color:rgba(229,226,223,0.6)">{{ v.addr }}</span>
+            <div aria-hidden="true" style="height:64px;border-radius:4px;background-image:repeating-linear-gradient(135deg, rgba(229,226,223,0.06) 0px, rgba(229,226,223,0.06) 2px, transparent 2px, transparent 9px);border:1px solid rgba(88,65,65,0.4);display:flex;align-items:center;justify-content:center">
+              <span style="font-family:ui-monospace,monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(229,226,223,0.4)">Foto do espaço — solicitar</span>
+            </div>
+            <span style="margin-top:auto;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#ffb3b5">{{ v.countLabel }} →</span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-labelledby="ato08" data-reveal="1" style="margin:clamp(72px,10vw,130px) 0 0;position:relative;overflow:hidden;background:#0e0e0d;border-top:1px solid rgba(88,65,65,0.35)">
+      <div aria-hidden="true" style="position:absolute;inset:0;background-image:url(assets/stage-b.jpg);background-size:cover;background-position:50% 50%;opacity:0.18;filter:grayscale(0.4)"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,14,13,0.85) 0%,rgba(14,14,13,0.95) 100%)"></div>
+      <div style="position:relative;max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,5vw,64px)">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <span aria-hidden="true" style="display:block;width:48px;height:1px;background:#ffb3b5"></span>
+          <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">Ato VIII — memória FENATEVI</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;margin-top:28px;align-items:end">
+          <h2 id="ato08" style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6.4vw,80px);line-height:0.94;letter-spacing:-0.02em;color:#e5e2df">Vinte e duas edições<br><span style="font-style:italic">não caem no escuro.</span></h2>
+          <p style="margin:0;max-width:480px;font-size:17px;line-height:1.7;color:rgba(229,226,223,0.72);text-wrap:pretty">Quando as luzes se apagam, a edição não acaba: ela entra no acervo. Espetáculos, companhias, homenageados e registros de cada ano continuam acessíveis na mesma URL — o portal é também o arquivo vivo do festival.</p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:2px;margin-top:56px;background:rgba(88,65,65,0.4)">
+          <sc-for list="{{ edicoesTeaser }}" as="e" hint-placeholder-count="4">
+            <button onClick="{{ e.onClick }}" style="flex:1 1 220px;min-width:0;background:#131312;border:0;padding:30px 26px;min-height:200px;display:flex;flex-direction:column;gap:10px;text-align:left;transition:background 350ms ease" style-hover="background:#1c1c1a">
+              <span style="font-family:'Bodoni Moda',serif;font-size:clamp(38px,4vw,52px);line-height:1;color:#e5e2df">{{ e.year }}</span>
+              <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffdb9d">{{ e.ed }}</span>
+              <span style="font-size:13px;line-height:1.55;color:rgba(229,226,223,0.6)">{{ e.desc }}</span>
+              <span style="margin-top:auto;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:{{ e.stateColor }}">{{ e.state }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:40px">
+          <button onClick="{{ goMemoria }}" style="min-height:52px;padding:16px 30px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:13px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Explorar memória do festival</button>
+          <button onClick="{{ goEdicao }}" style="min-height:52px;padding:16px 30px;border-radius:2px;border:0;box-shadow:inset 0 0 0 1px rgba(229,226,223,0.4);background:none;color:#e5e2df;font-size:13px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Ver FENATEVI 2024</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="noticias" aria-labelledby="ato09" data-reveal="1" style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,5vw,64px) 0">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px">
+        <div>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <span aria-hidden="true" style="display:block;width:48px;height:1px;background:#e0bfbf"></span>
+            <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffdb9d">Ato IX — festival acontecendo</span>
+          </div>
+          <h2 id="ato09" style="margin:22px 0 0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(38px,5.6vw,68px);line-height:0.98;letter-spacing:-0.02em;color:#e5e2df">Notícias e <span style="font-style:italic">bastidores</span></h2>
+        </div>
+        <p style="margin:0;max-width:420px;font-size:15px;line-height:1.65;color:rgba(229,226,223,0.6)">Área editorial para publicação rápida durante o festival: alterações de programação, bastidores, registros do dia e chamadas.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-top:44px">
+        <sc-for list="{{ newsSlots }}" as="n" hint-placeholder-count="3">
+          <article style="min-width:0;border:1px dashed rgba(229,226,223,0.22);border-radius:8px;padding:26px;min-height:260px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,179,181,0.75)">{{ n.kind }}</span>
+            <span style="font-family:'Bodoni Moda',serif;font-size:26px;line-height:1.12;color:rgba(229,226,223,0.55)">{{ n.title }}</span>
+            <span style="font-size:13px;line-height:1.6;color:rgba(229,226,223,0.42)">{{ n.desc }}</span>
+            <span style="margin-top:auto;font-family:ui-monospace,monospace;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.35)">Slot editorial — sem conteúdo publicado</span>
+          </article>
+        </sc-for>
+      </div>
+      <p style="margin:22px 0 0;font-size:13px;line-height:1.6;color:rgba(229,226,223,0.45)">Estado “conteúdo ainda indisponível”: nenhuma notícia foi inventada para esta prototipação.</p>
+    </section>
+
+    <section aria-labelledby="ato10" data-reveal="1" style="max-width:1280px;margin:0 auto;padding:clamp(64px,9vw,120px) clamp(20px,5vw,64px) 0">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <span aria-hidden="true" style="display:block;width:48px;height:1px;background:#e0bfbf"></span>
+        <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffdb9d">Ato X — quem faz acontecer</span>
+      </div>
+      <h2 id="ato10" style="margin:22px 0 34px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(34px,4.6vw,56px);line-height:1;letter-spacing:-0.02em;color:#e5e2df">Realização e parceiros</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:32px">
+        <sc-for list="{{ partners }}" as="p" hint-placeholder-count="5">
+          <div style="min-width:0;display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:1px solid rgba(88,65,65,0.6)">
+            <span style="font-size:10px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:#ffb3b5">{{ p.role }}</span>
+            <span style="font-family:'Bodoni Moda',serif;font-size:{{ p.size }};line-height:1.2;color:#e5e2df">{{ p.name }}</span>
+            <span style="font-size:13px;line-height:1.55;color:rgba(229,226,223,0.55)">{{ p.note }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="margin-top:48px;padding:28px;border:1px solid rgba(88,65,65,0.5);border-radius:8px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;background:#1c1c1a">
+        <div style="display:flex;flex-direction:column;gap:8px;max-width:560px">
+          <span style="font-family:'Bodoni Moda',serif;font-size:24px;line-height:1.25;color:#e5e2df">Associação Cultural, Circense e Ambiental Uma Floresta</span>
+          <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:19px;color:#ffdb9d">“Basta uma semente”</span>
+        </div>
+        <span style="font-size:13px;line-height:1.6;color:rgba(229,226,223,0.55);max-width:380px">Organização responsável pelo FENATEVI. Os logotipos oficiais entram nesta área na implementação.</span>
+      </div>
+    </section>
+    <!--HOME-REST-->
+  </div>
+  </sc-if>
+  <sc-if value="{{ isProgramacao }}">
+  <div data-screen-label="Programação">
+    <section aria-labelledby="progTitle" style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,72px) clamp(20px,5vw,64px) 0">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Início</button>
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;padding-top:12px">
+        <div>
+          <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+            <span aria-hidden="true" style="display:block;width:48px;height:1px;background:#ffb3b5"></span>
+            <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">Programação completa</span>
+          </div>
+          <h1 id="progTitle" style="margin:20px 0 0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(44px,7vw,88px);line-height:0.94;letter-spacing:-0.02em;color:#e5e2df">O que tem <span style="font-style:italic">hoje?</span></h1>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;max-width:360px">
+          <span style="font-size:15px;line-height:1.6;color:rgba(229,226,223,0.7)">Oito dias, sete espaços, cinco frentes de programação. Toda a edição com entrada franca.</span>
+          <span style="display:inline-flex;align-items:center;gap:8px;font-family:ui-monospace,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:#ffdb9d"><span aria-hidden="true" style="width:5px;height:5px;border-radius:9999px;background:#feb700"></span>Conteúdo demonstrativo · edição 2024</span>
+        </div>
+      </div>
+    </section>
+
+    <div style="position:sticky;top:78px;z-index:40;background:rgba(19,19,18,0.92);backdrop-filter:blur(16px);border-top:1px solid rgba(88,65,65,0.4);border-bottom:1px solid rgba(88,65,65,0.4);margin-top:40px">
+      <div style="max-width:1280px;margin:0 auto;padding:18px clamp(20px,5vw,64px);display:flex;flex-direction:column;gap:14px">
+        <div role="group" aria-label="Filtrar por momento" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <sc-for list="{{ dayChips }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.onClick }}" aria-pressed="{{ c.on }}" style="min-height:44px;padding:11px 18px;border-radius:9999px;border:1px solid {{ c.bc }};background:{{ c.bg }};color:{{ c.fg }};font-size:12px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase">{{ c.label }}</button>
+          </sc-for>
+          <span aria-hidden="true" style="width:1px;height:28px;background:rgba(88,65,65,0.6);margin:0 6px"></span>
+          <sc-for list="{{ dayNumChips }}" as="c" hint-placeholder-count="8">
+            <button onClick="{{ c.onClick }}" aria-pressed="{{ c.on }}" aria-label="Dia {{ c.label }} de outubro" style="min-width:52px;min-height:52px;padding:8px 10px;border-radius:2px;border:1px solid {{ c.bc }};background:{{ c.bg }};color:{{ c.fg }};display:flex;flex-direction:column;align-items:center;gap:2px">
+              <span style="font-family:'Bodoni Moda',serif;font-size:20px;line-height:1">{{ c.label }}</span>
+              <span style="font-size:9px;letter-spacing:1.2px;text-transform:uppercase;opacity:0.7">{{ c.dow }}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="6">
+            <button onClick="{{ c.onClick }}" aria-pressed="{{ c.on }}" style="min-height:40px;padding:9px 15px;border-radius:9999px;border:1px solid {{ c.bc }};background:{{ c.bg }};color:{{ c.fg }};font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <sc-for list="{{ venueChips }}" as="c" hint-placeholder-count="8">
+            <button onClick="{{ c.onClick }}" aria-pressed="{{ c.on }}" style="min-height:40px;padding:9px 15px;border-radius:2px;border:1px solid {{ c.bc }};background:{{ c.bg }};color:{{ c.fg }};font-size:11px;font-weight:600;letter-spacing:1.2px">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;padding-top:4px">
+          <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+            <span style="display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(255,219,157,0.4);border-radius:2px;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#ffdb9d">Entrada franca em toda a edição</span>
+            <span style="font-size:13px;color:rgba(229,226,223,0.6)">{{ progResultLabel }}</span>
+          </div>
+          <button onClick="{{ clearFilters }}" style="min-height:40px;background:none;border:0;padding:8px 0;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(229,226,223,0.6);border-bottom:1px solid rgba(229,226,223,0.25)">Limpar filtros</button>
+        </div>
+      </div>
+    </div>
+
+    <section aria-label="Resultados da programação" style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px)">
+      <sc-if value="{{ progEmpty }}">
+        <div style="margin:56px 0;border:1px dashed rgba(229,226,223,0.22);border-radius:8px;padding:48px 32px;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+          <span style="font-family:'Bodoni Moda',serif;font-size:30px;color:#e5e2df">Nada em cena com esses filtros.</span>
+          <span style="font-size:15px;line-height:1.6;color:rgba(229,226,223,0.6)">Estado vazio: tente outro dia, outra frente ou limpe os filtros.</span>
+          <button onClick="{{ clearFilters }}" style="min-height:48px;padding:14px 24px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Limpar filtros</button>
+        </div>
+      </sc-if>
+      <sc-for list="{{ progGroups }}" as="g" hint-placeholder-count="3">
+        <div style="padding:56px 0 0">
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:18px;padding-bottom:18px;border-bottom:1px solid rgba(88,65,65,0.6)">
+            <span style="font-family:'Bodoni Moda',serif;font-size:clamp(40px,5vw,60px);line-height:0.9;color:#e5e2df">{{ g.day }}</span>
+            <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:24px;color:#e0bfbf">{{ g.dow }}</span>
+            <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.45)">Outubro · {{ g.countLabel }}</span>
+          </div>
+          <ul style="list-style:none;margin:0;padding:0">
+            <sc-for list="{{ g.items }}" as="ev" hint-placeholder-count="3">
+              <li style="border-bottom:1px solid rgba(88,65,65,0.4)">
+                <button onClick="{{ ev.open }}" style="width:100%;text-align:left;background:none;border:0;padding:24px 10px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;align-items:start;transition:background 250ms ease" style-hover="background:rgba(229,226,223,0.04)">
+                  <span style="display:flex;flex-direction:column;gap:8px">
+                    <span style="font-family:'Bodoni Moda',serif;font-size:30px;line-height:1;color:#ffdb9d">{{ ev.timeLabel }}</span>
+                    <span style="font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(229,226,223,0.45)">{{ ev.statusLabel }}</span>
+                  </span>
+                  <span style="grid-column:span 2;display:flex;flex-direction:column;gap:8px;min-width:0">
+                    <span style="font-family:'Bodoni Moda',serif;font-size:clamp(22px,2.4vw,28px);line-height:1.1;color:#e5e2df">{{ ev.t }}</span>
+                    <span style="font-size:14px;line-height:1.5;color:rgba(229,226,223,0.7)">{{ ev.group }}</span>
+                  </span>
+                  <span style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                    <span style="font-size:13px;line-height:1.45;color:#e5e2df">{{ ev.venueName }}</span>
+                    <span style="font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.45)">{{ ev.cat }}</span>
+                  </span>
+                  <span style="display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start">
+                    <sc-for list="{{ ev.tags }}" as="tag" hint-placeholder-count="2">
+                      <span style="padding:5px 9px;border:1px solid rgba(229,226,223,0.2);border-radius:9999px;font-size:10px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:rgba(229,226,223,0.75)">{{ tag }}</span>
+                    </sc-for>
+                  </span>
+                </button>
+              </li>
+            </sc-for>
+          </ul>
+        </div>
+      </sc-for>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;padding:56px 0 0">
+        <button onClick="{{ goGrade }}" style="min-height:52px;padding:16px 28px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:12px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Ver grade diária</button>
+        <button onClick="{{ goMapa }}" style="min-height:52px;padding:16px 28px;border-radius:2px;border:0;box-shadow:inset 0 0 0 1px rgba(229,226,223,0.35);background:none;color:#e5e2df;font-size:12px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Onde ficam os espaços</button>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+  <sc-if value="{{ isEspetaculo }}">
+  <article data-screen-label="Detalhe de espetáculo">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(32px,5vw,56px) clamp(20px,5vw,64px) 0">
+      <button onClick="{{ goProgramacao }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Programação</button>
+    </div>
+    <header style="max-width:1280px;margin:0 auto;padding:20px clamp(20px,5vw,64px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(32px,5vw,64px);align-items:start">
+      <div style="min-width:0;display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:#ffb3b5">{{ show.cat }}</span>
+          <span aria-hidden="true" style="width:24px;height:1px;background:rgba(229,226,223,0.3)"></span>
+          <span style="font-size:11px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:{{ show.statusColor }}">{{ show.statusLabel }}</span>
+        </div>
+        <h1 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6.4vw,80px);line-height:0.94;letter-spacing:-0.02em;color:#e5e2df">{{ show.t }}</h1>
+        <p style="margin:0;font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(20px,2.6vw,28px);line-height:1.25;color:#e0bfbf">{{ show.group }} · {{ show.city }}</p>
+        <dl style="margin:12px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:24px;border-top:1px solid rgba(88,65,65,0.6);padding-top:24px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <dt style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Data e horário</dt>
+            <dd style="margin:0;font-family:'Bodoni Moda',serif;font-size:26px;line-height:1.1;color:#e5e2df">{{ show.dayLabel }} · {{ show.time }}</dd>
+            <dd style="margin:0;font-size:13px;color:rgba(229,226,223,0.6)">{{ show.dow }} · termina {{ show.endsAt }}</dd>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <dt style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Local</dt>
+            <dd style="margin:0;font-size:17px;line-height:1.35;color:#e5e2df">{{ show.venueName }}</dd>
+            <dd style="margin:0;font-size:13px;line-height:1.5;color:rgba(229,226,223,0.6)">{{ show.venueAddr }}</dd>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <dt style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Duração e classificação</dt>
+            <dd style="margin:0;font-size:17px;color:#e5e2df">{{ show.durLabel }}</dd>
+            <dd style="margin:0;font-size:13px;color:rgba(229,226,223,0.6)">Classificação: {{ show.ratingLabel }}</dd>
+          </div>
+        </dl>
+        <sc-if value="{{ show.hasAccess }}">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:16px 18px;border:1px solid rgba(255,219,157,0.45);border-radius:4px;background:rgba(254,183,0,0.06)">
+            <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffdb9d">Acessibilidade nesta sessão</span>
+            <span style="font-size:15px;color:#e5e2df">{{ show.accessLabel }}</span>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;padding-top:8px">
+          <span style="display:inline-flex;align-items:center;min-height:52px;padding:16px 26px;border-radius:2px;background:rgba(255,179,181,0.14);border:1px solid rgba(255,179,181,0.5);color:#ffb3b5;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Entrada franca</span>
+          <button onClick="{{ show.openVenue }}" style="min-height:52px;padding:16px 26px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Como chegar</button>
+          <button onClick="{{ goGrade }}" style="min-height:52px;padding:16px 26px;border-radius:2px;border:0;box-shadow:inset 0 0 0 1px rgba(229,226,223,0.35);background:none;color:#e5e2df;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Ver na grade do dia</button>
+        </div>
+      </div>
+      <figure style="margin:0;min-width:0;display:flex;flex-direction:column;gap:10px">
+        <div style="position:relative;aspect-ratio:4/3;border-radius:8px;overflow:hidden;border:1px solid rgba(88,65,65,0.6);background:#0e0e0d">
+          <div aria-hidden="true" style="position:absolute;inset:0;background-image:{{ show.bg }};background-size:cover;background-position:50% 40%"></div>
+          <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(19,19,18,0.5) 0%,rgba(19,19,18,0) 55%)"></div>
+        </div>
+        <figcaption style="font-family:ui-monospace,monospace;font-size:10px;line-height:1.6;letter-spacing:1.2px;text-transform:uppercase;color:rgba(229,226,223,0.45)">Registro da edição 2024, extraído do programa impresso — resolução insuficiente para uso em grandes dimensões. Solicitar arquivo original à companhia.</figcaption>
+      </figure>
+    </header>
+
+    <section aria-label="Sobre o espetáculo" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,64px)">
+      <div style="min-width:0;display:flex;flex-direction:column;gap:20px">
+        <h2 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(30px,3.6vw,44px);line-height:1.05;color:#e5e2df">Sobre o espetáculo</h2>
+        <p style="margin:0;font-size:17px;line-height:1.75;color:rgba(229,226,223,0.78);text-wrap:pretty">{{ show.release }}</p>
+        <sc-if value="{{ show.hasNote }}">
+          <p style="margin:0;padding:16px 18px;border-left:2px solid rgba(255,179,181,0.5);font-size:14px;line-height:1.65;color:rgba(229,226,223,0.65)">{{ show.noteText }}</p>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:12px;padding-top:16px">
+          <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Autoria e direção</span>
+          <span style="font-size:16px;line-height:1.6;color:#e5e2df">Autoria: {{ show.author }}</span>
+          <span style="font-size:16px;line-height:1.6;color:#e5e2df">Direção: {{ show.dir }}</span>
+        </div>
+      </div>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:18px">
+        <h2 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(26px,3vw,34px);line-height:1.1;color:#e5e2df">Ficha técnica</h2>
+        <dl style="margin:0;display:flex;flex-direction:column">
+          <sc-for list="{{ show.fichaRows }}" as="f" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px 24px;padding:14px 0;border-bottom:1px solid rgba(88,65,65,0.4)">
+              <dt style="font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#ffb3b5">{{ f.label }}</dt>
+              <dd style="margin:0;grid-column:span 2;font-size:15px;line-height:1.6;color:rgba(229,226,223,0.8)">{{ f.value }}</dd>
+            </div>
+          </sc-for>
+        </dl>
+      </div>
+    </section>
+
+    <section aria-label="Companhia e espaço" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
+      <div style="min-width:0;border:1px solid rgba(88,65,65,0.55);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px;background:#1c1c1a">
+        <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffb3b5">Companhia</span>
+        <span style="font-family:'Bodoni Moda',serif;font-size:28px;line-height:1.1;color:#e5e2df">{{ show.group }}</span>
+        <span style="font-size:14px;color:rgba(229,226,223,0.65)">{{ show.city }}</span>
+      </div>
+      <button onClick="{{ show.openVenue }}" style="text-align:left;min-width:0;border:1px solid rgba(88,65,65,0.55);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px;background:#1c1c1a" style-hover="background:#20201e">
+        <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffb3b5">Espaço</span>
+        <span style="font-family:'Bodoni Moda',serif;font-size:28px;line-height:1.1;color:#e5e2df">{{ show.venueName }}</span>
+        <span style="font-size:14px;line-height:1.5;color:rgba(229,226,223,0.65)">{{ show.venueAddr }}</span>
+        <span style="margin-top:8px;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#ffdb9d">Ver programação deste espaço →</span>
+      </button>
+      <sc-if value="{{ show.hasProc }}">
+        <div style="min-width:0;border:1px solid rgba(88,65,65,0.55);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:12px;background:#1c1c1a">
+          <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffb3b5">Processo criativo</span>
+          <span style="font-size:16px;line-height:1.6;color:#e5e2df">Demonstração de trabalho aberta ao público após a apresentação.</span>
+          <sc-for list="{{ show.proc }}" as="p" hint-placeholder-count="1">
+            <span style="font-size:13px;line-height:1.55;color:rgba(229,226,223,0.65)">{{ p.group }} · {{ p.venue }}</span>
+          </sc-for>
+        </div>
+      </sc-if>
+    </section>
+
+    <sc-if value="{{ show.hasRelated }}">
+      <section aria-label="Outras apresentações" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0">
+        <h2 style="margin:0 0 24px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(26px,3vw,36px);color:#e5e2df">Outras apresentações desta companhia</h2>
+        <ul style="list-style:none;margin:0;padding:0;border-top:1px solid rgba(88,65,65,0.5)">
+          <sc-for list="{{ show.related }}" as="r" hint-placeholder-count="1">
+            <li style="border-bottom:1px solid rgba(88,65,65,0.5)">
+              <button onClick="{{ r.open }}" style="width:100%;text-align:left;background:none;border:0;padding:20px 8px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;align-items:center" style-hover="background:rgba(229,226,223,0.04)">
+                <span style="font-family:'Bodoni Moda',serif;font-size:24px;color:#ffdb9d">{{ r.dayLabel }} · {{ r.time }}</span>
+                <span style="grid-column:span 2;font-family:'Bodoni Moda',serif;font-size:22px;color:#e5e2df">{{ r.t }}</span>
+                <span style="font-size:13px;color:rgba(229,226,223,0.65)">{{ r.venueName }}</span>
+              </button>
+            </li>
+          </sc-for>
+        </ul>
+      </section>
+    </sc-if>
+  </article>
+  </sc-if>
+
+  <sc-if value="{{ isOficina }}">
+  <article data-screen-label="Detalhe de oficina">
+    <div style="max-width:1280px;margin:0 auto;padding:clamp(32px,5vw,56px) clamp(20px,5vw,64px) 0">
+      <button onClick="{{ goOficinas }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Oficinas e ações formativas</button>
+    </div>
+    <header style="max-width:1280px;margin:0 auto;padding:20px clamp(20px,5vw,64px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:clamp(32px,5vw,64px);align-items:start">
+      <div style="min-width:0;display:flex;flex-direction:column;gap:18px">
+        <span style="font-size:11px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:#ffb3b5">Ação formativa · oficina</span>
+        <h1 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6.4vw,76px);line-height:0.95;letter-spacing:-0.02em;color:#e5e2df">{{ ws.t }}</h1>
+        <p style="margin:0;font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(19px,2.4vw,26px);line-height:1.3;color:#e0bfbf">Com {{ ws.teachers }}</p>
+        <p style="margin:0;font-size:17px;line-height:1.7;color:rgba(229,226,223,0.75);text-wrap:pretty">{{ ws.desc }}</p>
+        <sc-if value="{{ ws.hasAccess }}">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:14px 18px;border:1px solid rgba(255,219,157,0.45);border-radius:4px;background:rgba(254,183,0,0.06)">
+            <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffdb9d">Acessibilidade</span>
+            <span style="font-size:15px;color:#e5e2df">{{ ws.accessLabel }}</span>
+          </div>
+        </sc-if>
+      </div>
+      <aside aria-label="Inscrição" style="min-width:0;border:1px solid rgba(255,179,181,0.4);border-radius:8px;background:linear-gradient(180deg,rgba(128,0,32,0.22) 0%,rgba(28,28,26,1) 70%);padding:clamp(24px,3vw,34px);display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:10px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:#ffb3b5">Inscrição aberta</span>
+          <span style="font-family:'Bodoni Moda',serif;font-size:38px;line-height:1;color:#e5e2df">{{ ws.seats }}</span>
+          <span style="font-size:14px;color:rgba(229,226,223,0.7)">Turmas: {{ ws.classes }} · {{ ws.format }}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding-top:6px;border-top:1px solid rgba(229,226,223,0.15)">
+          <span style="font-size:15px;color:#e5e2df">{{ ws.days }} · {{ ws.time }}</span>
+          <span style="font-size:14px;line-height:1.5;color:rgba(229,226,223,0.7)">{{ ws.venueName }}</span>
+          <span style="font-size:13px;line-height:1.5;color:rgba(229,226,223,0.55)">{{ ws.venueAddr }}</span>
+        </div>
+        <a href="{{ ws.link }}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;min-height:56px;padding:18px 26px;border-radius:2px;background:#800020;color:#fff;font-size:13px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Fazer inscrição</a>
+        <span style="font-size:12px;line-height:1.55;color:rgba(229,226,223,0.5)">Formulário externo da organização. Faixa etária: {{ ws.age }}.</span>
+      </aside>
+    </header>
+
+    <section aria-label="Informações da oficina" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,80px) clamp(20px,5vw,64px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,64px)">
+      <dl style="margin:0;min-width:0;display:flex;flex-direction:column">
+        <sc-for list="{{ ws.rows }}" as="r" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 24px;padding:14px 0;border-bottom:1px solid rgba(88,65,65,0.4)">
+            <dt style="font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#ffb3b5">{{ r.label }}</dt>
+            <dd style="margin:0;grid-column:span 2;font-size:15px;line-height:1.6;color:rgba(229,226,223,0.82)">{{ r.value }}</dd>
+          </div>
+        </sc-for>
+      </dl>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:20px">
+        <div style="border:1px solid rgba(88,65,65,0.55);border-radius:8px;padding:26px;display:flex;flex-direction:column;gap:12px;background:#1c1c1a">
+          <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffdb9d">Requisitos e observações</span>
+          <span style="font-size:16px;line-height:1.7;color:rgba(229,226,223,0.8)">{{ ws.note }}</span>
+        </div>
+        <sc-if value="{{ ws.hasRelated }}">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Espetáculo relacionado</span>
+            <sc-for list="{{ ws.related }}" as="r" hint-placeholder-count="1">
+              <button onClick="{{ r.open }}" style="text-align:left;background:none;border:1px solid rgba(88,65,65,0.55);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:8px" style-hover="background:#1c1c1a">
+                <span style="font-family:'Bodoni Moda',serif;font-size:24px;line-height:1.1;color:#e5e2df">{{ r.t }}</span>
+                <span style="font-size:13px;color:rgba(229,226,223,0.65)">{{ r.dayLabel }} · {{ r.time }} · {{ r.venueName }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <button onClick="{{ ws.openVenue }}" style="align-self:flex-start;min-height:48px;padding:14px 24px;background:none;border:1px solid rgba(229,226,223,0.3);border-radius:2px;color:#e5e2df;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase">Ver o espaço da oficina</button>
+      </div>
+    </section>
+  </article>
+  </sc-if>
+  <sc-if value="{{ isGrade }}">
+  <div data-screen-label="Grade diária">
+    <section style="max-width:1280px;margin:0 auto;padding:clamp(32px,5vw,56px) clamp(20px,5vw,64px) 0">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Início</button>
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;padding-top:12px">
+        <div>
+          <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">Grade diária</span>
+          <h1 style="margin:18px 0 0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6.4vw,80px);line-height:0.95;letter-spacing:-0.02em;color:#e5e2df">Dia, hora <span style="font-style:italic">e palco</span></h1>
+        </div>
+        <p style="margin:0;max-width:380px;font-size:15px;line-height:1.65;color:rgba(229,226,223,0.65)">A leitura panorâmica do festival: escolha um dia e veja o que acontece em cada espaço — ou percorra a semana inteira.</p>
+      </div>
+    </section>
+
+    <div style="max-width:1280px;margin:0 auto;padding:36px clamp(20px,5vw,64px) 0;display:flex;flex-direction:column;gap:14px">
+      <div role="group" aria-label="Modo de visualização" style="display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ gradeViewChips }}" as="c" hint-placeholder-count="3">
+          <button onClick="{{ c.onClick }}" aria-pressed="{{ c.on }}" style="min-height:44px;padding:12px 20px;border-radius:2px;border:1px solid {{ c.bc }};background:{{ c.bg }};color:{{ c.fg }};font-size:12px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase">{{ c.label }}</button>
+        </sc-for>
+      </div>
+      <sc-if value="{{ gradeNotSemana }}" hint-placeholder-val="{{ true }}">
+        <div role="group" aria-label="Selecionar dia" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+          <sc-for list="{{ gradeDayChips }}" as="c" hint-placeholder-count="8">
+            <button onClick="{{ c.onClick }}" aria-pressed="{{ c.on }}" aria-label="Dia {{ c.label }}" style="min-width:56px;min-height:56px;padding:8px;border-radius:2px;border:1px solid {{ c.bc }};background:{{ c.bg }};color:{{ c.fg }};display:flex;flex-direction:column;align-items:center;gap:2px">
+              <span style="font-family:'Bodoni Moda',serif;font-size:22px;line-height:1">{{ c.label }}</span>
+              <span style="font-size:9px;letter-spacing:1.2px;text-transform:uppercase;opacity:0.7">{{ c.dow }}</span>
+            </button>
+          </sc-for>
+          <span style="font-size:13px;color:rgba(229,226,223,0.6);padding-left:8px">{{ gradeDayLabel }}</span>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ gradeIsEspaco }}" hint-placeholder-val="{{ true }}">
+      <section aria-label="Grade por espaço" style="max-width:1280px;margin:0 auto;padding:40px clamp(20px,5vw,64px) 0;display:flex;flex-direction:column;gap:2px;background:rgba(88,65,65,0.0)">
+        <sc-for list="{{ gradeByVenue }}" as="v" hint-placeholder-count="7">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;padding:24px 0;border-top:1px solid rgba(88,65,65,0.5)">
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+              <button onClick="{{ v.onClick }}" style="text-align:left;background:none;border:0;padding:0;font-family:'Bodoni Moda',serif;font-size:26px;line-height:1.1;color:#e5e2df" style-hover="color:#ffb3b5">{{ v.name }}</button>
+              <span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.45)">{{ v.kind }} · {{ v.countLabel }}</span>
+            </div>
+            <div style="grid-column:span 2;min-width:0;display:flex;flex-wrap:wrap;gap:12px">
+              <sc-for list="{{ v.items }}" as="ev" hint-placeholder-count="1">
+                <button onClick="{{ ev.open }}" style="flex:1 1 260px;text-align:left;background:#1c1c1a;border:1px solid rgba(88,65,65,0.5);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:8px" style-hover="background:#20201e">
+                  <span style="font-family:'Bodoni Moda',serif;font-size:22px;color:#ffdb9d">{{ ev.timeLabel }}</span>
+                  <span style="font-size:16px;line-height:1.35;color:#e5e2df">{{ ev.t }}</span>
+                  <span style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">{{ ev.cat }}</span>
+                </button>
+              </sc-for>
+              <sc-if value="{{ v.isEmpty }}">
+                <span style="flex:1 1 260px;display:flex;align-items:center;padding:18px;border:1px dashed rgba(229,226,223,0.16);border-radius:6px;font-size:13px;color:rgba(229,226,223,0.4)">Sem programação neste dia</span>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ gradeIsHorario }}">
+      <section aria-label="Grade por horário" style="max-width:1280px;margin:0 auto;padding:40px clamp(20px,5vw,64px) 0">
+        <sc-for list="{{ gradeByHour }}" as="s" hint-placeholder-count="4">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:26px 0;border-top:1px solid rgba(88,65,65,0.5)">
+            <span style="font-family:'Bodoni Moda',serif;font-size:clamp(34px,4vw,48px);line-height:0.9;color:#ffdb9d">{{ s.time }}</span>
+            <div style="grid-column:span 2;display:flex;flex-direction:column;gap:12px;min-width:0">
+              <sc-for list="{{ s.items }}" as="ev" hint-placeholder-count="1">
+                <button onClick="{{ ev.open }}" style="text-align:left;background:none;border:0;border-bottom:1px solid rgba(88,65,65,0.4);padding:12px 4px;display:flex;flex-wrap:wrap;gap:6px 20px;align-items:baseline" style-hover="background:rgba(229,226,223,0.04)">
+                  <span style="font-family:'Bodoni Moda',serif;font-size:22px;line-height:1.2;color:#e5e2df;flex:1 1 240px">{{ ev.t }}</span>
+                  <span style="font-size:13px;color:rgba(229,226,223,0.7)">{{ ev.venueName }}</span>
+                  <span style="font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.45)">{{ ev.cat }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ gradeIsSemana }}">
+      <section aria-label="Panorama da semana" style="max-width:1280px;margin:0 auto;padding:40px clamp(20px,5vw,64px) 0">
+        <p style="margin:0 0 18px;font-size:13px;color:rgba(229,226,223,0.55)">Panorama de oito dias × sete espaços. Em telas estreitas, role horizontalmente ou use as visões por dia.</p>
+        <div style="overflow-x:auto;padding-bottom:12px">
+          <div style="min-width:900px;display:flex;flex-direction:column;gap:2px">
+            <div style="display:grid;grid-template-columns:200px repeat(8,1fr);gap:2px">
+              <span style="padding:12px;font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(229,226,223,0.45)">Espaço</span>
+              <sc-for list="{{ gradeDayChips }}" as="c" hint-placeholder-count="8">
+                <span style="padding:12px 8px;text-align:center;background:rgba(229,226,223,0.04);display:flex;flex-direction:column;gap:2px">
+                  <span style="font-family:'Bodoni Moda',serif;font-size:20px;color:#e5e2df">{{ c.label }}</span>
+                  <span style="font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(229,226,223,0.45)">{{ c.dow }}</span>
+                </span>
+              </sc-for>
+            </div>
+            <sc-for list="{{ gradeWeek }}" as="row" hint-placeholder-count="7">
+              <div style="display:grid;grid-template-columns:200px repeat(8,1fr);gap:2px">
+                <span style="padding:14px 12px;font-size:13px;line-height:1.4;color:#e5e2df;background:rgba(229,226,223,0.03)">{{ row.name }}</span>
+                <sc-for list="{{ row.days }}" as="d" hint-placeholder-count="8">
+                  <span style="padding:8px 6px;background:{{ d.bg }};display:flex;flex-direction:column;gap:6px;min-height:64px">
+                    <sc-for list="{{ d.items }}" as="ev" hint-placeholder-count="1">
+                      <button onClick="{{ ev.open }}" style="text-align:left;background:none;border:0;padding:4px;display:flex;flex-direction:column;gap:2px" style-hover="background:rgba(229,226,223,0.06)">
+                        <span style="font-size:11px;font-weight:700;letter-spacing:1px;color:#ffdb9d">{{ ev.timeLabel }}</span>
+                        <span style="font-size:11px;line-height:1.35;color:#e5e2df">{{ ev.t }}</span>
+                      </button>
+                    </sc-for>
+                  </span>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <div style="max-width:1280px;margin:0 auto;padding:48px clamp(20px,5vw,64px) 0;display:flex;flex-wrap:wrap;gap:16px">
+      <button onClick="{{ goProgramacao }}" style="min-height:52px;padding:16px 28px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:12px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Ver programação com filtros</button>
+      <button onClick="{{ goMapa }}" style="min-height:52px;padding:16px 28px;border-radius:2px;border:0;box-shadow:inset 0 0 0 1px rgba(229,226,223,0.35);background:none;color:#e5e2df;font-size:12px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase">Mapa cultural</button>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isMapa }}">
+  <div data-screen-label="Mapa cultural">
+    <section style="max-width:1280px;margin:0 auto;padding:clamp(32px,5vw,56px) clamp(20px,5vw,64px) 0">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Início</button>
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;padding-top:12px">
+        <div>
+          <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">Mapa cultural</span>
+          <h1 style="margin:18px 0 0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6.4vw,80px);line-height:0.95;letter-spacing:-0.02em;color:#e5e2df">Onde o festival <span style="font-style:italic">acontece</span></h1>
+        </div>
+        <p style="margin:0;max-width:380px;font-size:15px;line-height:1.65;color:rgba(229,226,223,0.65)">Sete espaços entre o Centro, Jardim da Penha e Goiabeiras. Toque em um espaço para ver endereço e programação.</p>
+      </div>
+    </section>
+    <section style="max-width:1280px;margin:0 auto;padding:40px clamp(20px,5vw,64px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px">
+      <div style="min-width:0;border:1px solid rgba(88,65,65,0.6);border-radius:8px;background:#1c1c1a;padding:22px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffb3b5">Vitória · Espírito Santo</span>
+          <span style="font-size:11px;letter-spacing:1.2px;color:#ffdb9d">7 espaços</span>
+        </div>
+        <div role="img" aria-label="Mapa esquemático dos espaços culturais do festival" style="position:relative;aspect-ratio:1/1;border-radius:4px;background:radial-gradient(120% 100% at 25% 15%, rgba(128,0,32,0.28) 0%, rgba(14,14,13,1) 62%);border:1px solid rgba(88,65,65,0.5);overflow:hidden">
+          <div aria-hidden="true" style="position:absolute;inset:0;background-image:linear-gradient(rgba(229,226,223,0.05) 1px, transparent 1px),linear-gradient(90deg, rgba(229,226,223,0.05) 1px, transparent 1px);background-size:48px 48px"></div>
+          <sc-for list="{{ venueList }}" as="v" hint-placeholder-count="7">
+            <button onClick="{{ v.onClick }}" aria-label="{{ v.name }}" style="position:absolute;left:{{ v.left }};top:{{ v.top }};transform:translate(-50%,-50%);min-width:44px;min-height:44px;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:6px">
+              <span aria-hidden="true" style="width:12px;height:12px;border-radius:9999px;background:#ffb3b5;box-shadow:0 0 18px rgba(255,179,181,0.7)"></span>
+              <span style="font-size:9px;letter-spacing:0.8px;text-transform:uppercase;color:rgba(229,226,223,0.75);white-space:nowrap">{{ v.num }}</span>
+            </button>
+          </sc-for>
+          <span style="position:absolute;left:12px;bottom:10px;font-family:ui-monospace,monospace;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Esquema — base geográfica real na implementação</span>
+        </div>
+      </div>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ venueList }}" as="v" hint-placeholder-count="7">
+          <button onClick="{{ v.onClick }}" style="text-align:left;background:#131312;border:0;border-top:1px solid rgba(88,65,65,0.5);padding:22px 4px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;align-items:center" style-hover="background:#1c1c1a">
+            <span style="display:flex;flex-direction:column;gap:6px;min-width:0">
+              <span style="display:flex;align-items:baseline;gap:10px">
+                <span style="font-family:'Bodoni Moda',serif;font-size:22px;color:#ffdb9d">{{ v.num }}</span>
+                <span style="font-family:'Bodoni Moda',serif;font-size:23px;line-height:1.15;color:#e5e2df">{{ v.name }}</span>
+              </span>
+              <span style="font-size:13px;line-height:1.5;color:rgba(229,226,223,0.6)">{{ v.addr }}</span>
+            </span>
+            <span style="display:flex;flex-direction:column;gap:6px">
+              <span style="font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.5)">{{ v.kind }}</span>
+              <span style="font-size:12px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#ffb3b5">{{ v.countLabel }} →</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isEspaco }}">
+  <div data-screen-label="Espaço cultural">
+    <section style="max-width:1280px;margin:0 auto;padding:clamp(32px,5vw,56px) clamp(20px,5vw,64px) 0">
+      <button onClick="{{ goMapa }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Mapa cultural</button>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,56px);padding-top:16px;align-items:start">
+        <div style="min-width:0;display:flex;flex-direction:column;gap:16px">
+          <span style="font-size:11px;font-weight:700;letter-spacing:2.2px;text-transform:uppercase;color:#ffb3b5">Espaço cultural</span>
+          <h1 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(38px,5.6vw,68px);line-height:0.98;letter-spacing:-0.02em;color:#e5e2df">{{ espaco.name }}</h1>
+          <sc-if value="{{ espaco.hasSub }}">
+            <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:22px;color:#e0bfbf">dentro da {{ espaco.sub }}</span>
+          </sc-if>
+          <span style="font-size:16px;line-height:1.6;color:rgba(229,226,223,0.75)">{{ espaco.addr }}</span>
+          <span style="font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.5)">{{ espaco.kind }} · {{ espaco.countLabel }}</span>
+          <div style="display:flex;flex-wrap:wrap;gap:14px;padding-top:10px">
+            <button onClick="{{ goGrade }}" style="min-height:52px;padding:16px 26px;border:0;border-radius:2px;background:#800020;color:#fff;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Ver na grade diária</button>
+            <button onClick="{{ goMapa }}" style="min-height:52px;padding:16px 26px;border-radius:2px;border:0;box-shadow:inset 0 0 0 1px rgba(229,226,223,0.35);background:none;color:#e5e2df;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase">Como chegar</button>
+          </div>
+        </div>
+        <div style="min-width:0;display:flex;flex-direction:column;gap:10px">
+          <div aria-hidden="true" style="aspect-ratio:4/3;border-radius:8px;border:1px solid rgba(88,65,65,0.5);background-image:repeating-linear-gradient(135deg, rgba(229,226,223,0.06) 0px, rgba(229,226,223,0.06) 2px, transparent 2px, transparent 10px);display:flex;align-items:center;justify-content:center">
+            <span style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.4)">Fotografia do espaço — solicitar à organização</span>
+          </div>
+          <span style="font-family:ui-monospace,monospace;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(229,226,223,0.4)">Placeholder identificado: nenhuma imagem real deste espaço está disponível no material de 2024.</span>
+        </div>
+      </div>
+    </section>
+    <section aria-label="Programação neste espaço" style="max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,72px) clamp(20px,5vw,64px) 0">
+      <h2 style="margin:0 0 8px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(28px,3.4vw,40px);color:#e5e2df">Programação neste espaço</h2>
+      <sc-if value="{{ espaco.isEmpty }}">
+        <p style="margin:20px 0 0;padding:28px;border:1px dashed rgba(229,226,223,0.2);border-radius:8px;font-size:15px;color:rgba(229,226,223,0.6)">Este espaço não recebe atividades nesta edição.</p>
+      </sc-if>
+      <sc-for list="{{ espaco.groups }}" as="g" hint-placeholder-count="3">
+        <div style="padding:32px 0 0">
+          <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:16px;padding-bottom:14px;border-bottom:1px solid rgba(88,65,65,0.55)">
+            <span style="font-family:'Bodoni Moda',serif;font-size:36px;line-height:0.9;color:#e5e2df">{{ g.day }}</span>
+            <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:20px;color:#e0bfbf">{{ g.dow }}</span>
+          </div>
+          <sc-for list="{{ g.items }}" as="ev" hint-placeholder-count="2">
+            <button onClick="{{ ev.open }}" style="width:100%;text-align:left;background:none;border:0;border-bottom:1px solid rgba(88,65,65,0.35);padding:20px 6px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;align-items:center" style-hover="background:rgba(229,226,223,0.04)">
+              <span style="font-family:'Bodoni Moda',serif;font-size:24px;color:#ffdb9d">{{ ev.timeLabel }}</span>
+              <span style="grid-column:span 2;font-family:'Bodoni Moda',serif;font-size:22px;line-height:1.15;color:#e5e2df">{{ ev.t }}</span>
+              <span style="font-size:13px;color:rgba(229,226,223,0.65)">{{ ev.group }}</span>
+              <span style="font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.45)">{{ ev.cat }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-for>
+    </section>
+  </div>
+  </sc-if>
+  <sc-if value="{{ isMemoria }}">
+  <div data-screen-label="Linha do tempo">
+    <section style="position:relative;overflow:hidden">
+      <div aria-hidden="true" style="position:absolute;inset:0;background-image:url(assets/stage-c.jpg);background-size:cover;background-position:50% 40%;opacity:0.2;filter:grayscale(0.5)"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,19,18,0.7) 0%,rgba(19,19,18,0.98) 85%)"></div>
+      <div style="position:relative;max-width:1280px;margin:0 auto;padding:clamp(32px,5vw,56px) clamp(20px,5vw,64px) clamp(48px,7vw,88px)">
+        <button onClick="{{ goHome }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Início</button>
+        <span style="display:block;padding-top:16px;font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">Linha do tempo · memória FENATEVI</span>
+        <h1 style="margin:20px 0 0;max-width:900px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(42px,7vw,92px);line-height:0.93;letter-spacing:-0.02em;color:#e5e2df">Duas décadas de teatro <span style="font-style:italic">guardadas na mesma URL.</span></h1>
+        <p style="margin:28px 0 0;max-width:620px;font-size:17px;line-height:1.7;color:rgba(229,226,223,0.75);text-wrap:pretty">Cada edição encerrada continua viva aqui: programação, espetáculos, companhias, homenageados e registros. A linha do tempo cresce a cada ano — e recua a cada acervo digitalizado.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;padding-top:32px">
+          <span style="display:inline-flex;align-items:center;min-height:48px;padding:14px 20px;border:1px solid rgba(229,226,223,0.2);border-radius:2px;font-size:12px;letter-spacing:1.4px;color:rgba(229,226,223,0.5)">Busca no acervo — disponível quando as edições históricas forem publicadas</span>
+        </div>
+      </div>
+    </section>
+    <section aria-label="Edições" style="max-width:1280px;margin:0 auto;padding:0 clamp(20px,5vw,64px)">
+      <sc-for list="{{ timeline }}" as="e" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,4vw,56px);padding:clamp(36px,5vw,56px) 0;border-top:1px solid rgba(88,65,65,0.55);align-items:start">
+          <div style="min-width:0;display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:'Bodoni Moda',serif;font-size:clamp(52px,7vw,90px);line-height:0.9;color:#e5e2df">{{ e.year }}</span>
+            <span style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ffdb9d">{{ e.ed }}</span>
+            <span style="font-size:14px;color:rgba(229,226,223,0.6)">{{ e.period }}</span>
+          </div>
+          <div style="grid-column:span 2;min-width:0;display:flex;flex-direction:column;gap:16px">
+            <span style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:{{ e.stateColor }}">{{ e.state }}</span>
+            <p style="margin:0;max-width:620px;font-size:16px;line-height:1.7;color:rgba(229,226,223,0.75)">{{ e.desc }}</p>
+            <div style="display:flex;flex-direction:column;gap:8px;max-width:420px">
+              <span style="font-size:10px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.4)">Completude do acervo</span>
+              <span aria-hidden="true" style="display:block;height:3px;background:rgba(229,226,223,0.12)">
+                <span style="display:block;height:3px;width:{{ e.fill }};background:{{ e.stateColor }}"></span>
+              </span>
+            </div>
+            <button onClick="{{ e.onClick }}" style="align-self:flex-start;min-height:48px;padding:14px 24px;background:none;border:1px solid rgba(229,226,223,0.3);border-radius:2px;color:#e5e2df;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase">{{ e.cta }}</button>
+          </div>
+        </div>
+      </sc-for>
+      <p style="margin:0;padding:40px 0 0;font-size:13px;line-height:1.6;color:rgba(229,226,223,0.45);max-width:640px">Cada edição publicada poderá conter identidade visual, resumo, programação completa, espetáculos, fotografias, homenageados, notícias, materiais gráficos, documentos, participantes e patrocinadores.</p>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isEdicao }}">
+  <div data-screen-label="FENATEVI 2024">
+    <section style="position:relative;overflow:hidden;border-bottom:1px solid rgba(88,65,65,0.4)">
+      <div aria-hidden="true" style="position:absolute;inset:0;background-image:url(assets/stage-d.jpg);background-size:cover;background-position:50% 45%;opacity:0.16"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(19,19,18,0.78) 0%,rgba(19,19,18,0.97) 90%)"></div>
+      <div style="position:relative;max-width:1280px;margin:0 auto;padding:clamp(32px,5vw,56px) clamp(20px,5vw,64px) clamp(48px,7vw,80px)">
+        <button onClick="{{ goMemoria }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Linha do tempo</button>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,64px);padding-top:20px;align-items:end">
+          <div style="min-width:0;display:flex;flex-direction:column;gap:18px">
+            <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">Acervo · edição encerrada</span>
+            <h1 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:700;font-size:clamp(52px,9vw,120px);line-height:0.85;letter-spacing:-0.04em;color:#e5e2df">2024</h1>
+            <p style="margin:0;font-family:'Bodoni Moda',serif;font-size:clamp(24px,3.4vw,40px);line-height:1.15;color:#e0bfbf">20ª edição · 13 a 20 de outubro</p>
+            <p style="margin:0;font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(18px,2.2vw,26px);color:#ffdb9d">Entrada franca · “A arte cura!”</p>
+            <div style="display:flex;flex-wrap:wrap;gap:24px;padding-top:12px">
+              <span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:32px;color:#e5e2df">13</span><span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Mostra Oficial</span></span>
+              <span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:32px;color:#e5e2df">06</span><span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Mostra Paralela</span></span>
+              <span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:32px;color:#e5e2df">02</span><span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Oficinas</span></span>
+              <span style="display:flex;flex-direction:column;gap:4px"><span style="font-family:'Bodoni Moda',serif;font-size:32px;color:#e5e2df">07</span><span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Espaços</span></span>
+            </div>
+          </div>
+          <figure style="margin:0;min-width:0;display:flex;flex-direction:column;gap:10px;max-width:420px;justify-self:end">
+            <div style="border:1px solid rgba(88,65,65,0.6);border-radius:8px;overflow:hidden;background:#0e0e0d">
+              <img src="assets/2024/edicao2024-capa.png" alt="Capa do programa impresso do FENATEVI 2024, com máscaras teatrais e o título Festival Nacional de Teatro Cidade de Vitória" style="display:block;width:100%;height:auto">
+            </div>
+            <figcaption style="font-family:ui-monospace,monospace;font-size:10px;line-height:1.6;letter-spacing:1.2px;text-transform:uppercase;color:rgba(229,226,223,0.45)">Key visual da 20ª edição, extraído do programa impresso. Solicitar arquivo vetorial original.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Apresentação da edição" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,64px)">
+      <div style="min-width:0;display:flex;flex-direction:column;gap:20px">
+        <h2 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(30px,3.8vw,46px);line-height:1.05;color:#e5e2df">A vigésima edição</h2>
+        <p style="margin:0;font-size:17px;line-height:1.75;color:rgba(229,226,223,0.78);text-wrap:pretty">“O Teatro é arte da resistência. E, graças à resistência de mulheres e homens que compõem o universo das Artes Cênicas de Vitória do Espírito Santo, bem como dos quatro cantos do país é que o Festival Nacional de Teatro Cidade de Vitória chega à sua 20ª edição. Ainda é um jovem, mas com uma trajetória rica de experiências que reúne inúmeros espetáculos e atividades de formação.”</p>
+        <span style="font-size:14px;letter-spacing:1.4px;text-transform:uppercase;color:#ffb3b5">Beth Caser · atriz, gestora e idealizadora do festival</span>
+      </div>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Núcleos desta edição</span>
+        <sc-for list="{{ frentes }}" as="f" hint-placeholder-count="6">
+          <div style="display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid rgba(88,65,65,0.4)">
+            <span style="font-size:15px;line-height:1.4;color:#e5e2df">{{ f.label }}</span>
+            <span style="font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#ffdb9d;white-space:nowrap">{{ f.count }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-label="Homenageados" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0">
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+        <span aria-hidden="true" style="display:block;width:48px;height:1px;background:#ffb3b5"></span>
+        <span style="font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">Homenageados de 2024</span>
+      </div>
+      <h2 style="margin:20px 0 36px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(32px,4.4vw,54px);line-height:1;color:#e5e2df">Quem sustenta a luz <span style="font-style:italic">e o palco</span></h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px">
+        <sc-for list="{{ honrados }}" as="h" hint-placeholder-count="2">
+          <article style="min-width:0;border:1px solid rgba(88,65,65,0.55);border-radius:8px;background:#1c1c1a;padding:28px;display:flex;flex-direction:column;gap:18px">
+            <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+              <span role="img" aria-label="Retrato de {{ h.name }}" style="width:96px;height:96px;border-radius:9999px;border:1px solid rgba(255,179,181,0.5);background-image:{{ h.bg }};background-size:cover;background-position:50% 30%;flex-shrink:0"></span>
+              <span style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                <span style="font-family:'Bodoni Moda',serif;font-size:26px;line-height:1.1;color:#e5e2df">{{ h.name }}</span>
+                <span style="font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:#ffdb9d">{{ h.role }}</span>
+              </span>
+            </div>
+            <p style="margin:0;font-size:15px;line-height:1.7;color:rgba(229,226,223,0.72)">{{ h.bio }}</p>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-label="Mostra Oficial 2024" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0">
+      <h2 style="margin:0 0 24px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(28px,3.6vw,44px);color:#e5e2df">Mostra Oficial</h2>
+      <ul style="list-style:none;margin:0;padding:0;border-top:1px solid rgba(88,65,65,0.55)">
+        <sc-for list="{{ edicaoOficial }}" as="ev" hint-placeholder-count="6">
+          <li style="border-bottom:1px solid rgba(88,65,65,0.4)">
+            <button onClick="{{ ev.open }}" style="width:100%;text-align:left;background:none;border:0;padding:18px 6px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;align-items:center" style-hover="background:rgba(229,226,223,0.04)">
+              <span style="font-size:13px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#ffdb9d">{{ ev.dayLabel }} · {{ ev.time }}</span>
+              <span style="grid-column:span 2;font-family:'Bodoni Moda',serif;font-size:22px;line-height:1.15;color:#e5e2df">{{ ev.t }}</span>
+              <span style="font-size:13px;color:rgba(229,226,223,0.65)">{{ ev.group }} · {{ ev.city }}</span>
+              <span style="font-size:12px;color:rgba(229,226,223,0.5)">{{ ev.venueName }}</span>
+            </button>
+          </li>
+        </sc-for>
+      </ul>
+      <h2 style="margin:56px 0 24px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(28px,3.6vw,44px);color:#e5e2df">7ª Mostra Paralela Vera Viana</h2>
+      <ul style="list-style:none;margin:0;padding:0;border-top:1px solid rgba(88,65,65,0.55)">
+        <sc-for list="{{ edicaoParalela }}" as="ev" hint-placeholder-count="4">
+          <li style="border-bottom:1px solid rgba(88,65,65,0.4)">
+            <button onClick="{{ ev.open }}" style="width:100%;text-align:left;background:none;border:0;padding:18px 6px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;align-items:center" style-hover="background:rgba(229,226,223,0.04)">
+              <span style="font-size:13px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#bec6e0">{{ ev.dayLabel }} · {{ ev.time }}</span>
+              <span style="grid-column:span 2;font-family:'Bodoni Moda',serif;font-size:22px;line-height:1.15;color:#e5e2df">{{ ev.t }}</span>
+              <span style="font-size:13px;color:rgba(229,226,223,0.65)">{{ ev.group }} · {{ ev.city }}</span>
+              <span style="font-size:12px;color:rgba(229,226,223,0.5)">{{ ev.venueName }}</span>
+            </button>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+
+    <section aria-label="Formação e livros" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(32px,5vw,56px)">
+      <div style="min-width:0;display:flex;flex-direction:column;gap:16px">
+        <h2 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(26px,3.2vw,38px);color:#e5e2df">Ações formativas</h2>
+        <sc-for list="{{ wsList }}" as="w" hint-placeholder-count="2">
+          <button onClick="{{ w.open }}" style="text-align:left;background:#1c1c1a;border:1px solid rgba(88,65,65,0.5);border-radius:8px;padding:22px;display:flex;flex-direction:column;gap:8px" style-hover="background:#20201e">
+            <span style="font-family:'Bodoni Moda',serif;font-size:24px;line-height:1.1;color:#e5e2df">{{ w.t }}</span>
+            <span style="font-size:13px;line-height:1.5;color:rgba(229,226,223,0.7)">{{ w.days }} · {{ w.time }}</span>
+            <span style="font-size:13px;line-height:1.5;color:rgba(229,226,223,0.6)">{{ w.teachers }}</span>
+            <span style="font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#ffdb9d">{{ w.seats }} · {{ w.age }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:16px">
+        <h2 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(26px,3.2vw,38px);color:#e5e2df">Lançamento de livros</h2>
+        <span style="font-size:13px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.5)">18 de outubro · 18h30 · Casa da Música — Sala Milson Henriques</span>
+        <sc-for list="{{ edicaoLivros }}" as="b" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:8px;padding:16px 0;border-bottom:1px solid rgba(88,65,65,0.4)">
+            <span style="font-family:'Bodoni Moda',serif;font-size:22px;line-height:1.15;color:#e5e2df">{{ b.t }}</span>
+            <span style="font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:#ffb3b5">{{ b.a }}</span>
+            <span style="font-size:14px;line-height:1.65;color:rgba(229,226,223,0.7)">{{ b.d }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-label="Processos criativos" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0">
+      <h2 style="margin:0 0 10px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(26px,3.2vw,38px);color:#e5e2df">Demonstrações de trabalho e processos criativos</h2>
+      <p style="margin:0 0 28px;max-width:600px;font-size:15px;line-height:1.65;color:rgba(229,226,223,0.6)">Encontros abertos ao público realizados após as apresentações, com as companhias participantes.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2px;background:rgba(88,65,65,0.4)">
+        <sc-for list="{{ edicaoProc }}" as="p" hint-placeholder-count="8">
+          <div style="background:#131312;padding:24px;display:flex;flex-direction:column;gap:12px">
+            <span style="font-family:'Bodoni Moda',serif;font-size:26px;color:#ffdb9d">{{ p.dayLabel }}</span>
+            <span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:rgba(229,226,223,0.45)">{{ p.dow }}</span>
+            <sc-for list="{{ p.items }}" as="i" hint-placeholder-count="2">
+              <span style="display:flex;flex-direction:column;gap:2px;padding-top:8px;border-top:1px solid rgba(88,65,65,0.35)">
+                <span style="font-size:14px;line-height:1.4;color:#e5e2df">{{ i.group }}</span>
+                <span style="font-size:12px;color:rgba(229,226,223,0.55)">{{ i.venue }}</span>
+              </span>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section aria-label="Ficha técnica da edição" style="max-width:1280px;margin:0 auto;padding:clamp(48px,7vw,88px) clamp(20px,5vw,64px) 0">
+      <h2 style="margin:0 0 24px;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(26px,3.2vw,38px);color:#e5e2df">Ficha técnica da edição</h2>
+      <dl style="margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 40px">
+        <sc-for list="{{ edicaoCredits }}" as="c" hint-placeholder-count="10">
+          <div style="display:flex;flex-direction:column;gap:4px;padding:14px 0;border-bottom:1px solid rgba(88,65,65,0.4)">
+            <dt style="font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#ffb3b5">{{ c.label }}</dt>
+            <dd style="margin:0;font-size:15px;line-height:1.6;color:rgba(229,226,223,0.8)">{{ c.value }}</dd>
+          </div>
+        </sc-for>
+      </dl>
+      <p style="margin:32px 0 0;font-family:'Bodoni Moda',serif;font-style:italic;font-size:clamp(20px,2.6vw,30px);color:#ffdb9d">“O festival agradece a todas as empresas que fazem arte, aos técnicos da cultura, aos grupos participantes e ao público.”</p>
+    </section>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isNoticias }}">
+  <div data-screen-label="Notícias">
+    <section style="max-width:1280px;margin:0 auto;padding:clamp(32px,5vw,56px) clamp(20px,5vw,64px) 0">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Início</button>
+      <span style="display:block;padding-top:16px;font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">Notícias · festival acontecendo</span>
+      <h1 style="margin:20px 0 0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(40px,6.4vw,80px);line-height:0.95;letter-spacing:-0.02em;color:#e5e2df">O festival, <span style="font-style:italic">dia a dia</span></h1>
+      <p style="margin:26px 0 0;max-width:620px;font-size:16px;line-height:1.7;color:rgba(229,226,223,0.7)">Área editorial para publicação frequente durante os dias de festival: alterações de programação, bastidores, registros e chamadas. Publicação rápida pela organização, com a mesma linguagem do portal.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;padding:44px 0 0">
+        <sc-for list="{{ newsSlots }}" as="n" hint-placeholder-count="3">
+          <article style="min-width:0;border:1px dashed rgba(229,226,223,0.22);border-radius:8px;padding:26px;min-height:280px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,179,181,0.75)">{{ n.kind }}</span>
+            <span style="font-family:'Bodoni Moda',serif;font-size:26px;line-height:1.12;color:rgba(229,226,223,0.55)">{{ n.title }}</span>
+            <span style="font-size:13px;line-height:1.6;color:rgba(229,226,223,0.42)">{{ n.desc }}</span>
+            <span style="margin-top:auto;font-family:ui-monospace,monospace;font-size:9px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.35)">Slot editorial — sem conteúdo publicado</span>
+          </article>
+        </sc-for>
+      </div>
+      <p style="margin:28px 0 0;font-size:13px;line-height:1.6;color:rgba(229,226,223,0.45);max-width:620px">Estado “conteúdo ainda indisponível”: nenhuma notícia da edição vigente foi criada para este protótipo. O componente já contempla título, categoria, data, imagem e corpo de texto.</p>
+    </section>
+  </div>
+  </sc-if>
+  <sc-if value="{{ isMobile }}">
+  <div data-screen-label="Experiência mobile">
+    <section style="max-width:1280px;margin:0 auto;padding:clamp(32px,5vw,56px) clamp(20px,5vw,64px) 0">
+      <button onClick="{{ goHome }}" style="background:none;border:0;padding:8px 0;min-height:44px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(229,226,223,0.6)">← Início</button>
+      <span style="display:block;padding-top:16px;font-size:12px;font-weight:600;letter-spacing:2.8px;text-transform:uppercase;color:#ffb3b5">Responsividade · contexto de rua</span>
+      <h1 style="margin:20px 0 0;font-family:'Bodoni Moda',serif;font-weight:400;font-size:clamp(38px,6vw,72px);line-height:0.96;letter-spacing:-0.02em;color:#e5e2df">O festival <span style="font-style:italic">no bolso</span></h1>
+      <p style="margin:24px 0 0;max-width:640px;font-size:16px;line-height:1.7;color:rgba(229,226,223,0.7)">Durante os dias de festival o celular é o contexto principal. A programação muda de comportamento: barra fixa com “agora”, dias em rolagem horizontal, filtros em bottom sheet e navegação inferior permanente.</p>
+    </section>
+    <section aria-label="Telas mobile" style="max-width:1280px;margin:0 auto;padding:48px clamp(20px,5vw,64px) 0;display:flex;flex-wrap:wrap;gap:32px;justify-content:center">
+
+      <figure style="margin:0;display:flex;flex-direction:column;gap:12px;align-items:center">
+        <div style="width:375px;height:720px;border-radius:28px;border:1px solid rgba(88,65,65,0.7);background:#131312;overflow:hidden;position:relative;display:flex;flex-direction:column">
+          <div style="padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(88,65,65,0.5)">
+            <span style="font-family:'Bodoni Moda',serif;font-size:17px;letter-spacing:2px;color:#e5e2df">FENATEVI</span>
+            <span style="display:flex;gap:12px;align-items:center"><span style="font-size:10px;letter-spacing:1.2px;color:rgba(229,226,223,0.6)">PT-BR</span><span aria-hidden="true" style="width:22px;height:1px;background:#e5e2df;box-shadow:0 5px 0 #e5e2df,0 -5px 0 #ffb3b5"></span></span>
+          </div>
+          <div style="padding:14px 18px 10px;background:linear-gradient(180deg,rgba(254,183,0,0.09) 0%,rgba(19,19,18,0) 100%);border-bottom:1px solid rgba(88,65,65,0.4)">
+            <span style="display:flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:#ffdb9d"><span aria-hidden="true" style="width:6px;height:6px;border-radius:9999px;background:#feb700"></span>Agora em cena · 20h</span>
+            <span style="display:block;padding-top:8px;font-family:'Bodoni Moda',serif;font-size:24px;line-height:1.05;color:#e5e2df">A Charanga dos Proscritos</span>
+            <span style="display:block;padding-top:6px;font-size:12px;color:rgba(229,226,223,0.65)">Praça Costa Pereira · termina 20h30</span>
+          </div>
+          <div style="display:flex;gap:8px;padding:12px 18px;overflow-x:auto;border-bottom:1px solid rgba(88,65,65,0.4)">
+            <span style="flex:0 0 auto;padding:9px 14px;border-radius:9999px;background:#800020;color:#fff;font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase">Hoje</span>
+            <span style="flex:0 0 auto;padding:9px 14px;border-radius:9999px;border:1px solid rgba(229,226,223,0.25);font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#e5e2df">Amanhã</span>
+            <span style="flex:0 0 auto;padding:9px 14px;border-radius:9999px;border:1px solid rgba(229,226,223,0.25);font-size:11px;color:#e5e2df">18</span>
+            <span style="flex:0 0 auto;padding:9px 14px;border-radius:9999px;border:1px solid rgba(229,226,223,0.25);font-size:11px;color:#e5e2df">19</span>
+            <span style="flex:0 0 auto;padding:9px 14px;border-radius:9999px;border:1px solid rgba(229,226,223,0.25);font-size:11px;color:#e5e2df">20</span>
+          </div>
+          <div style="flex:1;overflow:hidden;padding:0 18px">
+            <sc-for list="{{ mobileList }}" as="m" hint-placeholder-count="4">
+              <span style="display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(88,65,65,0.35)">
+                <span style="flex:0 0 54px;font-family:'Bodoni Moda',serif;font-size:20px;color:#ffdb9d">{{ m.time }}</span>
+                <span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                  <span style="font-family:'Bodoni Moda',serif;font-size:17px;line-height:1.15;color:#e5e2df">{{ m.t }}</span>
+                  <span style="font-size:11px;color:rgba(229,226,223,0.6)">{{ m.venueName }}</span>
+                  <span style="font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,179,181,0.8)">{{ m.cat }} · entrada franca</span>
+                </span>
+              </span>
+            </sc-for>
+          </div>
+          <div style="position:absolute;left:18px;right:18px;bottom:70px;display:flex;justify-content:center">
+            <span style="padding:12px 20px;border-radius:9999px;background:rgba(229,226,223,0.12);backdrop-filter:blur(10px);border:1px solid rgba(229,226,223,0.2);font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#e5e2df">Filtros ⌃</span>
+          </div>
+          <div style="border-top:1px solid rgba(88,65,65,0.5);background:#0e0e0d;padding:12px 18px;display:flex;justify-content:space-between">
+            <span style="display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#ffb3b5"><span aria-hidden="true" style="width:16px;height:2px;background:#ffb3b5"></span>Programação</span>
+            <span style="display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(229,226,223,0.55)"><span aria-hidden="true" style="width:16px;height:2px;background:rgba(229,226,223,0.3)"></span>Grade</span>
+            <span style="display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(229,226,223,0.55)"><span aria-hidden="true" style="width:16px;height:2px;background:rgba(229,226,223,0.3)"></span>Mapa</span>
+            <span style="display:flex;flex-direction:column;align-items:center;gap:4px;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:rgba(229,226,223,0.55)"><span aria-hidden="true" style="width:16px;height:2px;background:rgba(229,226,223,0.3)"></span>Memória</span>
+          </div>
+        </div>
+        <figcaption style="font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Programação · hoje</figcaption>
+      </figure>
+
+      <figure style="margin:0;display:flex;flex-direction:column;gap:12px;align-items:center">
+        <div style="width:375px;height:720px;border-radius:28px;border:1px solid rgba(88,65,65,0.7);background:#131312;overflow:hidden;position:relative;display:flex;flex-direction:column">
+          <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(229,226,223,0.55)">← Programação</span>
+            <span style="font-family:'Bodoni Moda',serif;font-size:30px;line-height:1;color:#e5e2df">O Corpo Que Eu Habito</span>
+            <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:16px;color:#e0bfbf">Cia Da Ideia — Companhia de Dança · RJ</span>
+            <span style="display:flex;flex-direction:column;gap:8px;padding:14px 0;border-top:1px solid rgba(88,65,65,0.5);border-bottom:1px solid rgba(88,65,65,0.5)">
+              <span style="font-family:'Bodoni Moda',serif;font-size:22px;color:#e5e2df">16 OUT · 19h30</span>
+              <span style="font-size:12px;color:rgba(229,226,223,0.7)">Casa da Música Sônia Cabral · 55 min · Livre</span>
+            </span>
+            <span style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(255,219,157,0.45);border-radius:4px;background:rgba(254,183,0,0.06)">
+              <span style="font-size:9px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:#ffdb9d">Acessibilidade</span>
+              <span style="font-size:12px;color:#e5e2df">Libras · Audiodescrição</span>
+            </span>
+            <span style="display:block;aspect-ratio:4/3;border-radius:6px;background-image:url(assets/2024/corpo-que-eu-habito.png);background-size:cover;background-position:50% 35%;border:1px solid rgba(88,65,65,0.5)"></span>
+            <span style="font-size:12px;line-height:1.6;color:rgba(229,226,223,0.7)">Um espetáculo híbrido em que dança, teatro, música e performance se mesclam para promover uma reflexão sobre o corpo de cada indivíduo no aqui e agora…</span>
+          </div>
+          <div style="padding:14px 18px;border-top:1px solid rgba(88,65,65,0.5);background:rgba(14,14,13,0.92);display:flex;gap:10px">
+            <span style="flex:1;display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:2px;background:#800020;color:#fff;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase">Como chegar</span>
+            <span style="flex:1;display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:2px;border:1px solid rgba(255,179,181,0.5);color:#ffb3b5;font-size:11px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase">Entrada franca</span>
+          </div>
+        </div>
+        <figcaption style="font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Espetáculo · CTA fixo</figcaption>
+      </figure>
+
+      <figure style="margin:0;display:flex;flex-direction:column;gap:12px;align-items:center">
+        <div style="width:375px;height:720px;border-radius:28px;border:1px solid rgba(88,65,65,0.7);background:#131312;overflow:hidden;position:relative;display:flex;flex-direction:column">
+          <div style="flex:1;padding:18px;display:flex;flex-direction:column;gap:14px">
+            <span style="font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(229,226,223,0.55)">Grade diária · 17 out</span>
+            <span style="font-family:'Bodoni Moda',serif;font-size:28px;line-height:1;color:#e5e2df">Por espaço</span>
+            <span style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px">
+              <span style="flex:0 0 auto;padding:8px 12px;border-radius:2px;background:#ffb3b5;color:#680018;font-size:11px;font-weight:700">17</span>
+              <span style="flex:0 0 auto;padding:8px 12px;border-radius:2px;border:1px solid rgba(229,226,223,0.22);font-size:11px;color:#e5e2df">18</span>
+              <span style="flex:0 0 auto;padding:8px 12px;border-radius:2px;border:1px solid rgba(229,226,223,0.22);font-size:11px;color:#e5e2df">19</span>
+              <span style="flex:0 0 auto;padding:8px 12px;border-radius:2px;border:1px solid rgba(229,226,223,0.22);font-size:11px;color:#e5e2df">20</span>
+            </span>
+            <span style="display:flex;flex-direction:column;gap:6px;padding:14px 0;border-top:1px solid rgba(88,65,65,0.45)">
+              <span style="font-family:'Bodoni Moda',serif;font-size:19px;color:#e5e2df">Casa da Música Sônia Cabral</span>
+              <span style="display:flex;gap:10px;align-items:baseline"><span style="font-family:'Bodoni Moda',serif;font-size:18px;color:#ffdb9d">19h30</span><span style="font-size:13px;color:#e5e2df">O Corpo Que Eu Habito</span></span>
+            </span>
+            <span style="display:flex;flex-direction:column;gap:6px;padding:14px 0;border-top:1px solid rgba(88,65,65,0.45)">
+              <span style="font-family:'Bodoni Moda',serif;font-size:19px;color:#e5e2df">Praça Costa Pereira</span>
+              <span style="display:flex;gap:10px;align-items:baseline"><span style="font-family:'Bodoni Moda',serif;font-size:18px;color:#ffdb9d">19h30</span><span style="font-size:13px;color:#e5e2df">A Charanga dos Proscritos</span></span>
+            </span>
+            <span style="display:flex;flex-direction:column;gap:6px;padding:14px 0;border-top:1px solid rgba(88,65,65,0.45)">
+              <span style="font-family:'Bodoni Moda',serif;font-size:19px;color:rgba(229,226,223,0.6)">Teatro SESI Jardim da Penha</span>
+              <span style="font-size:12px;color:rgba(229,226,223,0.4)">Sem programação neste dia</span>
+            </span>
+            <span style="display:flex;flex-direction:column;gap:6px;padding:14px 0;border-top:1px solid rgba(88,65,65,0.45)">
+              <span style="font-family:'Bodoni Moda',serif;font-size:19px;color:rgba(229,226,223,0.6)">Teatro Estrelas</span>
+              <span style="font-size:12px;color:rgba(229,226,223,0.4)">Oficina encerrada em 16/10</span>
+            </span>
+          </div>
+          <div style="padding:12px 18px;border-top:1px solid rgba(88,65,65,0.5);background:#0e0e0d;display:flex;gap:8px">
+            <span style="flex:1;text-align:center;padding:10px;border-radius:2px;background:rgba(229,226,223,0.1);font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:#e5e2df">Por espaço</span>
+            <span style="flex:1;text-align:center;padding:10px;border-radius:2px;font-size:10px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Por horário</span>
+          </div>
+        </div>
+        <figcaption style="font-size:12px;letter-spacing:1.4px;text-transform:uppercase;color:rgba(229,226,223,0.5)">Grade · sem scroll horizontal</figcaption>
+      </figure>
+    </section>
+    <p style="max-width:1280px;margin:0 auto;padding:40px clamp(20px,5vw,64px) 0;font-size:13px;line-height:1.7;color:rgba(229,226,223,0.45)">Estados representados: em cena agora, próxima sessão, sessão inexistente no espaço, oficina encerrada, entrada franca, acessibilidade destacada acima da ficha técnica. Alvos de toque com no mínimo 44px.</p>
+  </div>
+  </sc-if>
+  <!--SCREENS-->
+  </main>
+
+  <footer style="background:#0e0e0d;border-top:1px solid rgba(88,65,65,0.35);margin-top:clamp(64px,10vw,140px)">
+    <div style="max-width:1280px;margin:0 auto;padding:80px clamp(20px,5vw,64px) 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:48px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <span style="font-family:'Bodoni Moda',serif;font-size:32px;line-height:1.15;color:#e5e2df">FENATEVI</span>
+        <span style="font-size:12px;letter-spacing:0.6px;text-transform:uppercase;color:#e0bfbf">Festival Nacional de Teatro Cidade de Vitória</span>
+        <p style="margin:8px 0 0;font-size:13px;line-height:1.6;color:rgba(229,226,223,0.55)">Realizado desde 2004 em Vitória, Espírito Santo. Este portal é também o acervo permanente do festival.</p>
+      </div>
+      <nav aria-label="Navegação do rodapé" style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:13px;letter-spacing:0.7px;text-transform:uppercase;color:#ffb3b5">Navegação</span>
+        <sc-for list="{{ footerNav }}" as="f" hint-placeholder-count="6">
+          <button onClick="{{ f.onClick }}" style="text-align:left;background:none;border:0;padding:6px 0;min-height:32px;font-size:15px;color:#e5e2df" style-hover="color:#ffb3b5">{{ f.label }}</button>
+        </sc-for>
+      </nav>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:13px;letter-spacing:0.7px;text-transform:uppercase;color:#ffb3b5">Contato</span>
+        <span style="font-size:15px;color:#e5e2df">ratimbum@terra.com.br</span>
+        <span style="font-size:15px;color:#e5e2df">umafloresta@terra.com.br</span>
+        <span style="font-size:15px;color:rgba(229,226,223,0.75)">(27) 3222-0869 · (27) 99698-0869</span>
+        <span style="font-size:13px;line-height:1.6;color:rgba(229,226,223,0.5)">Imprensa: Márcia Almeida — Golden Assessoria de Comunicação · (27) 99925-3818</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:13px;letter-spacing:0.7px;text-transform:uppercase;color:#ffb3b5">Realização</span>
+        <span style="font-family:'Bodoni Moda',serif;font-size:20px;line-height:1.25;color:#e5e2df">Associação Cultural, Circense e Ambiental Uma Floresta</span>
+        <span style="font-family:'Bodoni Moda',serif;font-style:italic;font-size:18px;color:#ffdb9d">“Basta uma semente”</span>
+        <span style="font-size:13px;line-height:1.6;color:rgba(229,226,223,0.55)">Produção: Ratimbum Produções de Artes</span>
+      </div>
+    </div>
+    <div style="max-width:1280px;margin:0 auto;padding:24px clamp(20px,5vw,64px) 56px;border-top:1px solid rgba(88,65,65,0.35);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center">
+      <span style="font-size:13px;color:rgba(229,226,223,0.5)">© 2026 FENATEVI. Cultura em movimento.</span>
+      <div style="display:flex;flex-wrap:wrap;gap:20px">
+        <button onClick="{{ toggleA11y }}" style="background:none;border:0;padding:6px 0;min-height:32px;font-size:13px;color:rgba(229,226,223,0.7)">Acessibilidade</button>
+        <span style="font-size:13px;color:rgba(229,226,223,0.35)">Protótipo de alta fidelidade · dados da edição 2024</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440},&quot;demoDay&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;13&quot;,&quot;14&quot;,&quot;15&quot;,&quot;16&quot;,&quot;17&quot;,&quot;18&quot;,&quot;19&quot;,&quot;20&quot;],&quot;default&quot;:&quot;17&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Relógio de demonstração&quot;},&quot;demoHour&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:8,&quot;max&quot;:23,&quot;step&quot;:1,&quot;unit&quot;:&quot;h&quot;,&quot;default&quot;:20,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Relógio de demonstração&quot;},&quot;notasDesign&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Notas de design&quot;}}">
+const V = {
+  casa: { id:'casa', name:'Casa da Música Sônia Cabral', addr:'Praça João Clímaco, s/n — Centro, Vitória/ES', kind:'Teatro / casa de música', pos:[46,58] },
+  milson: { id:'milson', name:'Sala Milson Henriques', sub:'Casa da Música Sônia Cabral', addr:'Praça João Clímaco, s/n — Centro, Vitória/ES', kind:'Sala', pos:[52,63] },
+  sesi: { id:'sesi', name:'Teatro SESI Jardim da Penha', addr:'R. Tupinambás, 240 — Jardim da Penha, Vitória/ES', kind:'Teatro', pos:[76,22] },
+  ufes: { id:'ufes', name:'Teatro Universitário UFES', addr:'Av. Fernando Ferrari, 514 — Goiabeiras, Vitória/ES', kind:'Teatro universitário', pos:[86,34] },
+  praca: { id:'praca', name:'Praça Costa Pereira', addr:'Av. Jerônimo Monteiro — Centro, Vitória/ES', kind:'Ar livre', pos:[33,70] },
+  ma: { id:'ma', name:'Má Companhia', addr:'R. Prof. Baltazar, 152 — Centro, Vitória/ES', kind:'Espaço independente', pos:[24,80] },
+  estrelas: { id:'estrelas', name:'Teatro Estrelas', addr:'Rua Pereira Pinto, 180 — Centro, Vitória/ES', kind:'Teatro / formação', pos:[38,86] }
+};
+
+const EV = [
+  { id:'lenda', t:'A Lenda de Um Homem Sem Nome', day:13, time:'19h30', dur:50, v:'sesi', group:'Grupo Teatral Gota, Pó e Poeira', city:'ES', cat:'Mostra Oficial', author:'Adelpho Poli Monjardim e Carlos Ola', dir:'Carlos Ola', rating:'Livre', img:'assets/2024/lenda-homem-sem-nome.png',
+    release:'O espetáculo conta a história de um homem sem nome, um velho sovina e interesseiro que oculta um passado misterioso com forças sobrenaturais. Para ver sua propriedade novamente bem e com dinheiro no bolso, o “homem sem nome” refaz um pacto que pode custar a vida de Toninho, o seu filho. E é Sebastião, o empregado da propriedade, quem pode mudar o rumo dessa história com ajuda de um santo. A peça é uma adaptação da lenda capixaba A Pedra do Diabo, que fica no bairro de Inhanguetá, em Vitória.',
+    ficha:[['Autor','Adelpho Poli Monjardim e Carlos Ola'],['Direção','Carlos Ola'],['Sonoplastia','O grupo']], note:'Abertura oficial do festival às 19h.' },
+  { id:'violeta', t:'Violeta de Los Andes', day:14, time:'19h30', dur:55, v:'sesi', group:'Tarahumaras', city:'ES', cat:'Mostra Oficial', author:'Wilson Coelho', dir:'Wilson Coelho', rating:'14 anos', img:'assets/2024/violeta-los-andes.png',
+    release:'O espetáculo “Violeta de los Andes” é um monólogo teatral baseado na vida e obra de Violeta Parra (Chile, 1917-1967), multiartista identificada como precursora da Nova Canção Chilena. Violeta percorreu seu país durante 15 anos, registrando as canções populares e compôs cerca de 200 músicas, incluindo “Volver a Los 17”. A obra mostra a poeta, compositora, ceramista, pintora e bordadeira, engajada, falando de seus sonhos, amores e sofrimentos, e é recheado de seus poemas, cartas e textos.',
+    ficha:[['Texto, encenação e iluminação','Wilson Coelho'],['Atuação','Natalia Omena'],['Cenografia','Tião Fonseca'],['Figurino','Tarahumaras'],['Sonoplastia','Matheus Rezende'],['Arte digital','Max Goldner']] },
+  { id:'corpus', t:'Corpus Em Vidas', day:15, time:'19h', dur:100, v:'milson', group:'Grupo de Teatro Experimental Capixaba', city:'ES', cat:'Mostra Oficial', author:'Cesar Huapaya', dir:'Cesar Huapaya', rating:'Livre', img:'assets/2024/corpus-em-vidas.png',
+    release:'Um espetáculo inovador que combina teatro-instalação, música, dança e práticas performativas. Esta obra é muito mais do que uma peça teatral; é uma experiência antropológica da performance, abrindo as portas para um diálogo necessário e impactante. “Corpus em Vidas” mergulha nas questões mais urgentes do século XXI: por que continuamos a criar corpos sem vida, torturados, vendidos, prostituídos, explorados e escravizados? Este espetáculo busca não apenas questionar, mas também oferecer propostas de um "corpus com vidas" de forma decolonial.',
+    ficha:[['Performers','Amanda Chabudé, Amélia Barretto, Billh Bantu (Manuel Bem-vindo Soluelo), Carlos Roberto, Claudino Danilo dos Anjos, Eliezer de Almeida, Elídio Netto, Suely Bispo, Xis Makeda'],['Participação especial','Rosi Andrade'],['Direção','Renan e Dayse Marciel'],['Realização','Grupo de Teatro Experimental Capixaba e Núcleo de Performance e Antropologia Teatral (CNPq/UFES)']] },
+  { id:'olhos', t:'Meus Olhos Verdes', day:15, time:'20h', dur:60, v:'casa', group:'Cia Teatral JC', city:'ES', cat:'Mostra Oficial', author:'José Celso Cavalieri', dir:'José Celso Cavalieri', rating:'16 anos', img:'assets/2024/meus-olhos-verdes.png',
+    release:'Alex, um garoto de programa, vive o auge de sua vida. Em meio ao luxo e às ilusões de uma realidade construída para agradar aos outros, ele parece estar no controle de tudo. Porém, quando o passado ressurge em sua vida, trazendo consigo segredos e traumas que ele acreditava estarem enterrados, sua existência começa a se desintegrar. A trama coloca em xeque a própria noção de verdade, memória e identidade.',
+    ficha:[['Texto e direção','José Celso Cavalieri'],['Elenco','Diego Pianna'],['Cenografia','Diego Pianna, Felipe Avide e José Celso Cavalieri'],['Figurino','Diego Pianna'],['Iluminação','José Celso Cavalieri'],['Sonoplastia','Felipe Avide'],['Realização','Cia Teatral JC']] },
+  { id:'corpo16', t:'O Corpo Que Eu Habito', day:16, time:'19h30', dur:55, v:'casa', group:'Cia Da Ideia — Companhia de Dança', city:'RJ', cat:'Mostra Oficial', author:'Sueli Guerra', dir:'Sueli Guerra e Alessandro Brandão', rating:'Livre', access:['Libras','Audiodescrição'], img:'assets/2024/corpo-que-eu-habito.png',
+    release:'Um espetáculo híbrido em que dança, teatro, música e performance se mesclam com o objetivo de promover uma reflexão sobre o corpo de cada indivíduo no aqui e agora. No espetáculo, cada artista / intérprete traz para o palco suas experiências, histórias e particularidades, explorando as possibilidades e potencialidades de seus corpos. Em cena, 7 bailarinos compõem seus solos que acabam por se tangenciar formando duos, trios e momentos de encenação coletiva.',
+    ficha:[['Idealização','Sueli Guerra'],['Pesquisa, concepção e direção artística','Sueli Guerra e Alessandro Brandão'],['Intérpretes criadores','Sueli Guerra, Alessandro Brandão, Daniel Chagas / Jefferson Almeida, Edney D’conti, Andreia Pimentel, Renata Reinheimer e Saulo Eduardo'],['Musicista','Ana Paula Cruz'],['Trilha sonora original','Rodrigo Russano'],['Cenografia','Gisele Batalha'],['Figurinos','Patrícia Muniz'],['Iluminação','Paulo Cesar Medeiros'],['Produção local','Lalau Martins'],['Direção de produção','Cacau Gondomar'],['Realização','CLG — Canteiro de Ideias e Cia da Ideia']], note:'Patrocínio Instituto Cultural Vale, via Lei Federal de Incentivo à Cultura / Lei Rouanet.' },
+  { id:'corpo17', t:'O Corpo Que Eu Habito', day:17, time:'19h30', dur:55, v:'casa', group:'Cia Da Ideia — Companhia de Dança', city:'RJ', cat:'Mostra Oficial', author:'Sueli Guerra', dir:'Sueli Guerra e Alessandro Brandão', rating:'Livre', access:['Libras','Audiodescrição'], img:'assets/2024/corpo-que-eu-habito-2.png',
+    release:'Segunda apresentação do espetáculo híbrido em que dança, teatro, música e performance se mesclam para promover uma reflexão sobre o corpo de cada indivíduo no aqui e agora.',
+    ficha:[['Idealização','Sueli Guerra'],['Direção','Sueli Guerra e Alessandro Brandão'],['Realização','CLG — Canteiro de Ideias e Cia da Ideia']] },
+  { id:'charanga', t:'A Charanga dos Proscritos', day:17, time:'19h30', dur:60, v:'praca', group:'Boyásha Trupe de Teatro', city:'ES', cat:'Mostra Oficial', author:'George Orwell', dir:'João Paulo Stein', rating:'Livre', img:'assets/2024/charanga-dos-proscritos.png',
+    release:'Um bando. Uma trupe. Uma charanga! Perambulando de lá para cá. Tocando fanfarras. Penúria... O Destemido! Outra charanga. Fusca 1975 em quase perfeito estado de conservação. Numa granja, em algum tempo, um humano explorador chafurda na força de trabalho de um bando de animais. Fartos da exploração os animais se rebelam e expulsam o opressor. Mas tudo está melhor... é o que afirma Garganta, o portavoz do poder. Expulsos, os proscritos levantam acampamento. Penúria parte. Mas a Charanga resiste!',
+    ficha:[['Texto original','George Orwell (1903-1950)'],['Adaptação e dramaturgia','Márcio Marciano e Boyásha'],['Elenco','João Paulo Stein e Murilo Iglesias'],['Direção','João Paulo Stein'],['Direção musical','Murilo Iglesias'],['Direção de texto e preparação vocal','Babaya Morais'],['Colaboração artística','Lydia Del Picchia e Luiz Rocha'],['Cenário e figurino','Boyásha'],['Assistência de palco','Patrick Benevides']] },
+  { id:'dona', t:'Dona Rua Gentileza, Educando Hoje Os Motoristas de Amanhã', day:18, time:'14h', dur:50, v:'casa', group:'Trupe Ratimbum', city:'ES', cat:'Mostra Oficial', author:'Taty Moraes', dir:'Elenice Moreira', rating:null, img:'assets/2024/dona-rua-gentileza.png',
+    release:'A peça conta a estória da personagem Emília, que sai do interior em direção à cidade grande, onde pretende conhecer mais sobre a Educação no Trânsito, para ensinar onde mora. Chegando à cidade conhece o guarda Prudêncio, que a acompanha em sua trajetória, ensinando as regras do trânsito. Juntos, encontram a personagem principal, dona Rua Gentileza, que fica aborrecida toda vez que um motorista joga lixo pela janela do carro. O espetáculo tem músicas próprias e passa por situações como faixa de pedestre, rotatória, caixa amarela, sinalização, ônibus escolar e informações sobre Leis de Trânsito.',
+    ficha:[['Autor e direção','Taty Moraes e Elenice Moreira'],['Elenco','Cristina Moreira, Anna Mark, Ary Ottis, Ramon Bastos e Everton de Souza'],['Produção executiva','Taty Moraes'],['Produção','Elenice Moreira'],['Assistente de produção','Nívea Bromate'],['Montagem e contrarregra','Walter Gomes'],['Sonoplastia','Beré (Luiz Carlos)'],['Iluminação','Alcides Luiz Rodrigues'],['Realização','Ratimbum Produções de Artes']] },
+  { id:'saga', t:'SAGA — Uma História do Povo Preto', day:18, time:'19h30', dur:60, v:'casa', group:'Preqaria Cia de Teatro', city:'MG', cat:'Mostra Oficial', author:'Nathan Brits e João Valadares', dir:'Nathan Brits e João Valadares', rating:'Livre', img:'assets/2024/saga-povo-preto.png',
+    release:'Traz uma narrativa possível para a trajetória do negro africano, partindo de uma de suas cosmovisões até o Brasil de hoje, misturando aspectos históricos, mitológicos e culturais. Apesar do tema sério, a peça traz leveza, como na versão do grupo para a história de Ananse, a entidade Aranha da África Central. Um diferencial do espetáculo é tratar um tema sério como o racismo estrutural no Brasil também para o público infanto-juvenil: a peça já foi vista por mais de 5 mil crianças a partir de 6 anos de idade.',
+    ficha:[['Concepção e atuação','Nathan Brits e João Valadares'],['Iluminação','Iasmin Duarte'],['Realização','Preqaria Cia de Teatro']] },
+  { id:'homembanda', t:'Homem Banda, O Show', day:19, time:'10h', dur:30, v:'praca', group:'Companhia OsViajero', city:'ES', cat:'Mostra Oficial', author:'André Forecchi', dir:'André Forecchi', rating:'Livre', img:'assets/2024/homem-banda.png',
+    release:'André é um jovem sonhador que, confrontado com o vazio de um mundo cheio de facilidades superficiais, escolhe uma vida de desafios. A busca pela felicidade através das coisas difíceis leva o personagem a um modo único de fazer música: ele cria uma geringonça que permite tocar saxofone e toda sorte de percussões simultaneamente através de cordas e roldanas sem ajuda tecnológica. Cada gesto, uma nota; cada passo, uma melodia.',
+    ficha:[['Artista solista','André Forecchi'],['Dramaturgia','Henrique Fontes e André Forecchi'],['Direção técnica','Gabriel Bebici'],['Direção musical','André Forecchi e Santiago Moreno'],['Direção de arte','Thila Paixão'],['Preparadora vocal e de elenco','Luciene Camargo'],['Produção','Karolyna Coutinho']] },
+  { id:'metamorfose', t:'A Metamorfose', day:19, time:'19h30', dur:50, v:'casa', group:'Grupo Anônimos de Teatro', city:'ES', cat:'Mostra Oficial', author:'Fernando Marques (adaptação do texto homônimo de Franz Kafka)', dir:'Ivna Messina', rating:'Livre', img:'assets/2024/a-metamorfose.png',
+    release:'Um homem desperta de sonhos intranquilos metamorfoseado num inseto monstruoso. Assim era visto por sua família. Assim era visto pelo gerente do trabalho. Pela empregada, pelos inquilinos que ocupam sua casa, pelo mundo. Neste espetáculo — um solo — conta-se a sua história; o corpo reage, a situação se instala: quem realmente se metamorfoseia enquanto o tempo passa?',
+    ficha:[['Direção','Ivna Messina'],['Dramaturgia','Fernando Marques'],['Intérprete','Luiz Carlos Cardoso'],['Trilha sonora','Alessandra Biato e João de Paula Junior'],['Cenário e figurino','Antonio Apolinário'],['Iluminação','Daniel Boone'],['Identidade visual e fotografias','Farley José'],['Direção de produção','Luiz Carlos Cardoso'],['Realização','Grupo Anônimos de Teatro']] },
+  { id:'carambolas', t:'Carambolas — Algumas Verdades Em Memória de Dona Santa', day:19, time:'20h', dur:50, v:'ma', group:'Repertório Artes Cênicas e Cia', city:'ES', cat:'Mostra Oficial', author:'Thalia Peçanha', dir:'Nieve Matos', rating:'16 anos', img:'assets/2024/carambolas.png',
+    release:'No espetáculo somos transportados para Nova Esperança, uma cidadezinha à sombra de uma grande fábrica de celulose. Mas poderia ser qualquer distrito do Espírito Santo vizinho dos portos ou siderúrgicas do estado. Inspirado na vida e morte de Dona Santa, mãe da autora Thalia Peçanha, “Carambolas” tece personagens e fatos reais à ficção, convidando todos a refletirem sobre questões urgentes de justiça social e dignidade humana.',
+    ficha:[['Direção','Nieve Matos'],['Dramaturgia','Thalia Peçanha e Nieve Matos'],['Elenco','Antônio Apolinário, Brab Joá, Léia Rodrigues, Marina Malafaia, Winny Rocha'],['Produção e assistência de direção','Erica Vilhena'],['Direção musical','Nataly Volcati'],['Direção de arte','Antônio Apolinário'],['Design','Alê Pin'],['Concepção da iluminação','André Stefson'],['Operação da iluminação','Mariana Rodrigues'],['Registro','Brunela Negreiros e Marianna Eilert'],['Realização','Repertório Artes Cênicas e Cia · Coletivo Elas Tramam']] },
+  { id:'kala', t:'A Maldição e o Mistério de Kalá, Uma Fábula Contemporânea', day:20, time:'19h30', dur:50, v:'casa', group:'Grupo Rerigtiba', city:'ES', cat:'Mostra Oficial', author:'Tiche Vianna', dir:'Tiche Vianna', rating:'Livre', img:'assets/2024/maldicao-kala.png',
+    release:'Nelayan e Timur são dois amigos que permaneceram na Vila de Kalá depois de uma terrível maldição. Tempos depois, chega à Vila a jovem MasaDepan. O encontro de Timur e Nelayan com MasaDepan traz aos amigos a memória de Wanita e o mistério de sua partida de Kalá, há muito tempo. Desde então, Timur tenta encontrar um meio de quebrar a maldição.',
+    ficha:[['Dramaturgia e direção','Tiche Vianna'],['Elenco','Julia Campos, Sara Lyra, Welida Pontes e Bruno Meneguelli'],['Cenografia e figurino','Carlos Alberto Nunes'],['Assistente de cenografia e adereços','Mimo Vasco e Sara Lyra'],['Confecção de figurino','Raquel Miranda'],['Criação de trilha sonora e direção musical','Marcelo Onofri'],['Música incidental','Quelóide Cerebral / Compositor: Renan Alonso'],['Operação de som','Danilo Curtiss'],['Preparação vocal','Priscila Reis'],['Máscaras balinesas','Acervo do Grupo Rerigtiba'],['Produção executiva','Telma Amaral'],['Realização','Grupo de Teatro Rerigtiba']] },
+  { id:'calunga', t:'Calunga — A Princesa Que Virou Boneca', day:13, time:'16h', dur:45, v:'casa', group:'Mais Um Ponto, Mais Um Conto', city:'ES', cat:'Mostra Paralela', author:'Eliane Correia', dir:'Ronny Pires', rating:'Livre', img:'assets/2024/calunga.png',
+    release:'A princesa que virou boneca remonta a história de uma princesa destemida, Calunga, cuja jornada a leva a descobrir o verdadeiro significado da coragem, amizade e amor através da tradição oral. Sua origem celebra os vínculos ancestrais entre Brasil e África, com conexão direta entre o Maracatu e o Congo capixaba através da Lenda da Casaca.',
+    ficha:[['Elenco','Caio Pereira (Avó Iroko), Eliane Correia (Calunga)'],['Direção','Eliane Correia e Ronny Pires'],['Iluminação','Carlos Ola e Matheus Soares'],['Sonoplastia','Eliane Correia e Gui Vieira'],['Contra-regra','Rosangela Correia'],['Cenografia','João Batista de Moraes']] },
+  { id:'divertida', t:'Divertida Mente', day:13, time:'17h', dur:50, v:'milson', group:'Cia Peralta', city:'ES', cat:'Mostra Paralela', author:'Felipe Wotkosky', dir:'Felipe Wotkosky', rating:'Livre', img:'assets/2024/divertida-mente.png',
+    release:'Uma noite repleta de diversão e surpresas com Felipe Vix, ator e hipnólogo. Felipe combina seu carisma e talento com técnicas de hipnose para criar situações hilárias e momentos inesquecíveis. Voluntários da plateia terão a chance de subir ao palco e, sob a orientação de Felipe, viver experiências inacreditáveis e cômicas em uma incrível viagem pela imaginação, sempre com respeito e cuidado.',
+    ficha:[['Ator, diretor e produtor','Felipe Vieira'],['Operador de som','Dilan Martins'],['Cinegrafista','Brendom Botelho']] },
+  { id:'boi', t:'A História do Boi de Sol', day:14, time:'15h', dur:40, v:'casa', group:'Os Tião Grupo de Teatro', city:'ES', cat:'Mostra Paralela', author:'Sula Borges', dir:'Sula Borges', rating:'Livre', img:'assets/2024/boi-de-sol.png',
+    release:'Montanha é uma pequena cidade no extremo norte capixaba e fica pertinho dos estados da Bahia e Minas Gerais. Isso torna a cidade um caldeirão cultural com diversas influências em seu povo, sua culinária, seu sotaque e sua própria cultura. A história é extraída do livro “A História do Boi de Sol”, do autor Sula Borges de Montanha / ES.',
+    ficha:[['Direção','Sula Borges'],['Atores','João Vitor Borges, Debora Borges, Aendrea Antunes, Andreia Wagmaker, Cristiano Azevedo, Marcos Martins, Cristina Costa'],['Iluminador','J. Neto Borges']] },
+  { id:'cabrabo', t:'O Auto de Cabrabó', day:14, time:'19h', dur:90, v:'casa', group:'CIA T21', city:'ES', cat:'Mostra Paralela', author:'Tadeu Kunzendorff', dir:'Tadeu Kunzendorff', rating:'Livre', img:'assets/2024/auto-de-cabrabo.png',
+    release:'O Auto de Cabrabó conta a história de um prefeito honesto, que cuida da cidade e dos cidadãos com muito carinho, mas ele tem um passado obscuro e quando esse passado é revelado, a cidade fica de cabeça para baixo. O Auto de Cabrabó fala de um mundo como se fosse um espelho, que devolve a cada pessoa uma reflexão dos seus atos.',
+    ficha:[['Dramaturgia / direção geral','Tadeu Kunzendorff'],['Elenco','Felipe Ribeiro Lima, Maria Clara Ribeiro, Maciel de Carvalho, Renato, Sophia Nunes Dias, Anna Luísa Manni, Henrique Guimarães Oliveira, Daniela Frigeri Campos, Alan Coutinho Souza, Tâmara Sá Scaramussa, Raphael Mastrorosa Lupinari, Polyanna Barboza de Oliveira, Arthur Veronez Hombre, Bernardo de Oliveira Carneiro, Samuel Itabaiana de Carvalho Pires, Séfora Araújo Silva Neto, Fabrício Fraga, Paraguassu de Souza, Luan Alejandro Nakamura Palácios, Alana Demaria Santos, Tânia Mara dos Santos Demaria'],['Produção','Erika Mariano e Monica Carvalho'],['Fotografia','Erika Mariano']] },
+  { id:'couro', t:'Couro de Cabra e a Promessa', day:15, time:'19h30', dur:80, v:'sesi', group:'Trupamba Cia Teatral', city:'ES', cat:'Mostra Paralela', author:'Rodrigo Paouto', dir:'Rodrigo Paouto', rating:'14 anos', img:'assets/2024/couro-de-cabra.png',
+    release:'Livremente inspirado na cultura nordestina brasileira, o espetáculo conta a história de Couro de Cabra, “calango” sem eira nem beira, apaixonado por Celestina, filha única do Coronel Vitalino dos Virgulhão, mas em um conflito com nuances a lá Romeu e Julieta. Os dois não podem viver este amor, pois o Coronel jamais permitiria que sua filha se casasse com alguém tão miserável.',
+    ficha:[['Dramaturgia e direção','Rodrigo Paouto'],['Elenco','Washingtton Salvador, Saulo Santiago, Bia Caçador, Ana Capucho, Luan Tessarolo, Bethânia Graunke, Wesley Reis, Melky Borges, Sulivan Alves, Dave Rafael'],['Luz','Eliane Pereira'],['Som','Rodrigo Paouto'],['Figurino e maquiagem','O Grupo'],['Cenário','Rodrigo Paouto']] },
+  { id:'avarento', t:'O Avarento', day:19, time:'19h30', dur:60, v:'ufes', group:'Grupo de Teatro Arte Oficina', city:'ES', cat:'Mostra Paralela', author:'Molière', dir:'Abel Santana', rating:'Livre', img:'assets/2024/o-avarento.png',
+    release:'Harpagão é um homem de avareza cruel e desumana, incapaz de qualquer forma de amor. A felicidade dos filhos não lhe interessa, e chega ao ponto de querer casá-los apenas para aumentar sua fortuna. Dono de vários imóveis no Condado de Big Field, explora os moradores da região cobrando aluguéis exorbitantes. Todos o odeiam e querem vê-lo morto.',
+    ficha:[['Texto e direção','Abel Santana, adaptação do clássico de Molière'],['Elenco','Abel Santana, Danniel Machado, Manuela Peccin, Otávio Rodrigues, Luciana Britto, Deise Freitas, Lina Carneiro, Thais Rangel, Delza Marim, Lara Picallo'],['Sonoplastia','Thaís Duarte'],['Iluminação','Isabela Tonon'],['Coreografia','Lina Carneiro'],['Cenário e figurinos','Ângela Mendes e Sara Mendes']] },
+  { id:'livros', t:'Lançamento de Livros', day:18, time:'18h30', dur:90, v:'milson', group:'Duílio Kuster Cid, Erlon José Paschoal, Nieve Matos e autores parceiros', city:'ES', cat:'Lançamento', author:'—', dir:'—', rating:'Livre',
+    release:'Três lançamentos reunidos: “Melhor Manter o Escuro Aceso”, de Duílio Kuster Cid, coletânea de quatro textos teatrais escritos pelo ator e dramaturgo; “O Céu é o Limite”, de Erlon José Paschoal, texto teatral envolvente, sarcástico e crítico; e “Ontem, Hoje e Amanhã — Narrativas Capixabas”, de Nieve Matos e autores parceiros, coletânea de quatro dramaturgias criadas em processos colaborativos junto ao grupo Repertório Artes Cênicas e ao Instituto Cultural Tambor de Raiz.',
+    ficha:[['Autores','Duílio Kuster Cid, Erlon José Paschoal, Nieve Matos e autores parceiros'],['Local','Casa da Música Sônia Cabral — Sala Milson Henriques']] }
+];
+
+const WS = [
+  { id:'ws-corpo', t:'O Corpo Que Habitamos', days:'14 e 15 de outubro', dayNums:[14,15], time:'14h às 18h30', v:'estrelas', teachers:'Alessandro Brandão e Sueli Guerra', format:'Presencial e gratuito', audience:'Atores, artistas, estudantes de arte e teatro e interessados', age:'+16 anos', classes:'01', seats:'25 vagas por turma', link:'https://forms.gle/8fN23XfnN5Ua1iV6A', access:['Intérprete de Libras'], img:'assets/2024/corpo-que-eu-habito.png',
+    desc:'Imersão de dois dias conduzida pelos criadores de “O Corpo Que Eu Habito”, ligando pesquisa de corpo, memória e presença cênica.',
+    note:'É importante que o participante compareça aos 2 dias de oficina. Ao final do trabalho os participantes que quiserem estarão em cena, no espetáculo “O Corpo que Eu Habito”, juntamente com a Cia da Ideia.' },
+  { id:'ws-disso', t:'Dissociando o Corpo', days:'16 de outubro', dayNums:[16], time:'14h às 16h30', v:'estrelas', teachers:'André Forecchi — OsViajero', format:'Presencial e gratuito', audience:'Músicos, educadores, poetas, atores, artistas, estudantes e interessados', age:'+12 anos', classes:'01', seats:'20 vagas por turma', link:'https://docs.google.com/forms/d/e/1FAIpQLSfIoONOJLCdMOS_3q3Tf3YOFS1d8GrxN1l3Uj12AGJELsckJQ/viewform', access:[], img:'assets/2024/homem-banda.png',
+    desc:'Imersão na arte do Homem-banda, focada na dissociação rítmica e na aplicação prática do ritmo em diferentes contextos, especialmente na cultura popular e na pedagogia com crianças e adolescentes. A oficina oferece teoria e exercícios práticos que exploram o controle rítmico e a independência dos movimentos corporais.',
+    note:'Roupa confortável e levar algum instrumento de percussão. Exemplo: pandeiro, tambor, repenique, chocalho.' }
+];
+
+const PROC = [
+  { day:13, items:[['Cia Peralta — ES','Casa da Música Sônia Cabral'],['Grupo Teatral Gota, Pó e Poeira — ES','Teatro SESI Jardim da Penha']] },
+  { day:14, items:[['Os Tião Grupo de Teatro — ES','Casa da Música Sônia Cabral'],['CIA T21 — ES','Casa da Música Sônia Cabral'],['Grupo Tarahumaras — ES','Teatro SESI Jardim da Penha']] },
+  { day:15, items:[['Grupo de Teatro Experimental Capixaba — ES','Casa da Música — Sala Milson Henriques'],['Trupamba Cia Teatral — ES','Teatro SESI Jardim da Penha'],['Cia Teatral JC — ES','Casa da Música Sônia Cabral']] },
+  { day:16, items:[['Cia Da Ideia — Companhia de Dança — RJ','Casa da Música Sônia Cabral']] },
+  { day:17, items:[['Boyásha Trupe de Teatro — ES','Praça Costa Pereira']] },
+  { day:18, items:[['Trupe Ratimbum — ES','Casa da Música Sônia Cabral'],['Preqaria Cia de Teatro — MG','Casa da Música Sônia Cabral']] },
+  { day:19, items:[['Companhia OsViajero — ES','Praça Costa Pereira'],['Grupo Anônimos de Teatro — ES','Casa da Música Sônia Cabral'],['Grupo de Teatro Arte Oficina — ES','Teatro Universitário UFES'],['Repertório Artes Cênicas e Cia — ES','Má Companhia']] },
+  { day:20, items:[['Grupo Rerigtiba — ES','Casa da Música Sônia Cabral']] }
+];
+
+const HON = [
+  { id:'bere', name:'Bere (Luiz Carlos Siqueira)', role:'Capataz de Circo e Técnico de Palco', img:'assets/2024/homenageado-bere.png',
+    bio:'Técnico do Teatro Carlos Gomes e da Casa de Música Sonia Cabral. Em 1987 iniciou sua carreira profissional no Circo da Cultura do DEC — Departamento Estadual de Cultura, tendo como seu mentor o Sr. Bandejinha. Em 1996 foi convidado a integrar a equipe do Teatro Carmelia e logo depois do Teatro Carlos Gomes. Foi o iluminador da Dona Lenira Borges e Mitzi Marzzuti por muitos anos e já trabalhou para vários grupos nacionais e locais.' },
+  { id:'alcides', name:'Alcides Luiz Rodrigues Pereira', role:'Técnico de Luz', img:'assets/2024/homenageado-alcides.png',
+    bio:'Técnico do Teatro Carlos Gomes e da Casa de Música Sonia Cabral. Iniciou sua carreira em 1984 no Teatro SCAV e em 1985 foi efetivado no DEC — Departamento Estadual de Cultura. Passou também a integrar a equipe do Teatro Carlos Gomes a convite de Mauricio Silva e Waldir Castiglione. Em sua trajetória já montou iluminação para teatro, dança, música e circo, com grandes nomes como Fernanda Montenegro, Paulo Gustavo, Bibi Ferreira e Lenira Borges.' }
+];
+
+const DOW = { 13:'domingo', 14:'segunda-feira', 15:'terça-feira', 16:'quarta-feira', 17:'quinta-feira', 18:'sexta-feira', 19:'sábado', 20:'domingo' };
+const CATS = ['Mostra Oficial','Mostra Paralela','Oficina','Lançamento','Processo criativo'];
+
+class Component extends DCLogic {
+  state = { route:'home', showId:null, wsId:null, venueId:null, menuOpen:false, a11yOpen:false, a11y:{}, day:'todos', cat:'todos', venue:'todos', freeOnly:false, gradeView:'espaco', gradeDay:13, curtain:false, expandFicha:false };
+
+  mins(t) { const m = String(t).match(/(\d+)h(\d+)?/); return m ? Number(m[1])*60 + Number(m[2]||0) : 0; }
+  nowDay() { return Number(this.props.demoDay ?? 17); }
+  nowMin() { return Number(this.props.demoHour ?? 20) * 60; }
+  nowAbs() { return this.nowDay()*1440 + this.nowMin(); }
+  venueOf(ev) { return V[ev.v] || V.casa; }
+  status(ev) {
+    const s = ev.day*1440 + this.mins(ev.time), e = s + (ev.dur||60), n = this.nowAbs();
+    return n < s ? 'futuro' : (n <= e ? 'agora' : 'encerrado');
+  }
+  endLabel(ev) {
+    const t = this.mins(ev.time) + (ev.dur||60);
+    const h = Math.floor(t/60) % 24, m = t % 60;
+    return m ? h + 'h' + String(m).padStart(2,'0') : h + 'h';
+  }
+  dayLabel(d) { return d + ' OUT'; }
+  decorate(ev) {
+    const v = this.venueOf(ev), st = this.status(ev);
+    const tags = [ev.cat];
+    if (ev.rating) tags.push('Classificação ' + ev.rating);
+    (ev.access||[]).forEach(a => tags.push(a));
+    tags.push('Entrada franca');
+    return Object.assign({}, ev, {
+      venueName: v.name, venueSub: v.sub || '', venueAddr: v.addr, venueId: v.id,
+      dayLabel: this.dayLabel(ev.day), dow: DOW[ev.day], status: st,
+      isNow: st === 'agora', isPast: st === 'encerrado', isFuture: st === 'futuro',
+      statusLabel: st === 'agora' ? 'Em cena agora' : (st === 'encerrado' ? 'Sessão encerrada' : 'Programado'),
+      endsAt: this.endLabel(ev), tags, access: ev.access || [],
+      bg: ev.img ? 'url(' + ev.img + ')' : 'linear-gradient(135deg,#20201e 0%,#1c1c1a 100%)',
+      hasImg: !!ev.img, ratingLabel: ev.rating || 'A confirmar',
+      durLabel: (ev.dur||60) + ' min',
+      open: () => this.openShow(ev.id)
+    });
+  }
+  allEvents() { return EV.map(e => this.decorate(e)); }
+
+  nav(route, extra) {
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const apply = () => { this.setState(Object.assign({ route, menuOpen:false, expandFicha:false }, extra||{})); window.scrollTo(0,0); };
+    if (reduce) { apply(); return; }
+    const c = this.curtainEl();
+    if (c) c.style.transform = 'scaleY(1)';
+    setTimeout(() => { apply(); if (c) { c.style.transformOrigin = 'bottom'; c.style.transform = 'scaleY(0)'; setTimeout(()=>{ c.style.transitionDuration='0ms'; c.style.transformOrigin='top'; setTimeout(()=>{ c.style.transitionDuration='300ms'; }, 40); }, 320); } }, 300);
+  }
+  curtainEl() { return this.el ? this.el.querySelector('[data-curtain]') : document.querySelector('[data-curtain]'); }
+
+  openShow(id) { this.nav('espetaculo', { showId:id }); }
+  openWs(id) { this.nav('oficina', { wsId:id }); }
+  openVenue(id) { this.nav('espaco', { venueId:id }); }
+
+  componentDidMount() {
+    this.el = document.querySelector('[data-header]') ? document.body : null;
+    this.onScroll = () => {
+      const h = document.querySelector('[data-header]');
+      if (!h) return;
+      const on = window.scrollY > 40;
+      h.style.background = on ? 'rgba(14,14,13,0.86)' : 'rgba(14,14,13,0)';
+      h.style.backdropFilter = on ? 'blur(16px)' : 'blur(0px)';
+      h.style.borderBottomColor = on ? 'rgba(88,65,65,0.5)' : 'rgba(88,65,65,0)';
+    };
+    window.addEventListener('scroll', this.onScroll, { passive:true });
+    this.onScroll();
+    this.observe();
+  }
+  componentDidUpdate() { this.observe(); }
+  componentWillUnmount() { window.removeEventListener('scroll', this.onScroll); if (this.io) this.io.disconnect(); }
+  observe() {
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const els = document.querySelectorAll('[data-reveal]:not([data-seen])');
+    if (reduce) { els.forEach(el => { el.setAttribute('data-seen','1'); el.style.opacity='1'; el.style.transform='none'; }); return; }
+    if (!this.io) {
+      this.io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            en.target.style.opacity = '1';
+            en.target.style.transform = 'none';
+            this.io.unobserve(en.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -12% 0px' });
+    }
+    els.forEach(el => {
+      el.setAttribute('data-seen','1');
+      el.style.opacity = '0.001';
+      el.style.transform = 'translateY(22px)';
+      el.style.transition = 'opacity 900ms cubic-bezier(.2,.7,.2,1), transform 900ms cubic-bezier(.2,.7,.2,1)';
+      this.io.observe(el);
+    });
+  }
+
+  catalog() {
+    const out = this.allEvents().map(e => Object.assign({}, e, { kind:'show', sortKey: this.mins(e.time), timeLabel: e.time }));
+    WS.forEach(w => {
+      const v = V[w.v];
+      w.dayNums.forEach(d => out.push({
+        kind:'ws', id: w.id, t: w.t, day: d, time: w.time, timeLabel: w.time, sortKey: this.mins(w.time),
+        cat:'Oficina', group: w.teachers, city:'', v: w.v, venueName: v.name, venueId: v.id, venueAddr: v.addr,
+        dayLabel: this.dayLabel(d), dow: DOW[d], rating: w.age, ratingLabel: w.age, durLabel: w.time,
+        access: w.access || [], tags: ['Oficina', w.age, 'Gratuito', w.seats].concat(w.access||[]),
+        status: this.status({ day:d, time: w.time, dur:270 }),
+        statusLabel:'Inscrição', bg:'', hasImg:false, seats: w.seats,
+        open: () => this.openWs(w.id)
+      }));
+    });
+    PROC.forEach(p => p.items.forEach((it, i) => out.push({
+      kind:'proc', id:'proc-' + p.day + '-' + i, t:'Demonstração de trabalho — ' + it[0], day: p.day, time:'após a sessão', timeLabel:'após a sessão',
+      sortKey: 1400, cat:'Processo criativo', group: it[0], city:'', v:'', venueName: it[1], venueId:'', venueAddr:'',
+      dayLabel: this.dayLabel(p.day), dow: DOW[p.day], rating:'Livre', ratingLabel:'Livre', durLabel:'—',
+      access:[], tags:['Processo criativo','Aberto ao público'], status:'futuro', statusLabel:'Processo criativo',
+      bg:'', hasImg:false, open: () => this.nav('programacao', { cat:'Processo criativo' })
+    })));
+    return out.sort((a,b) => (a.day - b.day) || (a.sortKey - b.sortKey));
+  }
+  filtered() {
+    const s = this.state, nd = this.nowDay(), na = this.nowAbs();
+    return this.catalog().filter(e => {
+      if (s.cat !== 'todos' && e.cat !== s.cat) return false;
+      if (s.venue !== 'todos' && e.v !== s.venue) return false;
+      if (s.day === 'hoje' && e.day !== nd) return false;
+      if (s.day === 'amanha' && e.day !== nd + 1) return false;
+      if (s.day === 'agora') {
+        const st = e.day*1440 + e.sortKey;
+        if (!(st >= na && st <= na + 240)) return false;
+      }
+      if (s.day !== 'todos' && s.day !== 'hoje' && s.day !== 'amanha' && s.day !== 'agora' && e.day !== Number(s.day)) return false;
+      return true;
+    });
+  }
+  groupByDay(list) {
+    const days = [];
+    list.forEach(e => {
+      let g = days.find(d => d.day === e.day);
+      if (!g) { g = { day: e.day, dayLabel: this.dayLabel(e.day), dow: DOW[e.day], items: [], isToday: e.day === this.nowDay() }; days.push(g); }
+      g.items.push(e);
+    });
+    days.forEach(d => { d.countLabel = d.items.length + (d.items.length === 1 ? ' atividade' : ' atividades'); });
+    return days;
+  }
+  renderVals() {
+    const all = this.allEvents();
+    const nd = this.nowDay();
+    const agora = all.filter(e => e.isNow);
+    const naAbs = this.nowAbs();
+    const upcoming = all.filter(e => (e.day*1440 + this.mins(e.time)) > naAbs).sort((a,b)=>(a.day*1440+this.mins(a.time))-(b.day*1440+this.mins(b.time)));
+    const todayNext = upcoming.filter(e => e.day === nd);
+    const aSeguir = (todayNext.length ? todayNext : upcoming).slice(0,4).map(e => Object.assign({}, e, { whenLabel: e.day === nd ? 'hoje' : e.dayLabel + ' · ' + e.dow }));
+    const aSeguirTitle = todayNext.length ? 'A seguir · hoje' : 'A seguir · próximos dias';
+    const hoje = all.filter(e => e.day === nd).sort((a,b)=>this.mins(a.time)-this.mins(b.time));
+    const nowMin = this.nowMin();
+    const nowLabel = nd + ' de outubro · ' + DOW[nd] + ' · ' + Math.floor(nowMin/60) + 'h' + (nowMin%60 ? String(nowMin%60).padStart(2,'0') : '') + ' (relógio de demonstração)';
+
+    const byId = id => all.find(e => e.id === id);
+    const destaque = byId('corpo16');
+    const cartaz = [byId('saga'), byId('charanga'), byId('carambolas')].filter(Boolean);
+
+    return {
+      isHome: this.state.route === 'home',
+      menuOpen: this.state.menuOpen,
+      a11yOpen: this.state.a11yOpen,
+      nowLabel,
+      agora, hasAgora: agora.length > 0, noAgora: agora.length === 0,
+      aSeguir, hoje, aSeguirTitle, hasSeguir: aSeguir.length > 0, noSeguir: aSeguir.length === 0,
+      destaque, cartaz,
+      notas: this.props.notasDesign !== false,
+      isProgramacao: this.state.route === 'programacao',
+      isEspetaculo: this.state.route === 'espetaculo',
+      isOficina: this.state.route === 'oficina',
+      isGrade: this.state.route === 'grade',
+      isMapa: this.state.route === 'mapa',
+      isEspaco: this.state.route === 'espaco',
+      isMemoria: this.state.route === 'memoria',
+      isEdicao: this.state.route === 'edicao',
+      isNoticias: this.state.route === 'noticias',
+      isMobile: this.state.route === 'mobile',
+      mobileList: this.catalog().filter(e => e.day === 17 || e.day === 18).slice(0,4),
+      show: (() => {
+        const ev = byId(this.state.showId) || byId('corpo16');
+        const rel = all.filter(e => e.group === ev.group && e.id !== ev.id);
+        const proc = PROC.filter(p => p.day === ev.day).reduce((a,p)=>a.concat(p.items.filter(i => i[0].indexOf(ev.group.split(' —')[0]) === 0).map(i => ({ group:i[0], venue:i[1], day:p.day }))), []);
+        return Object.assign({}, ev, {
+          hasAccess: (ev.access||[]).length > 0,
+          accessLabel: (ev.access||[]).join(' · '),
+          fichaRows: (ev.ficha||[]).map(f => ({ label:f[0], value:f[1] })),
+          related: rel.map(r => Object.assign({}, r, { open: () => this.openShow(r.id) })),
+          hasRelated: rel.length > 0,
+          proc, hasProc: proc.length > 0,
+          hasNote: !!ev.note, noteText: ev.note || '',
+          statusColor: ev.isNow ? '#ffdb9d' : (ev.isPast ? 'rgba(229,226,223,0.45)' : '#ffb3b5'),
+          openVenue: () => this.openVenue(ev.v),
+          venueCount: this.catalog().filter(e => e.v === ev.v).length + ' atividades neste espaço'
+        });
+      })(),
+      ws: (() => {
+        const w = WS.find(x => x.id === this.state.wsId) || WS[0];
+        const v = V[w.v];
+        const related = all.filter(e => (w.id === 'ws-corpo' && e.id.indexOf('corpo') === 0) || (w.id === 'ws-disso' && e.id === 'homembanda'));
+        return Object.assign({}, w, {
+          venueName: v.name, venueAddr: v.addr,
+          hasAccess: (w.access||[]).length > 0, accessLabel: (w.access||[]).join(' · '),
+          related: related.map(r => Object.assign({}, r, { open: () => this.openShow(r.id) })),
+          hasRelated: related.length > 0,
+          openVenue: () => this.openVenue(w.v),
+          rows: [['Professores', w.teachers],['Datas', w.days],['Horário', w.time],['Formato', w.format],['Local', v.name + ' — ' + v.addr],['Público-alvo', w.audience],['Faixa etária', w.age],['Número de turmas', w.classes],['Vagas', w.seats]].map(r => ({ label:r[0], value:r[1] }))
+        });
+      })(),
+      wsList: WS.map(w => ({ id:w.id, t:w.t, days:w.days, time:w.time, teachers:w.teachers, seats:w.seats, age:w.age, venueName: V[w.v].name, open: () => this.openWs(w.id) })),
+      espaco: (() => {
+        const v = V[this.state.venueId] || V.casa;
+        const items = this.catalog().filter(e => e.v === v.id);
+        return Object.assign({}, v, {
+          sub: v.sub || '',
+          hasSub: !!v.sub,
+          groups: this.groupByDay(items),
+          countLabel: items.length + (items.length === 1 ? ' atividade' : ' atividades'),
+          isEmpty: items.length === 0
+        });
+      })(),
+      venueList: Object.keys(V).map((k,i) => {
+        const items = this.catalog().filter(e => e.v === k);
+        return { id:k, num:'0'+(i+1), name:V[k].name, kind:V[k].kind, addr:V[k].addr,
+          countLabel: items.length + (items.length === 1 ? ' atividade' : ' atividades'),
+          left: V[k].pos[0] + '%', top: V[k].pos[1] + '%',
+          on: this.state.venueId === k,
+          onClick: () => this.openVenue(k) };
+      }),
+      gradeDay: this.state.gradeDay,
+      gradeDayChips: [13,14,15,16,17,18,19,20].map(n => {
+        const on = this.state.gradeDay === n;
+        return { n, label:String(n), dow: DOW[n].slice(0,3), on,
+          bg: on ? '#ffb3b5' : 'rgba(229,226,223,0)', bc: on ? '#ffb3b5' : 'rgba(229,226,223,0.22)', fg: on ? '#680018' : '#e5e2df',
+          onClick: () => this.setState({ gradeDay: n }) };
+      }),
+      gradeViewChips: [['espaco','Por espaço'],['horario','Por horário'],['semana','Semana inteira']].map(v => {
+        const on = this.state.gradeView === v[0];
+        return { label:v[1], on, bg: on ? '#800020' : 'rgba(229,226,223,0)', bc: on ? '#800020' : 'rgba(229,226,223,0.25)', fg: on ? '#fff' : '#e5e2df',
+          onClick: () => this.setState({ gradeView: v[0] }) };
+      }),
+      gradeByVenue: Object.keys(V).map(k => {
+        const items = this.catalog().filter(e => e.v === k && e.day === this.state.gradeDay);
+        return { name: V[k].name, kind: V[k].kind, items, isEmpty: items.length === 0,
+          countLabel: items.length ? items.length + ' atividade(s)' : 'Sem programação neste dia',
+          onClick: () => this.openVenue(k) };
+      }),
+      gradeByHour: (() => {
+        const items = this.catalog().filter(e => e.day === this.state.gradeDay).sort((a,b)=>a.sortKey-b.sortKey);
+        const slots = [];
+        items.forEach(e => {
+          let s = slots.find(x => x.time === e.timeLabel);
+          if (!s) { s = { time: e.timeLabel, items: [] }; slots.push(s); }
+          s.items.push(e);
+        });
+        return slots;
+      })(),
+      gradeWeek: Object.keys(V).map(k => ({
+        name: V[k].name,
+        days: [13,14,15,16,17,18,19,20].map(n => {
+          const items = this.catalog().filter(e => e.v === k && e.day === n);
+          return { n, items, isEmpty: items.length === 0, bg: items.length ? 'rgba(128,0,32,0.18)' : 'rgba(229,226,223,0.02)' };
+        })
+      })),
+      gradeIsEspaco: this.state.gradeView === 'espaco',
+      gradeIsHorario: this.state.gradeView === 'horario',
+      gradeIsSemana: this.state.gradeView === 'semana',
+      gradeNotSemana: this.state.gradeView !== 'semana',
+      gradeDayLabel: this.state.gradeDay + ' de outubro · ' + DOW[this.state.gradeDay],
+      honrados: HON,
+      edicaoOficial: all.filter(e => e.cat === 'Mostra Oficial'),
+      edicaoParalela: all.filter(e => e.cat === 'Mostra Paralela'),
+      edicaoLivros: [
+        { t:'Melhor Manter o Escuro Aceso', a:'Duílio Kuster Cid', d:'Coletânea de quatro textos teatrais escritos pelo ator e dramaturgo nos últimos anos: “A Lenda do Reino Partido”, “Búffalo’s Show”, “Rubem Braga: a Vida em Voz Alta” e “Sopa de Galena”.' },
+        { t:'O Céu é o Limite', a:'Erlon José Paschoal', d:'Texto teatral envolvente, sarcástico e crítico. Retrata a vida de um personagem bem-sucedido que busca resgatar as relações de afeto com seu filho adolescente.' },
+        { t:'Ontem, Hoje e Amanhã — Narrativas Capixabas', a:'Nieve Matos e autores parceiros', d:'Coletânea de quatro dramaturgias criadas em processos colaborativos junto ao grupo Repertório Artes Cênicas e ao Instituto Cultural Tambor de Raiz.' }
+      ],
+      edicaoProc: PROC.map(p => ({ day:p.day, dayLabel: this.dayLabel(p.day), dow: DOW[p.day], items: p.items.map(i => ({ group:i[0], venue:i[1] })) })),
+      edicaoCredits: [
+        ['Direção geral','Elenice Moreira'],['Produção executiva','Taty Moraes'],['Coordenação de curadoria','Beth Caser'],
+        ['Curadoria','Beth Caser, Taty Moraes'],['Assessoria de imprensa','Márcia Almeida'],['Assistente de produção','George Henrique, Nívea Bromate'],
+        ['Apoio','Everton de Souza, Walter Gomes, Nilze Nascimento e Ramon Bastos'],['Gestão de mídias sociais','Tina Moreira, Duda Serqueira'],
+        ['Organização','Associação Cultural, Circense e Ambiental Uma Floresta'],['Produção','Ratimbum Produções de Artes'],
+        ['Patrocínio','Prefeitura Municipal de Vitória — Lei Rubem Braga'],['Promoção','TV Gazeta'],
+        ['Apoio de espaços','Casa da Música Sônia Cabral, Teatro Universitário (UFES), Teatro SESI, Teatro Estrelas']
+      ].map(r => ({ label:r[0], value:r[1] })),
+      timeline: [
+        { year:'2026', ed:'22ª edição', period:'13 a 21 de outubro', state:'Edição vigente', stateColor:'#ffdb9d', desc:'Curadoria em andamento. Programação, espetáculos e homenageados serão publicados pela organização.', cta:'Acompanhar', onClick: () => this.nav('home'), fill:'12%' },
+        { year:'2025', ed:'21ª edição', period:'Datas a confirmar no acervo', state:'Acervo pendente', stateColor:'rgba(229,226,223,0.5)', desc:'Registros, programação e fotografias a serem incorporados ao acervo digital.', cta:'Contribuir com acervo', onClick: () => this.nav('memoria'), fill:'6%' },
+        { year:'2024', ed:'20ª edição', period:'13 a 20 de outubro', state:'Acervo completo', stateColor:'#ffb3b5', desc:'Mostra Oficial, 7ª Mostra Paralela Vera Viana, oficinas, lançamentos de livros, processos criativos e dois homenageados.', cta:'Explorar esta edição', onClick: () => this.nav('edicao'), fill:'100%' },
+        { year:'2004—2023', ed:'19 edições', period:'Duas décadas de festival', state:'Em digitalização', stateColor:'rgba(229,226,223,0.5)', desc:'Programas impressos, cartazes, fotografias e registros em vídeo a serem digitalizados e publicados progressivamente.', cta:'Sobre o acervo', onClick: () => this.nav('memoria'), fill:'18%' }
+      ],
+      progGroups: this.groupByDay(this.filtered()),
+      progCount: this.filtered().length,
+      progEmpty: this.filtered().length === 0,
+      progResultLabel: this.filtered().length + (this.filtered().length === 1 ? ' atividade encontrada' : ' atividades encontradas'),
+      dayChips: [
+        { key:'agora', label:'Agora', on: this.state.day === 'agora' },
+        { key:'hoje', label:'Hoje', on: this.state.day === 'hoje' },
+        { key:'amanha', label:'Amanhã', on: this.state.day === 'amanha' },
+        { key:'todos', label:'Todos os dias', on: this.state.day === 'todos' }
+      ].map(c => Object.assign(c, {
+        bg: c.on ? '#800020' : 'rgba(229,226,223,0)', bc: c.on ? '#800020' : 'rgba(229,226,223,0.25)',
+        fg: c.on ? '#ffffff' : '#e5e2df', onClick: () => this.setState({ day: c.key })
+      })),
+      dayNumChips: [13,14,15,16,17,18,19,20].map(n => {
+        const on = this.state.day === String(n);
+        return { n, label: String(n), dow: DOW[n].slice(0,3), on,
+          bg: on ? '#ffb3b5' : 'rgba(229,226,223,0)', bc: on ? '#ffb3b5' : 'rgba(229,226,223,0.22)', fg: on ? '#680018' : '#e5e2df',
+          onClick: () => this.setState({ day: String(n) }) };
+      }),
+      catChips: ['todos'].concat(CATS).map(c => {
+        const on = this.state.cat === c;
+        return { label: c === 'todos' ? 'Todas as frentes' : c, on,
+          bg: on ? 'rgba(255,219,157,0.14)' : 'rgba(229,226,223,0)', bc: on ? '#ffdb9d' : 'rgba(229,226,223,0.22)', fg: on ? '#ffdb9d' : '#e5e2df',
+          onClick: () => this.setState({ cat: c }) };
+      }),
+      venueChips: [{ id:'todos', name:'Todos os espaços' }].concat(Object.keys(V).map(k => ({ id:k, name: V[k].name }))).map(v => {
+        const on = this.state.venue === v.id;
+        return { label: v.name, on,
+          bg: on ? 'rgba(190,198,224,0.14)' : 'rgba(229,226,223,0)', bc: on ? '#bec6e0' : 'rgba(229,226,223,0.22)', fg: on ? '#bec6e0' : '#e5e2df',
+          onClick: () => this.setState({ venue: v.id }) };
+      }),
+      clearFilters: () => this.setState({ day:'todos', cat:'todos', venue:'todos', freeOnly:false }),
+      dias: [13,14,15,16,17,18,19,20].map(n => {
+        const evs = all.filter(e => e.day === n);
+        const ws = WS.filter(w => w.dayNums.indexOf(n) >= 0);
+        const vs = [];
+        evs.forEach(e => { if (vs.indexOf(e.venueName) < 0) vs.push(e.venueName); });
+        return {
+          n, dow: DOW[n].slice(0,3), accent: n === nd ? '#ffdb9d' : 'rgba(229,226,223,0.5)',
+          countLabel: (evs.length + ws.length) + (evs.length + ws.length === 1 ? ' atividade' : ' atividades'),
+          venuesLabel: vs.slice(0,2).join(' · '),
+          onClick: () => this.nav('programacao', { day: String(n), cat:'todos', venue:'todos' })
+        };
+      }),
+      editorial: Object.assign({}, byId('metamorfose'), {
+        releaseShort: byId('metamorfose').release,
+        open: () => this.openShow('metamorfose')
+      }),
+      frentes: [
+        { num:'01', label:'Mostra Oficial', desc:'A curadoria central da edição, com companhias do Espírito Santo e de outros estados.', count: all.filter(e=>e.cat==='Mostra Oficial').length + ' espetáculos', onClick: () => this.nav('programacao', { cat:'Mostra Oficial', day:'todos' }) },
+        { num:'02', label:'7ª Mostra Paralela Vera Viana', desc:'Mostra que amplia o festival com grupos capixabas e produções para todas as idades.', count: all.filter(e=>e.cat==='Mostra Paralela').length + ' espetáculos', onClick: () => this.nav('programacao', { cat:'Mostra Paralela', day:'todos' }) },
+        { num:'03', label:'Oficinas e ações formativas', desc:'Formação gratuita com professores das companhias convidadas, com inscrição.', count: WS.length + ' oficinas · gratuitas', onClick: () => this.nav('programacao', { cat:'Oficina', day:'todos' }) },
+        { num:'04', label:'Processos criativos', desc:'Demonstrações de trabalho abertas ao público após as apresentações.', count: PROC.reduce((a,p)=>a+p.items.length,0) + ' encontros', onClick: () => this.nav('programacao', { cat:'Processo criativo', day:'todos' }) },
+        { num:'05', label:'Lançamento de livros', desc:'Dramaturgia capixaba publicada, apresentada pelos próprios autores.', count: '3 títulos', onClick: () => this.nav('programacao', { cat:'Lançamento', day:'todos' }) },
+        { num:'06', label:'Homenageados', desc:'A edição reconhece trajetórias técnicas e artísticas do teatro capixaba.', count: HON.length + ' homenagens', onClick: () => this.nav('edicao') }
+      ],
+      mapDots: Object.keys(V).map((k,i) => ({
+        left: V[k].pos[0] + '%', top: V[k].pos[1] + '%',
+        color: i === 0 ? '#feb700' : (i % 2 ? '#ffb3b5' : 'rgba(229,226,223,0.8)'),
+        glow: i === 0 ? 'rgba(255,219,157,0.8)' : 'rgba(255,179,181,0.5)'
+      })),
+      venuesHome: ['casa','praca','sesi'].map((k,i) => {
+        const v = V[k], n = all.filter(e => e.v === k).length;
+        return { num: '0' + (i+1), name: v.name, kind: v.kind, addr: v.addr,
+          countLabel: n + (n === 1 ? ' atividade' : ' atividades'),
+          onClick: () => this.openVenue(k) };
+      }),
+      edicoesTeaser: [
+        { year:'2026', ed:'22ª edição', desc:'13 a 21 de outubro. Programação em curadoria.', state:'Edição vigente', stateColor:'#ffdb9d', onClick: () => this.nav('memoria') },
+        { year:'2025', ed:'21ª edição', desc:'Registros e programação a serem incorporados ao acervo.', state:'Acervo pendente', stateColor:'rgba(229,226,223,0.45)', onClick: () => this.nav('memoria') },
+        { year:'2024', ed:'20ª edição', desc:'13 a 20 de outubro. Mostra Oficial, Paralela, oficinas e homenageados.', state:'Acervo completo', stateColor:'#ffb3b5', onClick: () => this.nav('edicao') },
+        { year:'2004—2023', ed:'19 edições', desc:'Duas décadas de festival a serem digitalizadas e publicadas.', state:'Em digitalização', stateColor:'rgba(229,226,223,0.45)', onClick: () => this.nav('memoria') }
+      ],
+      newsSlots: [
+        { kind:'Alteração de programação', title:'Espaço reservado para avisos de última hora', desc:'Publicado pela organização durante os dias de festival.' },
+        { kind:'Bastidores', title:'Espaço reservado para registros do dia', desc:'Fotos e relatos das montagens, ensaios e encontros.' },
+        { kind:'Chamada', title:'Espaço reservado para convocatórias', desc:'Editais, inscrições em oficinas e chamadas ao público.' }
+      ],
+      partners: [
+        { role:'Realização', name:'Associação Cultural, Circense e Ambiental Uma Floresta', size:'22px', note:'Organização do festival.' },
+        { role:'Produção', name:'Ratimbum Produções de Artes', size:'22px', note:'Produção executiva: Taty Moraes.' },
+        { role:'Patrocínio', name:'Prefeitura Municipal de Vitória', size:'22px', note:'Lei Rubem Braga.' },
+        { role:'Promoção', name:'TV Gazeta', size:'22px', note:'Parceria de mídia.' },
+        { role:'Apoio', name:'Casa da Música Sônia Cabral · Teatro Universitário UFES · Teatro SESI · Teatro Estrelas', size:'19px', note:'Espaços culturais parceiros.' }
+      ],
+      goHome: () => this.nav('home'),
+      goProgramacao: () => this.nav('programacao', { day:'todos', cat:'todos', venue:'todos' }),
+      goHoje: () => this.nav('programacao', { day:'hoje' }),
+      goGrade: () => this.nav('grade'),
+      goMapa: () => this.nav('mapa'),
+      goMemoria: () => this.nav('memoria'),
+      goEdicao: () => this.nav('edicao'),
+      goFestival: () => this.nav('edicao'),
+      goNoticias: () => this.nav('noticias'),
+      goOficinas: () => this.nav('programacao', { cat:'Oficina', day:'todos' }),
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      toggleA11y: () => this.setState(s => ({ a11yOpen: !s.a11yOpen })),
+      a11yOptions: ['Alto contraste','Aumentar texto','Reduzir movimento','Libras'].map(l => ({
+        label: l, on: !!this.state.a11y[l], onClick: () => this.setState(s => ({ a11y: Object.assign({}, s.a11y, { [l]: !s.a11y[l] }) }))
+      })),
+      menuItems: [
+        { num:'01', label:'Programação', desc:'Mostra Oficial, Paralela, oficinas, lançamentos e processos criativos.', onClick: () => this.nav('programacao') },
+        { num:'02', label:'Grade diária', desc:'Dia a dia cruzando horários e espaços culturais.', onClick: () => this.nav('grade') },
+        { num:'03', label:'Mapa cultural', desc:'Os espaços do festival pela cidade de Vitória.', onClick: () => this.nav('mapa') },
+        { num:'04', label:'Oficinas e ações formativas', desc:'Inscrição, vagas, professores e requisitos.', onClick: () => this.nav('programacao', { cat:'Oficina' }) },
+        { num:'05', label:'Linha do tempo', desc:'Memória permanente de todas as edições.', onClick: () => this.nav('memoria') },
+        { num:'06', label:'FENATEVI 2024', desc:'20ª edição — página completa de acervo.', onClick: () => this.nav('edicao') },
+        { num:'07', label:'Notícias', desc:'Publicações da organização durante o festival.', onClick: () => this.nav('noticias') },
+        { num:'08', label:'Ingressos', desc:'Entrada franca nesta edição.', onClick: () => this.nav('programacao') },
+        { num:'09', label:'Experiência mobile', desc:'Como a programação se comporta no celular durante o festival.', onClick: () => this.nav('mobile') }
+      ],
+      footerNav: [
+        { label:'Programação', onClick: () => this.nav('programacao') },
+        { label:'Grade diária', onClick: () => this.nav('grade') },
+        { label:'Mapa cultural', onClick: () => this.nav('mapa') },
+        { label:'Linha do tempo', onClick: () => this.nav('memoria') },
+        { label:'FENATEVI 2024', onClick: () => this.nav('edicao') },
+        { label:'Notícias', onClick: () => this.nav('noticias') }
+      ]
+    };
+  }
+}
+window.__FENATEVI_DATA = { V, EV, WS, PROC, HON, DOW, CATS };
+</script>
+</body>
+</html>
