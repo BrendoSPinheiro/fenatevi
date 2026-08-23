@@ -8,7 +8,6 @@ test.describe('Página inicial', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
     await expect(page.getByRole('heading', { level: 1, name: 'FENATEVI' })).toBeVisible();
     await expect(page.getByText('Uma nova experiência está sendo preparada.')).toBeVisible();
-    await expect(page.getByText('Basta uma semente...')).toBeVisible();
   });
 
   test('formata as datas do festival no idioma corrente', async ({ page }) => {

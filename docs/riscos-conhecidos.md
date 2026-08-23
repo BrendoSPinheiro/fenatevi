@@ -37,12 +37,16 @@ documento é descritivo; cada item vira tarefa quando for pedido.
    `Accept-Language`.** O Google desaconselha redirecionar por idioma percebido:
    o rastreador chega majoritariamente dos EUA e pode nunca indexar a versão
    pt-BR na raiz. Decisão em aberto, junto com a de manter ou não o multi-idioma.
-10. **O teste de axe é intermitente.** `e2e/accessibility.spec.ts` falha de vez em
-    quando com contraste 4.39:1 no CTA da home, lendo o fundo como `#947133`. Não
-    é problema de token — `--color-accent` sobre `--color-on-accent` passa com
-    folga: a varredura pega o botão **no meio do fade-in do GSAP**, quando a
-    opacidade ainda mistura o accent com o fundo. Observado 1 falha em 7
-    execuções, e reproduzido antes da configuração de SEO. A correção é esperar a
-    animação terminar antes de rodar o axe, não mexer nas cores.
-11. **Sem deploy, sem observabilidade e sem orçamento de performance** — decisões
+10. **A abertura teatral passa a ser o elemento de LCP da home.** Com a cortina
+    pintada no primeiro quadro, o Largest Contentful Paint mede a cortina, não o
+    título. O número tende a melhorar; ele simplesmente deixou de descrever
+    quando o _conteúdo_ aparece. Não leia essa melhora como ganho de desempenho.
+11. **O contraste da frase da abertura não é verificado pelo axe.** O fundo é um
+    gradiente, e o axe não calcula contraste sobre gradiente — reporta como
+    "incompleto", não como violação. A varredura de `e2e/intro.spec.ts` é
+    restrita ao overlay e cobre problemas estruturais, não cor. O orçamento de
+    contraste está verificado numericamente no comentário dos tokens de
+    cenografia, em `globals.css` (pior caso realista: 6,3:1). Ao mexer nas cores
+    da cortina ou na intensidade dos fachos, refaça essa conta à mão.
+12. **Sem deploy, sem observabilidade e sem orçamento de performance** — decisões
     ainda abertas.

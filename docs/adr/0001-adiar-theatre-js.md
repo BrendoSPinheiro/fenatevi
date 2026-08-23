@@ -50,6 +50,29 @@ A pergunta do bootstrap era: instalar agora para "deixar pronto"?
   - a cena precisa continuar respeitando `prefers-reduced-motion` e mantendo
     fallback sem WebGL.
 
+## Adendo — 2026-07-31: a abertura chegou, o Theatre.js continua fora
+
+A reavaliação prevista acima aconteceu com a implementação da abertura teatral
+(`StageIntro`). **A decisão de não adotar permanece**, agora por um motivo mais
+forte do que "não há uso concreto".
+
+A coreografia da abertura é declarativa, em CSS, e não em uma timeline
+JavaScript. O que decidiu foi a **ordem de execução**: o CSS é render-blocking e
+o JavaScript não. Uma cortina desenhada depois da hidratação não é uma cortina —
+é um flash de conteúdo com um pano caindo por cima; e uma cortina que só o
+JavaScript sabe abrir transforma "o bundle falhou" em "o site é uma tela
+vermelha". Em CSS, a abertura existe no primeiro pixel pintado e se encerra
+sozinha mesmo sem JavaScript.
+
+O Theatre.js dirige timelines em JavaScript. Adotá-lo aqui exigiria abrir mão
+justamente da propriedade que torna a abertura segura. Não é uma limitação da
+ferramenta: é o problema que não é o dela.
+
+A decisão continua **aberta para a cena 3D do festival**, onde as premissas são
+outras — conteúdo não essencial, dentro de um Canvas já carregado sob demanda, e
+com uma sequência complexa o bastante para justificar edição visual. As
+restrições listadas em "Consequências" seguem valendo nesse caso.
+
 ## Alternativas consideradas
 
 | Alternativa                                  | Por que não agora                                                       |

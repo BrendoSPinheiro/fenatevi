@@ -119,7 +119,7 @@ Client Component que apenas anima ou interage. `src/components/sections/hero.tsx
 é o exemplo de referência — ele anima, mas não sabe traduzir nada.
 
 Hoje rodam no cliente apenas: o seletor de idioma, o provider de smooth scroll, o
-Hero, a cena 3D, o botão "voltar ao topo" e o error boundary.
+Hero, a abertura teatral, a cena 3D, o botão "voltar ao topo" e o error boundary.
 
 ## 6. Internacionalização
 
@@ -146,6 +146,7 @@ Três bibliotecas, três papéis que não se sobrepõem:
 | **GSAP** (+ ScrollTrigger) | Animação de HTML e SVG: revelações, timelines, sequências ligadas ao scroll |
 | **Lenis**                  | Comportamento do scroll da página (suavização), nada mais                   |
 | **Three.js / R3F**         | Cenas 3D dentro de um `<canvas>`                                            |
+| **CSS `@keyframes`**       | Exclusivamente a abertura teatral, que precisa existir antes da hidratação  |
 
 Regras:
 
@@ -163,6 +164,12 @@ Regras:
 - O provider do Lenis não renderiza nada e não envolve o conteúdo: a página
   continua rolável se ele falhar ou nunca montar.
 - Regiões com scroll próprio (modais, listas) devem receber `data-lenis-prevent`.
+- **A abertura teatral (`StageIntro`) é a única exceção às duas regras acima.**
+  Ela cobre a página e é dirigida por CSS, não por GSAP, porque o CSS é
+  render-blocking e o JavaScript não: a cortina precisa existir no primeiro pixel
+  pintado e **se encerrar sozinha sem JavaScript**. Essa condição é o que torna a
+  exceção aceitável, e há teste E2E para os caminhos degradados. Detalhes e
+  restrições em [`guides/animacao-e-webgl.md`](./guides/animacao-e-webgl.md).
 
 ## 8. WebGL
 
@@ -186,11 +193,11 @@ festival. Cortinas, holofotes e a linha do tempo virão depois.
 
 ## 9. Testes
 
-| Camada                | Ferramenta               | O que cobre                                                 |
-| --------------------- | ------------------------ | ----------------------------------------------------------- |
-| Unitário / componente | Vitest + Testing Library | Comportamento observável: papéis, rótulos, texto, interação |
-| E2E                   | Playwright               | Idioma, teclado, skip link, fallback 3D, movimento reduzido |
-| Acessibilidade        | `@axe-core/playwright`   | Varredura WCAG 2.2 AA na home                               |
+| Camada                | Ferramenta               | O que cobre                                                           |
+| --------------------- | ------------------------ | --------------------------------------------------------------------- |
+| Unitário / componente | Vitest + Testing Library | Comportamento observável: papéis, rótulos, texto, interação           |
+| E2E                   | Playwright               | Idioma, teclado, skip link, fallback 3D, abertura, movimento reduzido |
+| Acessibilidade        | `@axe-core/playwright`   | Varredura WCAG 2.2 AA na home                                         |
 
 Testes ficam ao lado do código (`*.test.ts[x]`). O setup do Vitest está em
 `src/test/setup.ts`.
@@ -227,8 +234,10 @@ organização do festival precisar editar conteúdo sem deploy.
 
 ### Theatre.js
 
-Não instalado no bootstrap. A decisão está registrada em
-[`docs/adr/0001-adiar-theatre-js.md`](./adr/0001-adiar-theatre-js.md).
+Não instalado. A abertura teatral foi entregue sem ele — a decisão e o motivo
+estão registrados no adendo de
+[`docs/adr/0001-adiar-theatre-js.md`](./adr/0001-adiar-theatre-js.md), que segue
+em aberto apenas para uma futura cena 3D.
 
 ### Navegadores adicionais no E2E
 

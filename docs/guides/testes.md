@@ -22,6 +22,21 @@ Leia antes de: escrever teste, mexer em setup de teste ou decidir o que cobrir.
 - Playwright roda contra o **build de produção** (`pnpm build && pnpm start` na
   porta 3100), só em Chromium, com `locale: 'pt-BR'` fixado no contexto para que
   os testes meçam conteúdo, não detecção de idioma.
+- **O contexto também roda com `reducedMotion: 'reduce'` por padrão.** A
+  abertura teatral é HTML do servidor pintado por CSS render-blocking, anterior
+  a qualquer script: nenhum `addInitScript` consegue desligá-la, e sem esse
+  padrão cada cenário pagaria os 4,65 s da cortina. Movimento reduzido é o
+  mecanismo que o próprio produto oferece — nesse modo a abertura não existe —,
+  então nenhum bypass exclusivo de teste precisou ser inventado.
+- Quem exercita o movimento de verdade é `e2e/intro.spec.ts`, que reativa com
+  `test.use({ contextOptions: { reducedMotion: 'no-preference' } })`. Ao criar
+  uma seção animada nova, lembre-se de que ela **não** será exercitada em
+  movimento pelo resto da suíte.
+- `src/test/animation-event.ts` define `AnimationEvent`, que o jsdom não
+  implementa. Sem ela o React registra `webkitAnimationEnd` e nenhum
+  `animationend` disparado por teste chega a um `onAnimationEnd`. Ela é
+  importada **antes** de tudo em `setup.ts`: a detecção do React acontece
+  quando o `react-dom` é avaliado e fica em cache.
 - Primeira execução na máquina: `pnpm exec playwright install chromium`.
 
 ## Regras

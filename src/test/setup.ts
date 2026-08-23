@@ -1,3 +1,6 @@
+// Precisa vir antes de qualquer import que carregue o react-dom — ver o módulo.
+import './animation-event';
+
 import '@testing-library/jest-dom/vitest';
 
 import { cleanup } from '@testing-library/react';

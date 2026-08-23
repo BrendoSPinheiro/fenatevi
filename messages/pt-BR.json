@@ -19,12 +19,15 @@
     "navigationLabel": "Navegação principal",
     "about": "Sobre o festival"
   },
+  "intro": {
+    "line": "Basta uma semente...",
+    "hint": "Toque ou pressione uma tecla para entrar"
+  },
   "home": {
     "eyebrow": "Edição {edition}",
     "title": "FENATEVI",
     "subtitle": "Festival Nacional de Teatro de Vitória",
     "tagline": "Uma nova experiência está sendo preparada.",
-    "seed": "Basta uma semente...",
     "dates": "De {start} a {end}",
     "city": "Vitória, Espírito Santo",
     "cta": "Conhecer o festival",

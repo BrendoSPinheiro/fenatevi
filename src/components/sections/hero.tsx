@@ -10,7 +10,6 @@ interface HeroProps {
   readonly title: string;
   readonly subtitle: string;
   readonly tagline: string;
-  readonly seed: string;
   readonly dates: string;
   readonly city: string;
   readonly ctaLabel: string;
@@ -62,10 +61,6 @@ export function Hero(props: HeroProps) {
 
       <p data-animate="hero-item" className="mt-6 max-w-2xl text-lg text-muted">
         {props.tagline}
-      </p>
-
-      <p data-animate="hero-item" className="mt-2 text-lg text-accent/90 italic">
-        {props.seed}
       </p>
 
       <p data-animate="hero-item" className="mt-8 flex flex-wrap gap-x-8 gap-y-2 text-muted">

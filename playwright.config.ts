@@ -26,6 +26,18 @@ export default defineConfig({
      * em outros idiomas navegam para o prefixo explicitamente.
      */
     locale: 'pt-BR',
+    /*
+     * A abertura teatral (`StageIntro`) é HTML do servidor pintado por CSS
+     * render-blocking, anterior a qualquer script — nenhum `addInitScript`
+     * consegue impedi-la. Sem este padrão, cada cenário pagaria os 4,65 s da
+     * cortina antes de alcançar o conteúdo.
+     *
+     * Movimento reduzido é o mecanismo que o próprio produto oferece para isso
+     * (a abertura simplesmente não existe nesse modo), então nenhum bypass
+     * exclusivo de teste precisa ser inventado. `e2e/intro.spec.ts` reativa o
+     * movimento para exercitar a abertura de verdade.
+     */
+    contextOptions: { reducedMotion: 'reduce' },
   },
 
   // Chromium é suficiente para o bootstrap; Firefox e WebKit entram quando a

@@ -62,8 +62,36 @@ useGSAP(
   concreto for necessário (hoje: `AdaptiveDpr`).
 
 A cena atual é **prova técnica**, não a abertura do festival. Sobre adotar (ou
-não) o Theatre.js para a abertura, ver
+não) o Theatre.js, ver
 [`docs/adr/0001-adiar-theatre-js.md`](../adr/0001-adiar-theatre-js.md).
+
+## A abertura teatral é a exceção — e por quê
+
+`StageIntro` cobre a página inicial com uma cortina e a revela depois. Isso
+contraria diretamente a regra "nunca esconda conteúdo por CSS esperando uma
+animação revelá-lo". A exceção é deliberada e só se sustenta por uma condição:
+
+**a abertura se encerra sozinha sem JavaScript.** A coreografia inteira é
+`@keyframes` em `globals.css` (seção "Abertura teatral"); o componente só
+dispensa, desmonta e registra que já aconteceu. Com o JavaScript desligado ou
+com o bundle falhando, a cortina abre do mesmo jeito e libera a página — há
+teste E2E para os dois casos em `e2e/intro.spec.ts`.
+
+Ao mexer nela, preserve:
+
+- **CSS, não GSAP.** Uma timeline só roda depois da hidratação; a cortina precisa
+  existir no primeiro pixel pintado. O gatilho para reconsiderar está na ADR.
+- **A saída tira o overlay do viewport com `transform`.** Não troque por
+  `visibility` ou `pointer-events`: propriedades discretas não têm o valor final
+  aplicado quando a animação tem `animation-delay` longo (verificado no Chrome).
+  Um overlay com `opacity: 0` continua capturando cliques.
+- **Só `transform` e `opacity`.** Nada de `filter`, `box-shadow` ou geometria.
+- **Sem trava de scroll.** `overflow: hidden` no `body` remove a barra de
+  rolagem e isso é deslocamento de layout. Rolar conta como dispensar.
+- **`aria-hidden` e nenhum descendente focável**, para que a ordem de tabulação
+  da página não mude — o primeiro `Tab` continua indo ao skip link.
+- **Sob movimento reduzido a abertura não existe** (`display: none` explícito),
+  em vez de ser uma versão mais curta.
 
 ## Redução de movimento
 

@@ -19,12 +19,15 @@
     "navigationLabel": "Main navigation",
     "about": "About the festival"
   },
+  "intro": {
+    "line": "All it takes is a seed...",
+    "hint": "Tap or press any key to enter"
+  },
   "home": {
     "eyebrow": "{edition} edition",
     "title": "FENATEVI",
     "subtitle": "Vitória National Theatre Festival",
     "tagline": "A new experience is being prepared.",
-    "seed": "All it takes is a seed...",
     "dates": "From {start} to {end}",
     "city": "Vitória, Espírito Santo, Brazil",
     "cta": "Discover the festival",
