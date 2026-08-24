@@ -52,7 +52,7 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
         padding: '96px',
         backgroundColor: OG_COLORS.background,
         // Luz de palco: um brilho quente descendo do topo.
-        backgroundImage: `radial-gradient(circle at 50% -20%, ${OG_COLORS.accent}33, transparent 60%)`,
+        backgroundImage: `radial-gradient(circle at 50% -20%, ${OG_COLORS.secondary}33, transparent 60%)`,
       }}
     >
       <div
@@ -61,7 +61,7 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
           width: '120px',
           height: '6px',
           marginBottom: '48px',
-          backgroundColor: OG_COLORS.accent,
+          backgroundColor: OG_COLORS.primary,
         }}
       />
       <div
@@ -84,7 +84,7 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
       >
         {tCommon('festivalFullName')}
       </div>
-      <div style={{ marginTop: '20px', fontSize: '32px', color: OG_COLORS.accent }}>
+      <div style={{ marginTop: '20px', fontSize: '32px', color: OG_COLORS.secondary }}>
         {t('ogImageLocation')}
       </div>
     </div>,

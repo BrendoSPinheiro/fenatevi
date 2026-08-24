@@ -17,13 +17,19 @@ usabilidade ou performance.
 
 ## Estágio atual
 
-O repositório é o **bootstrap técnico** mais uma **página de validação**. O site
-ainda não foi implementado. A home prova que roteamento por idioma, traduções,
-tokens, GSAP, Lenis, React Three Fiber, fallback de WebGL e acessibilidade
-funcionam juntos — ela **não** é o design final.
+O portal está implementado, a partir do protótipo de alta fidelidade em
+`prototipo-fenatevi/`. São nove telas nos três idiomas — home, programação,
+grade diária, detalhe de espetáculo, detalhe de oficina, espaços, espaço,
+memória, edição e notícias — sobre o design system **Nocturne Stage**
+(`prototipo-fenatevi/uploads/DESIGN.md`).
 
-Não implemente design definitivo, abertura teatral, programação, linha do tempo,
-CMS, backend, autenticação, pagamentos, mapa ou deploy sem pedido explícito.
+O acervo da edição de 2024 é conteúdo tipado em `src/content/`. Enquanto a edição
+vigente não publicar sua programação (`currentEdition.hasPublishedProgram`), o
+portal apresenta esse acervo **e diz que é isso que está fazendo**.
+
+Não implemente CMS, backend, autenticação, pagamentos, busca no acervo,
+ingressos, mapa geográfico, notícias com conteúdo real ou deploy sem pedido
+explícito.
 
 ## Stack
 
@@ -59,7 +65,7 @@ Se um comando não está acima, ele não existe. **Use apenas `pnpm`, `pnpm exec
 docs/                    Documentação técnica, guias e ADRs
 e2e/                     Testes Playwright
 messages/                pt-BR.json, en.json, es.json
-src/app/[locale]/        Rotas, layouts, metadata, loading, error, not-found
+src/app/[locale]/        Rotas, layouts, metadata, error, not-found
 src/components/ui/       Reutilizáveis, sem conhecimento do festival
 src/components/layout/   Cabeçalho, rodapé, shell
 src/components/sections/ Seções visuais de página
@@ -68,7 +74,7 @@ src/hooks/               Hooks reutilizáveis
 src/lib/animation/       gsap/, lenis/, three/
 src/lib/i18n/            Rotas, navegação, configuração do next-intl
 src/lib/seo/             Domínio canônico e constantes da imagem de compartilhamento
-src/lib/utils/           Funções puras
+src/lib/utils/           Funções puras (schedule, format, program-query)
 src/providers/           Providers globais (hoje: smooth scroll)
 src/styles/              globals.css e design tokens
 src/test/                Setup do Vitest
@@ -108,7 +114,16 @@ Contexto adicional: [arquitetura](docs/architecture.md) (decisões),
 - **Nenhum texto visível ao usuário no JSX**: tudo vem de `messages/`, nos três
   idiomas.
 - **Sem `any`** (é `error` no ESLint). Use `unknown` e refine.
-- **Nenhuma cor, raio ou easing arbitrário** quando existe token equivalente.
+- **Nenhuma cor, raio ou easing arbitrário** quando existe token equivalente, e
+  **nenhum alfa arbitrário em texto**: use `foreground`, `foreground-muted` ou
+  `foreground-subtle`.
+- **Texto de acervo (título, release, ficha técnica, biografia) fica em pt-BR** e
+  passa por `ui/archive-text.tsx`, que marca o idioma real. Interface vai para
+  `messages/`. Ver `docs/guides/i18n.md`.
+- **Filtros vivem na URL**, não em estado de cliente — e por isso funcionam sem
+  JavaScript. Todo valor vindo da URL é validado antes do uso.
+- **Não crie `loading.tsx`**: o limite de Suspense entrega o conteúdo dentro de um
+  `<div hidden>` que só o JavaScript move para a página.
 - Importe GSAP apenas de `@/lib/animation/gsap`; navegação apenas de
   `@/lib/i18n/navigation`.
 - Acessibilidade WCAG 2.2 AA e zero erros de hidratação são portões de CI.

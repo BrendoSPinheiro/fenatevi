@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "FENATEVI — Vitória National Theatre Festival",
-    "description": "The Vitória National Theatre Festival brings together performances, gatherings and stage memory in the capital of Espírito Santo, Brazil.",
+    "description": "The Vitória National Theatre Festival brings performances, encounters and training to the city's theatres and squares.",
     "localeLabel": "English",
     "ogImageLocation": "Vitória · Espírito Santo · Brazil"
   },
@@ -9,46 +9,309 @@
     "skipToContent": "Skip to content",
     "backToTop": "Back to top",
     "festivalName": "FENATEVI",
-    "festivalFullName": "Vitória National Theatre Festival"
+    "festivalFullName": "Vitória National Theatre Festival",
+    "freeEntry": "Free admission",
+    "at": "at",
+    "close": "Close",
+    "opensInNewTab": "opens in a new tab",
+    "externalLinkNotice": "Registration takes place on a form outside this site."
   },
   "localeSwitcher": {
     "label": "Choose language",
     "current": "Current language"
   },
-  "header": {
-    "navigationLabel": "Main navigation",
-    "about": "About the festival"
-  },
   "intro": {
     "line": "All it takes is a seed...",
-    "hint": "Tap or press any key to enter"
-  },
-  "home": {
-    "eyebrow": "{edition} edition",
-    "title": "FENATEVI",
-    "subtitle": "Vitória National Theatre Festival",
-    "tagline": "A new experience is being prepared.",
-    "dates": "From {start} to {end}",
-    "city": "Vitória, Espírito Santo, Brazil",
-    "cta": "Discover the festival",
-    "aboutTitle": "About the festival",
-    "aboutBody": "FENATEVI takes over theatres, squares and cultural centres across Vitória with performances, training and encounters between artists and audiences. This site is under construction: the full programme, the memory of past editions and accessibility information will be published here.",
-    "accessibilityTitle": "Accessibility on stage",
-    "accessibilityIntro": "The current edition plans for the following features:",
-    "sceneTitle": "Lighting rehearsal",
-    "sceneDescription": "A slowly moving abstract composition evoking a spotlight over the stage.",
-    "sceneFallback": "Your device does not display the three-dimensional scene. All festival content remains fully available."
+    "hint": "Tap or press a key to enter"
   },
   "accessibilityFeatures": {
     "audioDescription": "Audio description",
     "signLanguage": "Brazilian Sign Language interpretation",
-    "captions": "Descriptive captions",
+    "captions": "Closed captioning",
     "wheelchairAccess": "Wheelchair access",
     "relaxedPerformance": "Relaxed performance"
   },
+  "nav": {
+    "primaryLabel": "Main navigation",
+    "mobileLabel": "Quick navigation",
+    "openAreas": "Site areas",
+    "closeAreas": "Close site areas",
+    "areasTitle": "Site areas",
+    "areasDescription": "Everything this site offers about the festival.",
+    "home": "Home",
+    "programacao": "Programme",
+    "grade": "Daily grid",
+    "espacos": "Venues",
+    "memoria": "Memory",
+    "noticias": "News",
+    "areaDescriptions": {
+      "home": "The current edition, what is on stage and the way into the archive.",
+      "programacao": "Every activity, filterable by day, strand and venue.",
+      "grade": "A whole day in three views: by venue, by time and the full week.",
+      "espacos": "The festival venues across the city, with address and programme.",
+      "memoria": "The timeline of editions and the state of each archive.",
+      "noticias": "Notices, backstage and calls published by the organisers."
+    },
+    "backToProgramacao": "Back to the programme",
+    "backToEspacos": "Back to venues",
+    "backToMemoria": "Back to the timeline"
+  },
+  "header": {
+    "navigationLabel": "Main navigation"
+  },
   "footer": {
-    "rights": "FENATEVI — Vitória National Theatre Festival",
-    "note": "Site under development."
+    "identification": "Vitória National Theatre Festival",
+    "navigationLabel": "Footer navigation",
+    "contactTitle": "Contact",
+    "city": "Vitória, Espírito Santo, Brazil",
+    "description": "Held in Vitória, Espírito Santo, since 2004. This site is also the festival’s permanent archive.",
+    "copyright": "© {year} FENATEVI. Culture in motion.",
+    "pressLabel": "Press"
+  },
+  "acervo": {
+    "languageNotice": "Archive records — titles, press releases, credits and biographies — are kept in their original language, Brazilian Portuguese.",
+    "demoNoticeTitle": "Sample content · {year} edition",
+    "demoNoticeBody": "The programme for the {edition}th edition has not been published yet. Until then, this site shows the complete archive of the {year} edition.",
+    "strands": {
+      "mostra-oficial": "Official Showcase",
+      "mostra-paralela": "Parallel Showcase",
+      "oficina": "Workshop",
+      "lancamento": "Book launch",
+      "processo-criativo": "Creative process"
+    },
+    "ratings": {
+      "livre": "All ages",
+      "10": "10+",
+      "12": "12+",
+      "14": "14+",
+      "16": "16+",
+      "18": "18+"
+    },
+    "ratingLabel": "Age rating",
+    "ratingUnknown": "Age rating not stated",
+    "durationLabel": "Running time",
+    "durationUnknown": "Running time not stated",
+    "endsAt": "Ends at {time}",
+    "endsAtUnknown": "End time not stated",
+    "accessibilityTitle": "Accessibility"
+  },
+  "sessao": {
+    "live": "On stage now",
+    "upcoming": "Coming up",
+    "ended": "Session ended",
+    "afterSession": "After the session"
+  },
+  "home": {
+    "eyebrow": "{edition}th edition · {year}",
+    "title": "FENATEVI",
+    "subtitle": "Vitória National Theatre Festival",
+    "signature": "Nine days of theatre on the city's stages and squares.",
+    "dates": "From {start} to {end}",
+    "city": "Vitória, Espírito Santo",
+    "ctaProgramacao": "See the programme",
+    "ctaHoje": "Today's programme",
+    "nowTitle": "On stage now",
+    "nowEmptyTitle": "Nothing on stage right now",
+    "nowEndedTitle": "This edition has ended",
+    "nowEndedBody": "The {year} edition is over. Its archive is available in full here.",
+    "nowEndedCta": "Explore the archive",
+    "nextTitleToday": "Later today",
+    "nextTitleUpcoming": "In the coming days",
+    "nextEmpty": "There are no further sessions scheduled.",
+    "featuredTitle": "On the bill",
+    "featuredAll": "See the full programme",
+    "featuredGrid": "See the daily grid",
+    "daysTitle": "The festival days",
+    "daysCount": "{count, plural, =0 {no activities} one {# activity} other {# activities}}",
+    "editorialCta": "Discover the performance",
+    "strandsTitle": "Programme strands",
+    "strandsCount": "{count, plural, one {# activity} other {# activities}}",
+    "cityTitle": "The city becomes a stage",
+    "cityBody": "Theatres, a square and independent spaces host the festival.",
+    "cityCta": "See all venues",
+    "memoriaTitle": "The festival's memory",
+    "memoriaBody": "Two decades of editions, with the archive being digitised and published step by step.",
+    "memoriaCta": "See the timeline",
+    "noticiasTitle": "News",
+    "noticiasCta": "See all news",
+    "partnersTitle": "Presented by and partners"
+  },
+  "programacao": {
+    "title": "Programme",
+    "description": "Every activity of the edition, by day, strand and venue.",
+    "filtersLabel": "Programme filters",
+    "momentLabel": "When",
+    "dayLabel": "Day",
+    "strandLabel": "Strand",
+    "venueLabel": "Venue",
+    "momentToday": "Today",
+    "momentTomorrow": "Tomorrow",
+    "momentAll": "All",
+    "allDays": "All days",
+    "allStrands": "All strands",
+    "allVenues": "All venues",
+    "resultCount": "{count, plural, =0 {No activities} one {# activity} other {# activities}}",
+    "clearFilters": "Clear filters",
+    "emptyTitle": "No activities match these filters",
+    "emptyBody": "Try removing one of the filters to see more of the programme.",
+    "openFilters": "Filter",
+    "gridCta": "See the daily grid"
+  },
+  "grade": {
+    "title": "Daily grid",
+    "description": "A whole day at once: by venue, by time or the complete week.",
+    "viewLabel": "View",
+    "viewEspaco": "By venue",
+    "viewHorario": "By time",
+    "viewSemana": "Full week",
+    "noActivitiesInVenue": "This venue hosts no activities on this day.",
+    "wideTableNotice": "The full week is a wide table: on narrow screens, scroll the table sideways to see every day.",
+    "weekTableLabel": "Venues by day of the edition",
+    "venueColumn": "Venue",
+    "emptyDay": "There are no activities on this day."
+  },
+  "espetaculo": {
+    "essentialsTitle": "The session",
+    "dateLabel": "Date",
+    "timeLabel": "Time",
+    "weekdayLabel": "Day of the week",
+    "endsLabel": "Expected end",
+    "venueLabel": "Venue",
+    "addressLabel": "Address",
+    "accessibilityTitle": "Accessibility for this session",
+    "releaseTitle": "About the performance",
+    "noteTitle": "Session note",
+    "technicalSheetTitle": "Credits",
+    "companyTitle": "The company",
+    "authorLabel": "Written by",
+    "directorLabel": "Directed by",
+    "originLabel": "From",
+    "venueTitle": "The venue",
+    "mapCta": "How to get there",
+    "gridCta": "See in the day's grid",
+    "creativeProcessTitle": "Creative process",
+    "creativeProcessBody": "After the session, the company presents a demonstration of its working process.",
+    "otherSessionsTitle": "Other performances by this company"
+  },
+  "oficina": {
+    "kicker": "Training activity",
+    "descriptionTitle": "About the workshop",
+    "registrationTitle": "Registration",
+    "registrationCta": "Open the registration form",
+    "seatsLabel": "Seats",
+    "seatsValue": "{count, plural, one {# seat per class} other {# seats per class}}",
+    "classesLabel": "Classes",
+    "formatLabel": "Format",
+    "formats": {
+      "presencial-gratuito": "In person and free of charge"
+    },
+    "datesLabel": "Dates",
+    "timeLabel": "Time",
+    "venueLabel": "Venue",
+    "audienceLabel": "Audience",
+    "ageLabel": "Age range",
+    "ageValue": "Ages {age} and up",
+    "ageAll": "No age restriction",
+    "teachersLabel": "Led by",
+    "requirementsTitle": "Requirements",
+    "relatedTitle": "Related performance",
+    "endedNotice": "This workshop has already taken place. The details remain in the archive."
+  },
+  "espacos": {
+    "title": "Cultural venues",
+    "description": "The venues that host the festival, spread across the city.",
+    "schemaLabel": "Schematic of the festival venues across the city",
+    "schemaNotice": "The schematic shows the venues' relative position, not their geographic location. The list beside it gives each address.",
+    "listTitle": "All venues",
+    "activityCount": "{count, plural, =0 {no activities} one {# activity} other {# activities}}",
+    "insideOf": "Inside {venue}",
+    "programTitle": "This venue's programme",
+    "noActivities": "This venue hosts no activities in this edition.",
+    "gridCta": "See in the daily grid",
+    "mapCta": "See on the schematic",
+    "kinds": {
+      "teatro": "Theatre",
+      "teatro-casa-de-musica": "Theatre / music house",
+      "teatro-universitario": "University theatre",
+      "teatro-formacao": "Theatre / training",
+      "sala": "Hall",
+      "ar-livre": "Open air",
+      "espaco-independente": "Independent space"
+    },
+    "addressLabel": "Address",
+    "kindLabel": "Venue type",
+    "parentLabel": "Inside",
+    "activitiesLabel": "Activities in this edition"
+  },
+  "memoria": {
+    "title": "The festival's memory",
+    "description": "Two decades of editions. Each with its archive at a different stage of digitisation.",
+    "timelineLabel": "Timeline of editions",
+    "editionLabel": "{edition}th edition",
+    "editionsCount": "{count, plural, one {# edition} other {# editions}}",
+    "periodUnknown": "Dates to be confirmed in the archive",
+    "completeness": "Archive {percent}% complete",
+    "states": {
+      "edicao-vigente": "Current edition",
+      "acervo-pendente": "Archive pending",
+      "acervo-completo": "Archive complete",
+      "em-digitalizacao": "Being digitised"
+    },
+    "entries": {
+      "2026": "Curation under way. Programme, performances and honourees will be published by the organisers.",
+      "2025": "Records, programme and photographs still to be added to the digital archive.",
+      "2024": "Official Showcase, parallel showcase, workshops, book launches, creative processes and two honourees.",
+      "2004-2023": "Printed programmes, posters, photographs and video records to be digitised and published progressively."
+    },
+    "actions": {
+      "edicao-vigente": "Follow the edition",
+      "acervo-completo": "Explore this edition"
+    },
+    "noPageNotice": "This edition does not have its own page yet.",
+    "scopeNote": "Each published edition may include visual identity, summary, complete programme, performances, photographs, honourees, news, graphic materials, documents, participants and sponsors."
+  },
+  "edicao": {
+    "kicker": "Archive · edition ended",
+    "headline": "{edition}th edition · from {start} to {end}",
+    "statementTitle": "The edition",
+    "strandsTitle": "Strands of this edition",
+    "venuesLabel": "Venues",
+    "honoreesTitle": "{year} honourees",
+    "officialTitle": "Official Showcase",
+    "parallelTitle": "Parallel Showcase",
+    "workshopsTitle": "Training activities",
+    "booksTitle": "Book launches",
+    "creativeProcessesTitle": "Creative processes by day",
+    "creditsTitle": "Edition credits",
+    "coverCaption": "Cover of the {year} printed programme"
+  },
+  "noticias": {
+    "title": "News",
+    "description": "Programme notices, backstage reports and calls published by the organisers during the festival.",
+    "emptyTitle": "No news published yet",
+    "emptyBody": "When the organisers publish the first item, it will appear here.",
+    "listLabel": "News, newest first",
+    "categories": {
+      "alteracao": "Programme change",
+      "bastidores": "Backstage",
+      "chamada": "Call"
+    }
+  },
+  "parceiros": {
+    "roles": {
+      "realizacao": "Presented by",
+      "producao": "Production",
+      "patrocinio": "Sponsorship",
+      "promocao": "Media partner",
+      "apoio": "Support"
+    },
+    "notes": {
+      "umaFloresta": "Festival organisers.",
+      "ratimbum": "Executive production: Taty Moraes.",
+      "prefeitura": "Rubem Braga Act.",
+      "tvGazeta": "Media partnership.",
+      "espacosParceiros": "Partner cultural venues."
+    }
   },
   "notFound": {
     "title": "Page not found",
@@ -59,5 +322,29 @@
     "title": "Something went off script",
     "description": "This page could not be displayed. Please try again.",
     "retry": "Try again"
+  },
+  "imagens": {
+    "lenda": "Performance poster: a man in a hat before a dark rock, in earth tones.",
+    "violeta": "Performance poster: a woman with a guitar against a backdrop of Andean mountains.",
+    "corpus": "Performance poster: bodies in collective performance, overlaid in red and black.",
+    "olhos": "Performance poster: a man's face in close-up, lit from the side.",
+    "corpo": "Performance poster: dancers in motion, silhouettes against a light background.",
+    "corpo2": "Poster for the second performance: a duo of dancers in contact, seen close up.",
+    "charanga": "Performance poster: two performers with brass instruments beside an old Beetle car.",
+    "dona": "Performance poster: colourful characters around a pedestrian crossing.",
+    "saga": "Performance poster: two Black actors on stage, lit in warm tones.",
+    "homembanda": "Performance poster: a musician surrounded by instruments linked by strings and pulleys.",
+    "metamorfose": "Performance poster: a hunched figure in a dark room, seen from above.",
+    "carambolas": "Performance poster: women on stage before a factory chimney in the background.",
+    "kala": "Performance poster: figures wearing Balinese masks, in shades of red and gold.",
+    "calunga": "Performance poster: a cloth doll beside a storyteller.",
+    "divertida": "Performance poster: a performer in a suit before a lit audience.",
+    "boi": "Performance poster: a decorated ox figure, typical of popular festivities.",
+    "cabrabo": "Performance poster: a large cast on stage, in colourful costumes.",
+    "couro": "Performance poster: characters in leather clothing under a north-eastern sun.",
+    "avarento": "Performance poster: an elderly man clutching a strongbox, in a comic scene.",
+    "homenageadoBere": "Portrait of Bere, Luiz Carlos Siqueira, honouree of the 2024 edition.",
+    "homenageadoAlcides": "Portrait of Alcides Luiz Rodrigues Pereira, honouree of the 2024 edition.",
+    "capa2024": "Cover of the 2024 printed programme, with theatrical masks and the festival name."
   }
 }

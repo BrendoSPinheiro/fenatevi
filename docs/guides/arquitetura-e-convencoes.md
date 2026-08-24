@@ -130,3 +130,67 @@ export function Hero({ title, tagline }: HeroProps) {
 2. Adicione o dado em `src/content/`, como objeto imutável e tipado.
 3. Guarde **chaves de tradução**, não frases.
 4. A página lê de `src/content/` e passa por props aos componentes.
+
+## As rotas do portal
+
+Nove telas, todas nos três idiomas. Os **segmentos não são traduzidos**
+(`/en/programacao`, não `/en/programme`): traduzi-los exigiria `pathnames` no
+next-intl, o que é alterar a estratégia de i18n.
+
+| Rota                 | Renderização | O que apresenta                               |
+| -------------------- | ------------ | --------------------------------------------- |
+| `/`                  | estática     | A home em atos                                |
+| `/programacao`       | sob demanda  | Listagem filtrável, agrupada por dia          |
+| `/programacao/grade` | sob demanda  | A grade em três visões                        |
+| `/espetaculos/[id]`  | estática     | Uma sessão: ficha, release, acessibilidade    |
+| `/oficinas/[id]`     | estática     | Uma ação formativa e sua inscrição externa    |
+| `/espacos`           | estática     | O esquema dos espaços e a lista com endereços |
+| `/espacos/[id]`      | estática     | Um espaço e a sua programação                 |
+| `/memoria`           | estática     | A linha do tempo das edições                  |
+| `/edicoes/[ano]`     | estática     | Uma edição com acervo completo                |
+| `/noticias`          | estática     | A área editorial e o seu estado de conteúdo   |
+
+As páginas de detalhe usam `generateStaticParams` sobre o acervo. `/programacao`
+e `/programacao/grade` renderizam sob demanda porque leem `searchParams` — o que
+é irrelevante: não há I/O, só computação sobre um array em memória.
+
+**Não use `loading.tsx` neste projeto.** Ele cria um limite de Suspense, e o
+conteúdo que chega depois do shell é entregue dentro de um `<div hidden>` que
+**só o JavaScript move para a página**. Sem JS, a tela fica vazia — o oposto da
+regra que vence todas as outras aqui. Foi verificado: com `loading.tsx` no
+segmento `[locale]`, a home inteira ficava oculta sem JavaScript.
+
+## Filtros vivem na URL, não em estado
+
+Os filtros da programação (`?dia=`, `?frente=`, `?espaco=`) e a visão da grade
+(`?visao=`, `?dia=`) são `searchParams`, lidos no servidor. Cada chip é um
+`Link`, não um botão com `useState`.
+
+Isso resolve quatro coisas de uma vez: o link profundo que a home usa, o
+compartilhamento de um resultado filtrado, o funcionamento **sem JavaScript**, e
+a ausência de estado de cliente na tela mais complexa do portal.
+
+Todo valor que chega da URL é **entrada externa** e passa por
+[`lib/utils/program-query.ts`](../../src/lib/utils/program-query.ts): um dia que
+não existe na edição, uma frente inventada ou um espaço desconhecido são
+ignorados, e a tela responde sem aquele filtro — nunca com erro, nunca com uma
+lista vazia enganosa.
+
+## `src/content/` é o acervo tipado
+
+Um módulo por coleção (`venues`, `activities`, `workshops`, `creative-processes`,
+`honorees`, `books`, `edition-credits`, `partners`, `editions`, `news`,
+`contact`), cada um exportando um `readonly` array tipado. Referências entre
+coleções são `id`s.
+
+A integridade referencial é garantida **por tipo, não por validação em runtime**:
+os ids de espaço são uma união literal derivada do próprio array
+(`(typeof RAW_VENUES)[number]['id']`), de modo que uma atividade apontando para
+um espaço inexistente é um erro de `pnpm typecheck`. Não há schema validator no
+projeto e não é preciso um: o dado é estático e o compilador é o validador.
+
+Derivações da programação (situação da sessão, término, agrupamento, filtragem,
+contagens) ficam em [`lib/utils/schedule.ts`](../../src/lib/utils/schedule.ts),
+como funções puras. **Nenhuma delas lê `Date.now()`** — o instante é sempre
+parâmetro. É o que as torna testáveis nos limites exatos e o que impede que
+produzam HTML diferente no servidor e no cliente.

@@ -24,7 +24,7 @@ function StageGradient() {
   return (
     <div
       aria-hidden="true"
-      className="size-full bg-[radial-gradient(circle_at_50%_38%,var(--color-accent)_0%,transparent_62%)] opacity-70"
+      className="size-full bg-[radial-gradient(circle_at_50%_38%,var(--color-secondary)_0%,transparent_62%)] opacity-70"
     />
   );
 }
@@ -47,7 +47,7 @@ export function StageScene({ description, fallbackText }: StageSceneProps) {
       ref={containerRef}
       role="img"
       aria-label={description}
-      className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-border bg-surface sm:aspect-[16/9]"
+      className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border border-outline-variant bg-surface sm:aspect-[16/9]"
     >
       {webGLSupport === 'available' ? (
         <StageCanvas active={isInViewport && !prefersReducedMotion} />
@@ -56,7 +56,7 @@ export function StageScene({ description, fallbackText }: StageSceneProps) {
       )}
 
       {webGLSupport === 'unavailable' && (
-        <p className="absolute inset-x-0 bottom-0 p-4 text-center text-sm text-balance text-muted">
+        <p className="absolute inset-x-0 bottom-0 p-4 text-center text-sm text-balance text-foreground-muted">
           {fallbackText}
         </p>
       )}

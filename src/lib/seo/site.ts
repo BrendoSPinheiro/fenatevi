@@ -32,8 +32,11 @@ export const OG_IMAGE_SIZE = { width: 1200, height: 630 } as const;
  * mudar o tema, atualize estes valores junto.
  */
 export const OG_COLORS = {
-  background: '#0b0a0c',
-  foreground: '#f4f1ec',
-  muted: '#a9a3b2',
-  accent: '#e8b04b',
+  background: '#131312',
+  foreground: '#e5e2df',
+  muted: '#c6c3c0',
+  /** Bordô da marca (`--color-primary-container`). */
+  primary: '#800020',
+  /** Âmbar de destaque (`--color-secondary`). */
+  secondary: '#ffdb9d',
 } as const;

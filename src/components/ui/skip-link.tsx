@@ -15,7 +15,7 @@ export async function SkipLink() {
   return (
     <a
       href={`#${MAIN_CONTENT_ID}`}
-      className="sr-only rounded-md bg-accent px-4 py-2 text-sm font-medium text-on-accent focus-visible:not-sr-only focus-visible:absolute focus-visible:top-4 focus-visible:left-4 focus-visible:z-[var(--z-skip-link)]"
+      className="sr-only rounded-sm bg-secondary px-4 py-2 text-sm font-medium text-on-secondary focus-visible:not-sr-only focus-visible:absolute focus-visible:top-4 focus-visible:left-4 focus-visible:z-[var(--z-skip-link)] focus-visible:inline-flex focus-visible:min-h-11 focus-visible:items-center"
     >
       {t('skipToContent')}
     </a>

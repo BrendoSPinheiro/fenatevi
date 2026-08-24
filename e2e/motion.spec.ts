@@ -7,19 +7,29 @@ test.describe('Movimento reduzido', () => {
     await page.goto('/');
 
     await expect(page.getByRole('heading', { level: 1, name: 'FENATEVI' })).toBeVisible();
-    await expect(page.getByText('Uma nova experiência está sendo preparada.')).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Conhecer o festival' })).toBeVisible();
+    await expect(
+      page.getByText('Nove dias de teatro nos palcos e nas praças da cidade.'),
+    ).toBeVisible();
+
+    /*
+     * A revelação por rolagem parte do estado visível: sob movimento reduzido
+     * ela não acontece, e todos os atos precisam estar completos mesmo assim.
+     */
+    await expect(
+      page.getByRole('heading', { level: 2, name: 'Os dias do festival' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: 'Realização e parceiros' }),
+    ).toBeVisible();
   });
 
-  test('o CTA leva à seção "Sobre o festival" mesmo sem smooth scroll', async ({ page }) => {
+  test('o CTA da abertura leva à programação mesmo sem smooth scroll', async ({ page }) => {
     await page.goto('/');
 
-    await page.getByRole('link', { name: 'Conhecer o festival' }).click();
+    await page.getByRole('link', { name: 'Ver a programação', exact: true }).click();
 
-    await expect(page).toHaveURL(/#sobre$/);
-    await expect(
-      page.getByRole('heading', { level: 2, name: 'Sobre o festival' }),
-    ).toBeInViewport();
+    await expect(page).toHaveURL(/\/programacao$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Programação' })).toBeVisible();
   });
 
   test('o botão "Voltar ao topo" funciona sem o Lenis inicializado', async ({ page }) => {

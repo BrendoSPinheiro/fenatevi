@@ -13,11 +13,22 @@ interface ContainerProps extends ContainerOwnProps {
   readonly as?: ElementType;
 }
 
-/** Largura máxima e respiro horizontal consistentes em todas as seções. */
+/**
+ * Largura máxima e respiro horizontal consistentes em todas as seções.
+ *
+ * Os valores são os do `DESIGN.md`: 1280px de conteúdo, margens de 20px no
+ * mobile e 64px no desktop — o "center stage" com espaço para respirar.
+ */
 export function Container({ as, className, ...props }: ContainerProps) {
   const Component = (as ?? 'div') as ElementType<ContainerOwnProps>;
 
   return (
-    <Component className={cn('mx-auto w-full max-w-5xl px-5 sm:px-8', className)} {...props} />
+    <Component
+      className={cn(
+        'mx-auto w-full max-w-(--container-max) px-margin-mobile lg:px-margin-desktop',
+        className,
+      )}
+      {...props}
+    />
   );
 }

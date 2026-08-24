@@ -1,7 +1,10 @@
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Bodoni_Moda, Hanken_Grotesk } from 'next/font/google';
 import { notFound } from 'next/navigation';
 
+import { CurtainTransition } from '@/components/layout/curtain-transition';
+import { MobileNav } from '@/components/layout/mobile-nav';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { SiteHeader } from '@/components/layout/site-header';
 import { SkipLink } from '@/components/ui/skip-link';
@@ -11,6 +14,27 @@ import { SmoothScrollProvider } from '@/providers/smooth-scroll-provider';
 import '@/styles/globals.css';
 
 import type { Metadata } from 'next';
+
+/*
+ * As duas famílias do Nocturne Stage, baixadas e auto-hospedadas em build por
+ * `next/font/google`: nenhuma requisição a terceiros em runtime, `font-display:
+ * swap` e preload automáticos, nenhum pacote novo no `package.json`.
+ *
+ * Ambas são variáveis — carrega-se apenas o eixo de peso, no subset latino, o
+ * que mantém as duas dentro do orçamento do caminho crítico.
+ */
+const bodoniModa = Bodoni_Moda({
+  subsets: ['latin'],
+  axes: ['opsz'],
+  display: 'swap',
+  variable: '--font-bodoni-moda',
+});
+
+const hankenGrotesk = Hanken_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-hanken-grotesk',
+});
 
 interface LocaleLayoutProps {
   readonly children: React.ReactNode;
@@ -98,14 +122,19 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   setRequestLocale(locale);
 
   return (
-    <html lang={localeHtmlLang[locale as Locale]}>
+    <html
+      lang={localeHtmlLang[locale as Locale]}
+      className={`${bodoniModa.variable} ${hankenGrotesk.variable}`}
+    >
       <body className="flex min-h-dvh flex-col">
         <NextIntlClientProvider>
           <SkipLink />
           <SmoothScrollProvider />
+          <CurtainTransition />
           <SiteHeader />
           <div className="flex-1">{children}</div>
           <SiteFooter />
+          <MobileNav />
         </NextIntlClientProvider>
       </body>
     </html>
