@@ -56,9 +56,19 @@ describe('Button', () => {
 
 describe('buttonClassName', () => {
   it('permite reaproveitar o visual do botão em um link', () => {
-    const className = buttonClassName('ghost', 'mt-4');
+    const className = buttonClassName('secondary', 'mt-4');
 
     expect(className).toContain('mt-4');
     expect(className).toContain('border');
+  });
+
+  it('dá à variante ghost uma pista de interação que não é só cor', () => {
+    expect(buttonClassName('ghost')).toContain('hover:underline');
+  });
+
+  it('mantém o alvo de toque mínimo em todas as variantes', () => {
+    for (const variant of ['primary', 'secondary', 'ghost'] as const) {
+      expect(buttonClassName(variant)).toContain('min-h-11');
+    }
   });
 });

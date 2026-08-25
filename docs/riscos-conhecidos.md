@@ -3,15 +3,12 @@
 Registrados para transparência. **Não os corrija espontaneamente** — este
 documento é descritivo; cada item vira tarefa quando for pedido.
 
-1. **Tipos de domínio ainda sem uso.** `Venue`, `Show`, `TimelineItem` e
-   `AccessibilityFeature` existem em `src/types/festival.ts` mas nenhum é
-   importado hoje (só `IsoDate`, `AccessibilityFeatureId` e `FestivalEdition`
-   são). Eles antecipam domínios futuros, o que fica em tensão com a regra de não
-   preparar o futuro. Ao implementar programação ou linha do tempo, valide-os
-   contra a necessidade real em vez de assumi-los corretos.
-2. **Chaves de tradução sem consumidor:** `header.navigationLabel`,
-   `header.about` e `metadata.localeLabel` existem nos três arquivos de
-   `messages/` e não são usadas.
+1. **`AccessibilityFeature` continua sem uso.** O tipo existe em
+   `src/types/festival.ts` e nenhum módulo o importa — o acervo referencia os
+   recursos pelo `AccessibilityFeatureId` direto. `Show` e `TimelineItem` foram
+   substituídos por `Activity` e `EditionTimelineEntry`, que têm consumidor.
+2. **Chaves de tradução sem consumidor:** `metadata.localeLabel` existe nos três
+   arquivos de `messages/` e não é usada.
 3. **Ids de âncora em português fixo** (`conteudo-principal`, `sobre`) valem para
    os três idiomas. É consistente e testável, mas ao criar rotas traduzidas
    decida conscientemente se os ids acompanham o idioma.
@@ -50,3 +47,44 @@ documento é descritivo; cada item vira tarefa quando for pedido.
     da cortina ou na intensidade dos fachos, refaça essa conta à mão.
 12. **Sem deploy, sem observabilidade e sem orçamento de performance** — decisões
     ainda abertas.
+
+13. **A cortina de transição revela, em vez de cobrir.** O protótipo faz a
+    cortina descer, espera 300 ms, troca de tela e a recolhe. Aqui a ordem é
+    invertida: a cortina é pintada já cobrindo a rota nova e se recolhe. Visual
+    próximo, semântica melhor — **navegação não espera animação**. Divergência
+    deliberada.
+14. **O controle "A11y" do cabeçalho não existe.** O protótipo o desenha, ainda
+    que rotulado "Estado de demonstração — integração real na implementação":
+    alto contraste, aumento de texto, redução de movimento e Libras são quatro
+    funcionalidades anunciadas e não desenhadas. O portal já entrega WCAG 2.2 AA
+    e respeita `prefers-reduced-motion` nativamente. Implementá-las de verdade é
+    uma change própria, com decisões próprias sobre persistência de preferência.
+    A ausência **será notada** por quem conhece o protótipo.
+15. **O mapa cultural é um esquema, não um mapa.** As posições dos espaços são
+    porcentagens dentro do container, herdadas do protótipo: mostram os espaços
+    em relação uns aos outros e nada mais. Não há base cartográfica, biblioteca
+    de mapa nem coordenada. A página declara isso em texto, e a lista de espaços
+    com endereços reais não depende do esquema.
+16. **O acervo histórico não é traduzido.** Títulos, releases, fichas técnicas e
+    biografias permanecem em pt-BR nas páginas em inglês e espanhol, marcados com
+    `lang="pt-BR"` e precedidos de aviso traduzido. O visitante estrangeiro ainda
+    encontra texto que não lê; traduzir material artístico de terceiros sem
+    revisão humana seria pior.
+17. **A home mostra a programação de 2024 sob o cabeçalho da edição de 2026.** É
+    o que o protótipo desenha, e o aviso de conteúdo demonstrativo é explícito e
+    traduzido, acima da primeira lista de cada tela que apresenta programação. O
+    risco real é o aviso passar despercebido.
+18. **`stage-scene.tsx` e `use-webgl-support.ts` ficaram sem consumidor.** A home
+    deixou de exibir a cena 3D; o código permanece no repositório, com seus
+    testes, à espera de um uso previsto no design. Não é código morto por
+    descuido — é uma decisão registrada na proposta da change.
+19. **As imagens são todas de baixa resolução.** As 23 capas e retratos de 2024
+    são extrações do programa impresso e não passam de 530px de largura; as
+    fotografias de palco têm 512px. Cada uma declara `isLowResolution` no
+    acervo, e `imagesNeedingOriginals` (em `src/content/images.ts`) é a lista de
+    pedidos a fazer às companhias e à organização.
+20. **As três fotografias de espaço distribuídas com o protótipo não são
+    usadas.** `venue-a/b/c.jpg` não vêm identificadas com o espaço que retratam,
+    e atribuí-las a um teatro nomeado seria uma afirmação que o material não
+    sustenta. Nenhum espaço declara fotografia; a página de espaço trata a
+    ausência com área neutra, sem dizer nada ao visitante sobre isso.

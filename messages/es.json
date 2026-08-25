@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "FENATEVI — Festival Nacional de Teatro de Vitória",
-    "description": "El Festival Nacional de Teatro de Vitória reúne espectáculos, encuentros y memoria escénica en la capital de Espírito Santo, Brasil.",
+    "description": "El Festival Nacional de Teatro de Vitória reúne espectáculos, encuentros y formación en los teatros y plazas de la ciudad.",
     "localeLabel": "Español",
     "ogImageLocation": "Vitória · Espírito Santo · Brasil"
   },
@@ -9,35 +9,20 @@
     "skipToContent": "Saltar al contenido",
     "backToTop": "Volver arriba",
     "festivalName": "FENATEVI",
-    "festivalFullName": "Festival Nacional de Teatro de Vitória"
+    "festivalFullName": "Festival Nacional de Teatro de Vitória",
+    "freeEntry": "Entrada libre",
+    "at": "en",
+    "close": "Cerrar",
+    "opensInNewTab": "se abre en una pestaña nueva",
+    "externalLinkNotice": "La inscripción se realiza en un formulario externo a este sitio."
   },
   "localeSwitcher": {
     "label": "Elegir idioma",
     "current": "Idioma actual"
   },
-  "header": {
-    "navigationLabel": "Navegación principal",
-    "about": "Sobre el festival"
-  },
   "intro": {
     "line": "Basta una semilla...",
     "hint": "Toca o pulsa una tecla para entrar"
-  },
-  "home": {
-    "eyebrow": "Edición {edition}",
-    "title": "FENATEVI",
-    "subtitle": "Festival Nacional de Teatro de Vitória",
-    "tagline": "Se está preparando una nueva experiencia.",
-    "dates": "Del {start} al {end}",
-    "city": "Vitória, Espírito Santo, Brasil",
-    "cta": "Conocer el festival",
-    "aboutTitle": "Sobre el festival",
-    "aboutBody": "El FENATEVI ocupa teatros, plazas y centros culturales de Vitória con espectáculos, formación y encuentros entre artistas y público. Este sitio está en construcción: la programación completa, la memoria de las ediciones anteriores y la información de accesibilidad se publicarán aquí.",
-    "accessibilityTitle": "Accesibilidad en escena",
-    "accessibilityIntro": "La edición vigente prevé los siguientes recursos:",
-    "sceneTitle": "Ensayo de luz",
-    "sceneDescription": "Composición abstracta en movimiento lento que evoca un reflector sobre el escenario.",
-    "sceneFallback": "Tu dispositivo no muestra la escena tridimensional. Todo el contenido del festival sigue disponible."
   },
   "accessibilityFeatures": {
     "audioDescription": "Audiodescripción",
@@ -46,18 +31,320 @@
     "wheelchairAccess": "Acceso para sillas de ruedas",
     "relaxedPerformance": "Función relajada"
   },
+  "nav": {
+    "primaryLabel": "Navegación principal",
+    "mobileLabel": "Navegación rápida",
+    "openAreas": "Áreas del sitio",
+    "closeAreas": "Cerrar las áreas",
+    "areasTitle": "Áreas del sitio",
+    "areasDescription": "Todo lo que este sitio ofrece sobre el festival.",
+    "home": "Inicio",
+    "programacao": "Programación",
+    "grade": "Grilla diaria",
+    "espacos": "Espacios",
+    "memoria": "Memoria",
+    "noticias": "Noticias",
+    "areaDescriptions": {
+      "home": "La edición vigente, lo que está en escena y la entrada al acervo.",
+      "programacao": "Todas las actividades, filtrables por día, sección y espacio.",
+      "grade": "El día entero en tres vistas: por espacio, por horario y la semana.",
+      "espacos": "Los espacios del festival en la ciudad, con dirección y programación.",
+      "memoria": "La línea de tiempo de las ediciones y el estado de cada acervo.",
+      "noticias": "Avisos, bastidores y convocatorias publicados por la organización."
+    },
+    "backToProgramacao": "Volver a la programación",
+    "backToEspacos": "Volver a los espacios",
+    "backToMemoria": "Volver a la línea de tiempo"
+  },
+  "header": {
+    "navigationLabel": "Navegación principal"
+  },
   "footer": {
-    "rights": "FENATEVI — Festival Nacional de Teatro de Vitória",
-    "note": "Sitio en desarrollo."
+    "identification": "Festival Nacional de Teatro de Vitória",
+    "navigationLabel": "Navegación del pie de página",
+    "contactTitle": "Contacto",
+    "city": "Vitória, Espírito Santo, Brasil",
+    "description": "Realizado desde 2004 en Vitória, Espírito Santo. Este sitio es también el acervo permanente del festival.",
+    "copyright": "© {year} FENATEVI. Cultura en movimiento.",
+    "pressLabel": "Prensa"
+  },
+  "acervo": {
+    "languageNotice": "Los registros del acervo — títulos, gacetillas, fichas técnicas y biografías — se mantienen en su idioma original, portugués de Brasil.",
+    "demoNoticeTitle": "Contenido de muestra · edición {year}",
+    "demoNoticeBody": "La programación de la {edition}ª edición aún no se ha publicado. Hasta entonces, el sitio muestra el acervo completo de la edición de {year}.",
+    "strands": {
+      "mostra-oficial": "Muestra Oficial",
+      "mostra-paralela": "Muestra Paralela",
+      "oficina": "Taller",
+      "lancamento": "Lanzamiento",
+      "processo-criativo": "Proceso creativo"
+    },
+    "ratings": {
+      "livre": "Todo público",
+      "10": "10 años",
+      "12": "12 años",
+      "14": "14 años",
+      "16": "16 años",
+      "18": "18 años"
+    },
+    "ratingLabel": "Clasificación",
+    "ratingUnknown": "Clasificación no informada",
+    "durationLabel": "Duración",
+    "durationUnknown": "Duración no informada",
+    "endsAt": "Finaliza a las {time}",
+    "endsAtUnknown": "Fin no informado",
+    "accessibilityTitle": "Accesibilidad"
+  },
+  "sessao": {
+    "live": "En escena ahora",
+    "upcoming": "A continuación",
+    "ended": "Función finalizada",
+    "afterSession": "Después de la función"
+  },
+  "home": {
+    "eyebrow": "{edition}ª edición · {year}",
+    "title": "FENATEVI",
+    "subtitle": "Festival Nacional de Teatro de Vitória",
+    "signature": "Nueve días de teatro en los escenarios y plazas de la ciudad.",
+    "dates": "Del {start} al {end}",
+    "city": "Vitória, Espírito Santo",
+    "ctaProgramacao": "Ver la programación",
+    "ctaHoje": "Programación de hoy",
+    "nowTitle": "En escena ahora",
+    "nowEmptyTitle": "Nada en escena en este momento",
+    "nowEndedTitle": "Esta edición ha finalizado",
+    "nowEndedBody": "La edición de {year} ha terminado. Su acervo está completo en el sitio.",
+    "nowEndedCta": "Explorar el acervo",
+    "nextTitleToday": "Todavía hoy",
+    "nextTitleUpcoming": "En los próximos días",
+    "nextEmpty": "No hay más funciones previstas.",
+    "featuredTitle": "En cartelera",
+    "featuredAll": "Ver la programación completa",
+    "featuredGrid": "Ver la grilla diaria",
+    "daysTitle": "Los días del festival",
+    "daysCount": "{count, plural, =0 {sin actividades} one {# actividad} other {# actividades}}",
+    "editorialCta": "Conocer el espectáculo",
+    "strandsTitle": "Secciones de la programación",
+    "strandsCount": "{count, plural, one {# actividad} other {# actividades}}",
+    "cityTitle": "La ciudad se vuelve escenario",
+    "cityBody": "Teatros, una plaza y espacios independientes reciben el festival.",
+    "cityCta": "Ver todos los espacios",
+    "memoriaTitle": "La memoria del festival",
+    "memoriaBody": "Dos décadas de ediciones, con el acervo digitalizándose y publicándose poco a poco.",
+    "memoriaCta": "Ver la línea de tiempo",
+    "noticiasTitle": "Noticias",
+    "noticiasCta": "Ver todas las noticias",
+    "partnersTitle": "Realización y socios"
+  },
+  "programacao": {
+    "title": "Programación",
+    "description": "Todas las actividades de la edición, por día, sección y espacio.",
+    "filtersLabel": "Filtros de la programación",
+    "momentLabel": "Momento",
+    "dayLabel": "Día",
+    "strandLabel": "Sección",
+    "venueLabel": "Espacio",
+    "momentToday": "Hoy",
+    "momentTomorrow": "Mañana",
+    "momentAll": "Todos",
+    "allDays": "Todos los días",
+    "allStrands": "Todas las secciones",
+    "allVenues": "Todos los espacios",
+    "resultCount": "{count, plural, =0 {Ninguna actividad} one {# actividad} other {# actividades}}",
+    "clearFilters": "Limpiar filtros",
+    "emptyTitle": "Ninguna actividad con estos filtros",
+    "emptyBody": "Prueba a quitar uno de los filtros para ver más programación.",
+    "openFilters": "Filtrar",
+    "gridCta": "Ver la grilla diaria"
+  },
+  "grade": {
+    "title": "Grilla diaria",
+    "description": "El día entero de una vez: por espacio, por horario o la semana completa.",
+    "viewLabel": "Vista",
+    "viewEspaco": "Por espacio",
+    "viewHorario": "Por horario",
+    "viewSemana": "Semana completa",
+    "noActivitiesInVenue": "Este espacio no recibe actividades este día.",
+    "wideTableNotice": "La semana completa es una tabla ancha: en pantallas estrechas, desplaza la tabla de lado para ver todos los días.",
+    "weekTableLabel": "Espacios por día de la edición",
+    "venueColumn": "Espacio",
+    "emptyDay": "No hay actividades este día."
+  },
+  "espetaculo": {
+    "essentialsTitle": "La función",
+    "dateLabel": "Fecha",
+    "timeLabel": "Horario",
+    "weekdayLabel": "Día de la semana",
+    "endsLabel": "Fin previsto",
+    "venueLabel": "Espacio",
+    "addressLabel": "Dirección",
+    "accessibilityTitle": "Accesibilidad de esta función",
+    "releaseTitle": "Sobre el espectáculo",
+    "noteTitle": "Nota de la función",
+    "technicalSheetTitle": "Ficha técnica",
+    "companyTitle": "La compañía",
+    "authorLabel": "Autoría",
+    "directorLabel": "Dirección",
+    "originLabel": "Origen",
+    "venueTitle": "El espacio",
+    "mapCta": "Cómo llegar",
+    "gridCta": "Ver en la grilla del día",
+    "creativeProcessTitle": "Proceso creativo",
+    "creativeProcessBody": "Después de la función, la compañía presenta una demostración de su proceso de trabajo.",
+    "otherSessionsTitle": "Otras funciones de esta compañía"
+  },
+  "oficina": {
+    "kicker": "Acción formativa",
+    "descriptionTitle": "Sobre el taller",
+    "registrationTitle": "Inscripción",
+    "registrationCta": "Abrir el formulario de inscripción",
+    "seatsLabel": "Plazas",
+    "seatsValue": "{count, plural, one {# plaza por grupo} other {# plazas por grupo}}",
+    "classesLabel": "Grupos",
+    "formatLabel": "Formato",
+    "formats": {
+      "presencial-gratuito": "Presencial y gratuito"
+    },
+    "datesLabel": "Fechas",
+    "timeLabel": "Horario",
+    "venueLabel": "Espacio",
+    "audienceLabel": "Público",
+    "ageLabel": "Franja de edad",
+    "ageValue": "A partir de {age} años",
+    "ageAll": "Sin restricción de edad",
+    "teachersLabel": "Quién lo conduce",
+    "requirementsTitle": "Requisitos",
+    "relatedTitle": "Espectáculo relacionado",
+    "endedNotice": "Este taller ya se realizó. La información permanece en el acervo."
+  },
+  "espacos": {
+    "title": "Espacios culturales",
+    "description": "Los espacios que reciben el festival, repartidos por la ciudad.",
+    "schemaLabel": "Esquema de los espacios del festival en la ciudad",
+    "schemaNotice": "El esquema muestra la posición relativa de los espacios, no su ubicación geográfica. La lista al lado indica cada dirección.",
+    "listTitle": "Todos los espacios",
+    "activityCount": "{count, plural, =0 {sin actividades} one {# actividad} other {# actividades}}",
+    "insideOf": "Dentro de {venue}",
+    "programTitle": "Programación de este espacio",
+    "noActivities": "Este espacio no recibe actividades en esta edición.",
+    "gridCta": "Ver en la grilla diaria",
+    "mapCta": "Ver en el esquema",
+    "kinds": {
+      "teatro": "Teatro",
+      "teatro-casa-de-musica": "Teatro / casa de música",
+      "teatro-universitario": "Teatro universitario",
+      "teatro-formacao": "Teatro / formación",
+      "sala": "Sala",
+      "ar-livre": "Al aire libre",
+      "espaco-independente": "Espacio independiente"
+    },
+    "addressLabel": "Dirección",
+    "kindLabel": "Tipo de espacio",
+    "parentLabel": "Dentro de",
+    "activitiesLabel": "Actividades en esta edición"
+  },
+  "memoria": {
+    "title": "Memoria del festival",
+    "description": "Dos décadas de ediciones. Cada una con su acervo en una etapa distinta de digitalización.",
+    "timelineLabel": "Línea de tiempo de las ediciones",
+    "editionLabel": "{edition}ª edición",
+    "editionsCount": "{count, plural, one {# edición} other {# ediciones}}",
+    "periodUnknown": "Fechas por confirmar en el acervo",
+    "completeness": "Acervo {percent}% completo",
+    "states": {
+      "edicao-vigente": "Edición vigente",
+      "acervo-pendente": "Acervo pendiente",
+      "acervo-completo": "Acervo completo",
+      "em-digitalizacao": "En digitalización"
+    },
+    "entries": {
+      "2026": "Curaduría en curso. Programación, espectáculos y homenajeados serán publicados por la organización.",
+      "2025": "Registros, programación y fotografías por incorporar al acervo digital.",
+      "2024": "Muestra Oficial, muestra paralela, talleres, lanzamientos de libros, procesos creativos y dos homenajeados.",
+      "2004-2023": "Programas impresos, carteles, fotografías y registros en vídeo por digitalizar y publicar progresivamente."
+    },
+    "actions": {
+      "edicao-vigente": "Seguir la edición",
+      "acervo-completo": "Explorar esta edición"
+    },
+    "noPageNotice": "Esta edición aún no tiene página propia.",
+    "scopeNote": "Cada edición publicada podrá incluir identidad visual, resumen, programación completa, espectáculos, fotografías, homenajeados, noticias, materiales gráficos, documentos, participantes y patrocinadores."
+  },
+  "edicao": {
+    "kicker": "Acervo · edición finalizada",
+    "headline": "{edition}ª edición · del {start} al {end}",
+    "statementTitle": "La edición",
+    "strandsTitle": "Núcleos de esta edición",
+    "venuesLabel": "Espacios",
+    "honoreesTitle": "Homenajeados de {year}",
+    "officialTitle": "Muestra Oficial",
+    "parallelTitle": "Muestra Paralela",
+    "workshopsTitle": "Acciones formativas",
+    "booksTitle": "Lanzamientos de libros",
+    "creativeProcessesTitle": "Procesos creativos por día",
+    "creditsTitle": "Ficha técnica de la edición",
+    "coverCaption": "Portada del programa impreso de {year}"
+  },
+  "noticias": {
+    "title": "Noticias",
+    "description": "Avisos de programación, bastidores y convocatorias publicados por la organización durante el festival.",
+    "emptyTitle": "Aún no hay noticias publicadas",
+    "emptyBody": "Cuando la organización publique la primera noticia, aparecerá aquí.",
+    "listLabel": "Noticias, de la más reciente a la más antigua",
+    "categories": {
+      "alteracao": "Cambio de programación",
+      "bastidores": "Bastidores",
+      "chamada": "Convocatoria"
+    }
+  },
+  "parceiros": {
+    "roles": {
+      "realizacao": "Realización",
+      "producao": "Producción",
+      "patrocinio": "Patrocinio",
+      "promocao": "Promoción",
+      "apoio": "Apoyo"
+    },
+    "notes": {
+      "umaFloresta": "Organización del festival.",
+      "ratimbum": "Producción ejecutiva: Taty Moraes.",
+      "prefeitura": "Ley Rubem Braga.",
+      "tvGazeta": "Alianza de medios.",
+      "espacosParceiros": "Espacios culturales asociados."
+    }
   },
   "notFound": {
     "title": "Página no encontrada",
-    "description": "La página que buscas no existe o ha sido movida.",
+    "description": "La página que buscas no existe o fue movida.",
     "backHome": "Volver a la página de inicio"
   },
   "error": {
     "title": "Algo se salió del guion",
-    "description": "No se pudo mostrar esta página. Inténtalo de nuevo.",
+    "description": "No fue posible mostrar esta página. Inténtalo de nuevo.",
     "retry": "Intentar de nuevo"
+  },
+  "imagens": {
+    "lenda": "Cartel del espectáculo: un hombre con sombrero ante una roca oscura, en tonos tierra.",
+    "violeta": "Cartel del espectáculo: una mujer con guitarra sobre un fondo de montañas andinas.",
+    "corpus": "Cartel del espectáculo: cuerpos en performance colectiva, superpuestos en rojo y negro.",
+    "olhos": "Cartel del espectáculo: un rostro masculino en primer plano, iluminado de lado.",
+    "corpo": "Cartel del espectáculo: bailarines en movimiento, siluetas sobre fondo claro.",
+    "corpo2": "Cartel de la segunda función: un dúo de bailarines en contacto, visto de cerca.",
+    "charanga": "Cartel del espectáculo: dos artistas con instrumentos de viento junto a un escarabajo.",
+    "dona": "Cartel del espectáculo: personajes coloridos alrededor de un paso de peatones.",
+    "saga": "Cartel del espectáculo: dos actores negros en escena, iluminados en tonos cálidos.",
+    "homembanda": "Cartel del espectáculo: un músico rodeado de instrumentos unidos por cuerdas y poleas.",
+    "metamorfose": "Cartel del espectáculo: una figura encogida en un cuarto oscuro, vista desde arriba.",
+    "carambolas": "Cartel del espectáculo: mujeres en escena ante una chimenea de fábrica al fondo.",
+    "kala": "Cartel del espectáculo: figuras con máscaras balinesas, en tonos rojo y oro.",
+    "calunga": "Cartel del espectáculo: una muñeca de trapo junto a una narradora.",
+    "divertida": "Cartel del espectáculo: un artista de traje ante un público iluminado.",
+    "boi": "Cartel del espectáculo: una figura de buey adornada, típica de las fiestas populares.",
+    "cabrabo": "Cartel del espectáculo: un elenco numeroso en escena, con vestuario colorido.",
+    "couro": "Cartel del espectáculo: personajes con ropa de cuero bajo un sol del nordeste.",
+    "avarento": "Cartel del espectáculo: un hombre mayor abrazado a una caja fuerte, en escena cómica.",
+    "homenageadoBere": "Retrato de Bere, Luiz Carlos Siqueira, homenajeado de la edición de 2024.",
+    "homenageadoAlcides": "Retrato de Alcides Luiz Rodrigues Pereira, homenajeado de la edición de 2024.",
+    "capa2024": "Portada del programa impreso de 2024, con máscaras teatrales y el nombre del festival."
   }
 }

@@ -24,7 +24,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   return (
     <Container as="main" id={MAIN_CONTENT_ID} tabIndex={-1} className="py-24">
       <h1 className="text-4xl font-semibold">{t('title')}</h1>
-      <p className="mt-4 max-w-xl text-lg text-muted">{t('description')}</p>
+      <p className="mt-4 max-w-xl text-lg text-foreground-muted">{t('description')}</p>
       <p className="mt-8">
         <Button onClick={reset}>{t('retry')}</Button>
       </p>

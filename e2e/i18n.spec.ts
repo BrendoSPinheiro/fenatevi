@@ -9,7 +9,9 @@ test.describe('Internacionalização', () => {
 
     await expect(page).toHaveURL(/\/en$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-    await expect(page.getByText('A new experience is being prepared.')).toBeVisible();
+    await expect(
+      page.getByText("Nine days of theatre on the city's stages and squares."),
+    ).toBeVisible();
 
     await page
       .getByRole('navigation', { name: 'Choose language' })
@@ -18,7 +20,9 @@ test.describe('Internacionalização', () => {
 
     await expect(page).toHaveURL(/\/es$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'es');
-    await expect(page.getByText('Se está preparando una nueva experiencia.')).toBeVisible();
+    await expect(
+      page.getByText('Nueve días de teatro en los escenarios y plazas de la ciudad.'),
+    ).toBeVisible();
   });
 
   test('voltar ao português devolve o visitante à raiz, sem prefixo', async ({ page }) => {
@@ -37,7 +41,9 @@ test.describe('Internacionalização', () => {
 
     await expect(page).toHaveURL(/:\d+\/$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
-    await expect(page.getByText('Uma nova experiência está sendo preparada.')).toBeVisible();
+    await expect(
+      page.getByText('Nove dias de teatro nos palcos e nas praças da cidade.'),
+    ).toBeVisible();
   });
 
   test('marca o idioma corrente no seletor', async ({ page }) => {

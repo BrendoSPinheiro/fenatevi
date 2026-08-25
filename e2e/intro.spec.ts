@@ -3,6 +3,15 @@ import { expect, test, type Page } from '@playwright/test';
 
 const LINE = 'Basta uma semente...';
 
+/*
+ * A abertura começa no primeiro pixel pintado, e é esse instante que esta spec
+ * observa — daí `waitUntil: 'domcontentloaded'` em toda visita à home.
+ *
+ * Com o padrão (`load`), o Playwright só devolveria o controle depois das
+ * imagens da home, e boa parte dos 4,65 s da coreografia já teria corrido antes
+ * da primeira asserção. O visitante vê a sequência inteira; o teste precisa
+ * chegar junto com ele.
+ */
 /** Duração total da coreografia, declarada em `globals.css`. */
 const SEQUENCE_MS = 4_650;
 
@@ -34,7 +43,7 @@ test.describe('Abertura teatral', () => {
   test.use({ contextOptions: { reducedMotion: 'no-preference' } });
 
   test('cobre o viewport na chegada e libera o conteúdo dentro do limite', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     await expect(overlay(page)).toBeVisible();
 
@@ -62,7 +71,7 @@ test.describe('Abertura teatral', () => {
     expect(covered, 'a cortina cobre todos os cantos e o centro').toBe(true);
 
     // O conteúdo fica clicável quando a sequência termina — e não depois disso.
-    await expect(page.getByRole('link', { name: 'Conhecer o festival' })).toBeEnabled({
+    await expect(page.getByRole('link', { name: 'Ver a programação', exact: true })).toBeEnabled({
       timeout: SEQUENCE_MS + 500,
     });
     await expect(overlay(page)).toBeHidden();
@@ -71,15 +80,32 @@ test.describe('Abertura teatral', () => {
   test('a frase fica legível por pelo menos um segundo antes das cortinas abrirem', async ({
     page,
   }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    const opacity = () =>
-      overlay(page).evaluate((element) => Number(getComputedStyle(element).opacity));
+    /*
+     * A sustentação é medida no **relógio da própria animação**, e não no
+     * relógio de parede.
+     *
+     * A janela declarada em `globals.css` dura 1,05 s (de 1,70 s a 2,75 s).
+     * Cronometrá-la de fora deixava só 50 ms de folga para o carregamento da
+     * página, o que tornava o teste refém do peso da home — ele falhava sem
+     * que a coreografia tivesse mudado. Perguntar à animação em que ponto ela
+     * está remove a corrida por completo, e mede exatamente o requisito: a
+     * frase fica legível por pelo menos um segundo.
+     */
+    const opacityAt = (ms: number) =>
+      overlay(page).evaluate((element, time) => {
+        for (const animation of element.getAnimations()) {
+          animation.pause();
+          animation.currentTime = time;
+        }
 
-    // A frase termina de entrar em 1,70 s e só começa a sair em 2,75 s.
-    await expect.poll(opacity, { timeout: 3_000 }).toBeGreaterThan(0.95);
-    await page.waitForTimeout(1_000);
-    expect(await opacity()).toBeGreaterThan(0.95);
+        return Number(getComputedStyle(element).opacity);
+      }, ms);
+
+    // 1,70 s: a frase acabou de entrar. 2,70 s: um segundo depois, ainda inteira.
+    expect(await opacityAt(1_700)).toBeGreaterThan(0.95);
+    expect(await opacityAt(2_700)).toBeGreaterThan(0.95);
   });
 
   for (const [nome, dispensar] of [
@@ -88,7 +114,7 @@ test.describe('Abertura teatral', () => {
     ['rolagem', (page: Page) => page.mouse.wheel(0, 200)],
   ] as const) {
     test(`é dispensada por ${nome}`, async ({ page }) => {
-      await page.goto('/');
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
       await expect(overlay(page)).toBeVisible();
       await esperaHidratacao(page);
 
@@ -106,7 +132,7 @@ test.describe('Abertura teatral', () => {
   }
 
   test('não é reexibida ao trocar de idioma sem recarregar a página', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await esperaHidratacao(page);
     await page.keyboard.press('Escape');
     await expect(overlay(page)).toBeHidden();
@@ -117,7 +143,9 @@ test.describe('Abertura teatral', () => {
       .click();
 
     await expect(page).toHaveURL(/\/en$/);
-    await expect(page.getByText('A new experience is being prepared.')).toBeVisible();
+    await expect(
+      page.getByText("Nine days of theatre on the city's stages and squares."),
+    ).toBeVisible();
     await expect(page.getByText('All it takes is a seed...')).toBeHidden();
   });
 
@@ -129,7 +157,7 @@ test.describe('Abertura teatral', () => {
   });
 
   test('o primeiro Tab alcança o skip link mesmo com a cortina no ar', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await expect(overlay(page)).toBeVisible();
 
     await page.keyboard.press('Tab');
@@ -149,7 +177,7 @@ test.describe('Abertura teatral', () => {
    * comentário dos tokens de cenografia, em `globals.css`.
    */
   test('não apresenta violações do axe com a cortina no ar', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await expect(overlay(page)).toBeVisible();
 
     const results = await new AxeBuilder({ page })
@@ -161,7 +189,7 @@ test.describe('Abertura teatral', () => {
   });
 
   test('não desloca o layout ao entrar nem ao sair', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     await page.evaluate(() => {
       const store = { total: 0 };
@@ -201,15 +229,15 @@ test.describe('Abertura teatral', () => {
       .toBeLessThan(0);
 
     await expect(page.getByRole('heading', { level: 1, name: 'FENATEVI' })).toBeVisible();
-    await page.getByRole('link', { name: 'Conhecer o festival' }).click();
-    await expect(page).toHaveURL(/#sobre$/);
+    await page.getByRole('link', { name: 'Ver a programação', exact: true }).click();
+    await expect(page).toHaveURL(/\/programacao$/);
   }
 
   test.describe('degradação', () => {
     test.use({ contextOptions: { reducedMotion: 'no-preference', javaScriptEnabled: false } });
 
     test('sem JavaScript, a cortina abre sozinha e revela o conteúdo', async ({ page }) => {
-      await page.goto('/');
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
 
       await expect(overlay(page)).toBeVisible();
       await esperaAPaginaFicarUtilizavel(page);
@@ -219,7 +247,7 @@ test.describe('Abertura teatral', () => {
   test('com o bundle falhando, a cortina ainda assim se encerra', async ({ page }) => {
     await page.route('**/*.js', (route) => route.abort());
 
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     await expect(overlay(page)).toBeVisible();
     await esperaAPaginaFicarUtilizavel(page);
@@ -234,7 +262,7 @@ test.describe('Abertura teatral', () => {
   ] as const) {
     test(`cobre o viewport em ${nome}`, async ({ page }) => {
       await page.setViewportSize(viewport);
-      await page.goto('/');
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
 
       await expect(overlay(page)).toBeVisible();
 
@@ -252,7 +280,7 @@ test.describe('Abertura teatral', () => {
 
   test('continua cobrindo o viewport após redimensionar no meio da sequência', async ({ page }) => {
     await page.setViewportSize({ width: 800, height: 600 });
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await expect(overlay(page)).toBeVisible();
 
     await page.setViewportSize({ width: 1600, height: 700 });
@@ -271,10 +299,10 @@ test.describe('Abertura teatral', () => {
 
 test.describe('Abertura teatral sob movimento reduzido', () => {
   test('não é exibida, e o conteúdo está disponível de imediato', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
 
     await expect(page.getByText(LINE)).toBeHidden();
     await expect(page.getByRole('heading', { level: 1, name: 'FENATEVI' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Conhecer o festival' })).toBeEnabled();
+    await expect(page.getByRole('link', { name: 'Ver a programação', exact: true })).toBeEnabled();
   });
 });

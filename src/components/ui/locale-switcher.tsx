@@ -36,10 +36,10 @@ export function LocaleSwitcher() {
                 // O link do idioma ativo aponta para a página atual.
                 aria-current={isActive ? 'page' : undefined}
                 className={cn(
-                  'rounded-md px-2.5 py-1.5 text-sm transition-colors',
+                  'inline-flex min-h-11 min-w-11 items-center justify-center rounded-sm px-2.5 text-sm transition-colors',
                   isActive
-                    ? 'font-medium text-accent'
-                    : 'text-muted underline underline-offset-4 hover:text-foreground',
+                    ? 'font-medium text-secondary'
+                    : 'text-foreground-muted underline underline-offset-4 hover:text-foreground',
                 )}
               >
                 {localeLabels[locale]}
