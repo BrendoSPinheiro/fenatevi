@@ -18,16 +18,26 @@ export type TextVariant =
  * 32px); nas demais o piso é a proporção que preserva a hierarquia sem estourar
  * a largura de 375px.
  */
+/*
+ * `WONK` liga as formas excêntricas da Fraunces (o `g` de cauda aberta, os
+ * terminais inclinados). Só nos dois tamanhos de display: é a voz do festival
+ * no cartaz, não no corpo da grade — que precisa desaparecer para ser lida.
+ */
+const WONK = "[font-variation-settings:'WONK'_1]";
+
 const VARIANT_CLASSES: Record<TextVariant, string> = {
-  'display-lg':
-    'font-serif font-bold tracking-[-0.02em] text-[clamp(2.75rem,8vw,5rem)] leading-[1.125]',
-  'display-md':
-    'font-serif font-semibold tracking-[-0.01em] text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.15]',
+  'display-lg': `font-serif font-bold tracking-[-0.02em] text-[clamp(2.75rem,8vw,5rem)] leading-[1.125] ${WONK}`,
+  'display-md': `font-serif font-semibold tracking-[-0.01em] text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.15] ${WONK}`,
   'headline-lg': 'font-serif font-medium text-[clamp(2rem,4.5vw,2.5rem)] leading-[1.2]',
   'body-lg': 'font-sans font-normal text-[1.125rem] leading-[1.556]',
   'body-md': 'font-sans font-normal text-[1rem] leading-[1.5]',
-  // Maiúsculas com tracking: a voz do programa impresso, conforme o `DESIGN.md`.
-  'label-md': 'font-sans font-semibold uppercase tracking-[0.05em] text-[0.875rem] leading-[1.429]',
+  /*
+   * Maiúsculas com tracking: a voz do programa impresso, conforme o `DESIGN.md`.
+   * A largura vem do eixo `wdth` da Archivo, desenhada — o espaçamento sozinho
+   * afasta as letras sem lhes dar corpo.
+   */
+  'label-md':
+    "font-sans font-semibold uppercase tracking-[0.05em] text-[0.875rem] leading-[1.429] [font-variation-settings:'wdth'_110]",
   caption: 'font-sans font-normal text-[0.75rem] leading-[1.333]',
 };
 

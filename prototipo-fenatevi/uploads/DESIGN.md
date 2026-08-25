@@ -50,45 +50,45 @@ colors:
   surface-variant: '#353533'
 typography:
   display-lg:
-    fontFamily: Bodoni Moda
+    fontFamily: Fraunces
     fontSize: 80px
     fontWeight: '700'
     lineHeight: 90px
     letterSpacing: -0.02em
   display-md:
-    fontFamily: Bodoni Moda
+    fontFamily: Fraunces
     fontSize: 56px
     fontWeight: '600'
     lineHeight: 64px
     letterSpacing: -0.01em
   headline-lg:
-    fontFamily: Bodoni Moda
+    fontFamily: Fraunces
     fontSize: 40px
     fontWeight: '500'
     lineHeight: 48px
   headline-lg-mobile:
-    fontFamily: Bodoni Moda
+    fontFamily: Fraunces
     fontSize: 32px
     fontWeight: '500'
     lineHeight: 38px
   body-lg:
-    fontFamily: Hanken Grotesk
+    fontFamily: Archivo
     fontSize: 18px
     fontWeight: '400'
     lineHeight: 28px
   body-md:
-    fontFamily: Hanken Grotesk
+    fontFamily: Archivo
     fontSize: 16px
     fontWeight: '400'
     lineHeight: 24px
   label-md:
-    fontFamily: Hanken Grotesk
+    fontFamily: Archivo
     fontSize: 14px
     fontWeight: '600'
     lineHeight: 20px
     letterSpacing: 0.05em
   caption:
-    fontFamily: Hanken Grotesk
+    fontFamily: Archivo
     fontSize: 12px
     fontWeight: '400'
     lineHeight: 16px
@@ -124,10 +124,10 @@ This design system operates primarily in a dark mode to maintain a theatrical at
 - **Surface (Midnight Blue/Black):** The foundation of the UI. `background_hex` is the deep void, while `tertiary` acts as the surface for cards and containers to create subtle separation.
 
 ## Typography
-The typography strategy relies on the tension between the expressive, high-contrast serif of the headlines and the clinical, modern precision of the sans-serif body text.
+The typography strategy relies on the tension between the expressive serif of the headlines and the clinical, modern precision of the sans-serif body text.
 
-- **Bodoni Moda** is the "voice" of the festival. Use it for large titles, quotes, and artistic statements.
-- **Hanken Grotesk** handles all functional information. Its neutral, contemporary structure ensures that complex schedules and descriptions remain legible.
+- **Fraunces** is the "voice" of the festival. Use it for large titles, quotes, and artistic statements. It replaced Bodoni Moda: a didone's hairlines vanish below ~32px, and most serif text on the portal sits between 18px and 24px on a dark background. Fraunces carries an `opsz` axis, so the same family stays dramatic at display sizes and readable at text sizes. Turn the `WONK` axis on only for `display-lg` and `display-md`.
+- **Archivo** handles all functional information. It replaced Hanken Grotesk, whose soft, humanist shapes shared Fraunces' warm register and left the pair without tension. Archivo's rational grotesque structure recedes so the serif can be the voice, and its `wdth` axis gives uppercase labels a drawn width instead of one faked with letter spacing.
 - Use uppercase for labels with slight tracking to evoke the feel of a printed theatrical program.
 
 ## Layout & Spacing
@@ -161,7 +161,7 @@ This design system uses a **Soft** shape language. Elements have slight rounding
 
 ### Navigation
 - **Header:** Transparent background that becomes a blurred Midnight Blue upon scroll. Use centered typography for the logo to reinforce the theatrical branding.
-- **Links:** Hanken Grotesk, uppercase, with 0.05em letter spacing.
+- **Links:** Archivo, uppercase, with 0.05em letter spacing.
 
 ### Cards (The "Playbill")
 - Cards should use a Midnight Blue background with a subtle Ivory border. 

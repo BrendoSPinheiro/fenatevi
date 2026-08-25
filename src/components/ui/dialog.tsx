@@ -6,6 +6,42 @@ import { cn } from '@/lib/utils/cn';
 
 import type { ReactNode } from 'react';
 
+/**
+ * Deixa inerte tudo o que está fora do diálogo e devolve uma função que
+ * restaura o estado anterior.
+ *
+ * Sobe do diálogo até o `<body>` e marca os irmãos de cada nível. `aria-modal`
+ * sozinho não basta: ele orienta o leitor de tela, mas o fundo continua
+ * clicável, focável pelo teclado e visível para auditoria — mesmo coberto por
+ * uma superfície opaca. `inert` remove os três de uma vez.
+ */
+function inertizarFundo(dialog: HTMLElement): () => void {
+  const marcados: HTMLElement[] = [];
+
+  for (let node: HTMLElement = dialog; node !== document.body;) {
+    const parent = node.parentElement;
+
+    if (parent === null) {
+      break;
+    }
+
+    for (const sibling of parent.children) {
+      if (sibling !== node && sibling instanceof HTMLElement && !sibling.inert) {
+        sibling.inert = true;
+        marcados.push(sibling);
+      }
+    }
+
+    node = parent;
+  }
+
+  return () => {
+    for (const element of marcados) {
+      element.inert = false;
+    }
+  };
+}
+
 /** Seletor dos elementos que podem receber foco dentro do diálogo. */
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -33,10 +69,11 @@ interface DialogProps {
  *   fechar, e não para o topo da página;
  * - `Tab` e `Shift+Tab` circulam dentro do diálogo (WCAG 2.2 — 2.1.2, sem
  *   armadilha de teclado: `Escape` sempre sai);
- * - o resto da página fica inerte para leitores de tela (`aria-hidden` no
- *   irmão) e o corpo não rola por baixo.
+ * - o resto da página fica inerte (`inert` em tudo o que está fora do
+ *   diálogo) e o corpo não rola por baixo.
  */
 export function Dialog({ isOpen, onClose, title, children, className }: DialogProps) {
+  const rootRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
   const titleId = useId();
@@ -55,6 +92,7 @@ export function Dialog({ isOpen, onClose, title, children, className }: DialogPr
 
     const { overflow } = document.body.style;
     document.body.style.overflow = 'hidden';
+    const restaurarFundo = rootRef.current === null ? null : inertizarFundo(rootRef.current);
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
@@ -89,6 +127,7 @@ export function Dialog({ isOpen, onClose, title, children, className }: DialogPr
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = overflow;
+      restaurarFundo?.();
       openerRef.current?.focus();
     };
   }, [isOpen, onClose]);
@@ -99,6 +138,7 @@ export function Dialog({ isOpen, onClose, title, children, className }: DialogPr
 
   return (
     <div
+      ref={rootRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}

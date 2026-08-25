@@ -31,16 +31,25 @@ Leia antes de: escrever classes, criar componente visual ou adicionar cor.
     `full` (pill, chips).
   - **Espaçamento:** `unit` (8px), `gutter` (24px), `margin-mobile` (20px),
     `margin-desktop` (64px), `stack-sm`/`stack-md`/`stack-lg` (16/32/80px).
-  - **Tipografia:** `--font-serif` (Bodoni Moda) e `--font-sans` (Hanken
-    Grotesk), carregadas por `next/font/google` no layout.
+  - **Tipografia:** `--font-serif` (Fraunces) e `--font-sans` (Archivo), carregadas por `next/font/google` no layout.
   - Fora do `@theme`, em `:root`: `--container-max` (1280px), durações
     (`--duration-*`) e camadas (`--z-*`).
 
 ## Tipografia
 
-- Duas famílias, e cada uma com um papel: **Bodoni Moda** é a voz do festival
-  (títulos, citações); **Hanken Grotesk** carrega toda a informação funcional
+- Duas famílias, e cada uma com um papel: **Fraunces** é a voz do festival
+  (títulos, citações); **Archivo** carrega toda a informação funcional
   (programação, descrições, rótulos).
+- A serifa é a Fraunces, e não uma didone, por legibilidade: a maior parte do
+  texto em `font-serif` fica entre 18px e 24px sobre fundo escuro, tamanho em que
+  hastes finas de alto contraste somem. O eixo `opsz` da Fraunces engrossa essas
+  hastes conforme o tamanho cai; o eixo `WONK`, ligado só em `display-lg` e
+  `display-md` (ver [`ui/text.tsx`](../../src/components/ui/text.tsx)), devolve a
+  excentricidade no cartaz.
+- A sans é a Archivo, e não uma grotesca macia, por contraste: a Fraunces já é
+  quente e orgânica, então a família funcional precisa ser fria e mecânica para
+  recuar. O eixo `wdth` da Archivo dá largura desenhada aos rótulos em caixa
+  alta — hoje aplicado em `label-md`.
 - Ambas entram por `next/font/google` em
   [`src/app/[locale]/layout.tsx`](../../src/app/[locale]/layout.tsx): baixadas
   e auto-hospedadas no build, sem requisição a terceiros em runtime e sem pacote

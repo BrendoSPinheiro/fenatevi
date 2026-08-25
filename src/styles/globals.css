@@ -125,12 +125,12 @@
 
   /*
    * Tipografia. As duas famílias entram por `next/font/google` no layout, que
-   * define `--font-bodoni-moda` e `--font-hanken-grotesk` com auto-hospedagem.
+   * define `--font-fraunces` e `--font-archivo` com auto-hospedagem.
    * Os fallbacks cobrem o intervalo antes do carregamento e a falha da fonte.
    */
-  --font-serif: var(--font-bodoni-moda), ui-serif, Georgia, 'Times New Roman', serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, 'Times New Roman', serif;
   --font-sans:
-    var(--font-hanken-grotesk), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    var(--font-archivo), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial, sans-serif;
 }
 

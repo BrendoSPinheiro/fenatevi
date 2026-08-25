@@ -1,6 +1,6 @@
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { Bodoni_Moda, Hanken_Grotesk } from 'next/font/google';
+import { Archivo, Fraunces } from 'next/font/google';
 import { notFound } from 'next/navigation';
 
 import { CurtainTransition } from '@/components/layout/curtain-transition';
@@ -20,20 +20,27 @@ import type { Metadata } from 'next';
  * `next/font/google`: nenhuma requisição a terceiros em runtime, `font-display:
  * swap` e preload automáticos, nenhum pacote novo no `package.json`.
  *
- * Ambas são variáveis — carrega-se apenas o eixo de peso, no subset latino, o
- * que mantém as duas dentro do orçamento do caminho crítico.
+ * Ambas são variáveis, no subset latino, o que as mantém dentro do orçamento do
+ * caminho crítico. Cada uma traz um eixo além do peso:
+ *
+ * - Fraunces: `opsz`, que engrossa as hastes finas nos tamanhos de texto — o
+ *   motivo de ela ter substituído uma didone — e `WONK`, ligado só nos títulos
+ *   grandes de `ui/text.tsx`;
+ * - Archivo: `wdth`, que dá aos rótulos em caixa alta uma largura desenhada em
+ *   vez de simulada por espaçamento. É a voz do programa impresso.
  */
-const bodoniModa = Bodoni_Moda({
+const fraunces = Fraunces({
   subsets: ['latin'],
-  axes: ['opsz'],
+  axes: ['opsz', 'WONK'],
   display: 'swap',
-  variable: '--font-bodoni-moda',
+  variable: '--font-fraunces',
 });
 
-const hankenGrotesk = Hanken_Grotesk({
+const archivo = Archivo({
   subsets: ['latin'],
+  axes: ['wdth'],
   display: 'swap',
-  variable: '--font-hanken-grotesk',
+  variable: '--font-archivo',
 });
 
 interface LocaleLayoutProps {
@@ -124,7 +131,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <html
       lang={localeHtmlLang[locale as Locale]}
-      className={`${bodoniModa.variable} ${hankenGrotesk.variable}`}
+      className={`${fraunces.variable} ${archivo.variable}`}
     >
       <body className="flex min-h-dvh flex-col">
         <NextIntlClientProvider>
