@@ -14,7 +14,7 @@ import { EmptyState } from '@/components/ui/empty-state';
 import { ProvenancedImage } from '@/components/ui/provenanced-image';
 import { MAIN_CONTENT_ID } from '@/components/ui/skip-link';
 import { Tag } from '@/components/ui/tag';
-import { Text } from '@/components/ui/text';
+import { Text, textClassName } from '@/components/ui/text';
 import { activities } from '@/content/activities';
 import { currentEdition, displayedEdition } from '@/content/festival';
 import { stagePhotos } from '@/content/images';
@@ -71,6 +71,7 @@ export default async function HomePage({ params }: HomePageProps) {
   const featured =
     chronological.find((activity) => activity.accessibility.length > 0) ?? chronological[0];
   const secondary = chronological.filter((activity) => activity.id !== featured?.id).slice(0, 3);
+  const featuredVenue = featured === undefined ? undefined : findVenue(featured.venueId);
   const firstDay = days[0] ?? '';
 
   const dates = t('dates', {
@@ -158,11 +159,16 @@ export default async function HomePage({ params }: HomePageProps) {
           <Reveal as="section" aria-labelledby="em-cena" className="mt-stack-md">
             {displayedEditionPhase === 'after' ? (
               <>
+                {/*
+                 * O ano vive **no título**, não só no corpo. Logo acima desta
+                 * seção o herói anuncia a edição vigente; um "esta edição está
+                 * encerrada" sem ano é lido como se fosse ela que terminou.
+                 */}
                 <Text variant="headline-lg" as="h2" id="em-cena" className="text-foreground">
-                  {t('nowEndedTitle')}
+                  {t('nowEndedTitle', { year: displayedEdition.year })}
                 </Text>
                 <Text variant="body-lg" className="mt-3 max-w-prose text-foreground-muted">
-                  {t('nowEndedBody', { year: displayedEdition.year })}
+                  {t('nowEndedBody')}
                 </Text>
                 <Link href="/memoria" className={`${buttonClassName('secondary')} mt-6`}>
                   {t('nowEndedCta')}
@@ -198,8 +204,17 @@ export default async function HomePage({ params }: HomePageProps) {
 
           {/* ------------------------------------------------- Ato III: a seguir */}
           <Reveal as="section" aria-labelledby="a-seguir" className="mt-stack-lg">
+            {/*
+             * Três estados, não dois. Enquanto a edição exibida for um acervo
+             * já encerrado, "nos próximos dias" é falso: estas são as primeiras
+             * sessões de uma edição que aconteceu.
+             */}
             <Text variant="headline-lg" as="h2" id="a-seguir" className="text-foreground">
-              {isEditionRunning ? t('nextTitleToday') : t('nextTitleUpcoming')}
+              {isEditionRunning
+                ? t('nextTitleToday')
+                : displayedEditionPhase === 'after'
+                  ? t('nextTitleArchive', { year: displayedEdition.year })
+                  : t('nextTitleUpcoming')}
             </Text>
 
             {secondary.length === 0 ? (
@@ -212,15 +227,32 @@ export default async function HomePage({ params }: HomePageProps) {
                   return (
                     <li key={activity.id}>
                       <Card as="article" className="h-full p-4">
-                        <p className="font-serif text-xl text-secondary">
-                          <time dateTime={activity.startsAt}>
+                        {/*
+                         * Estes cartões não estão agrupados por dia como as
+                         * linhas de `/programacao` estão — sem a data, "16h00"
+                         * é um horário de dia nenhum.
+                         */}
+                        <time dateTime={activity.startsAt} className="block">
+                          <span
+                            className={textClassName('caption', 'block text-foreground-subtle')}
+                          >
+                            {formatShortDay(festivalDayOf(activity.startsAt), locale)}
+                            {' · '}
+                            {formatWeekday(festivalDayOf(activity.startsAt), locale)}
+                          </span>
+                          <span className="mt-0.5 block font-serif text-xl text-secondary">
                             {formatSessionTime(activity.startsAt, locale)}
-                          </time>
-                        </p>
+                          </span>
+                        </time>
+                        {/*
+                         * O título é o único controle do cartão, então ele pode
+                         * ocupar 44px sem engolir outro alvo — e o nome
+                         * acessível continua sendo só o título.
+                         */}
                         <h3 className="mt-2 font-serif text-lg text-foreground">
                           <Link
                             href={activityHref(activity)}
-                            className="no-underline hover:underline"
+                            className="flex min-h-11 items-center no-underline hover:underline"
                           >
                             <ArchiveText>{activity.title}</ArchiveText>
                           </Link>
@@ -278,6 +310,24 @@ export default async function HomePage({ params }: HomePageProps) {
                   >
                     {featured.company}
                   </ArchiveText>
+
+                  {/*
+                   * Quando e onde: a pergunta que traz o público de Vitória ao
+                   * portal. O destaque a respondia só depois de um clique.
+                   */}
+                  <p className="mt-3 font-sans text-sm text-foreground-subtle">
+                    <time dateTime={featured.startsAt}>
+                      {formatShortDay(festivalDayOf(featured.startsAt), locale)}
+                      {', '}
+                      {formatSessionTime(featured.startsAt, locale)}
+                    </time>
+                    {featuredVenue !== undefined && (
+                      <>
+                        {' · '}
+                        <ArchiveText>{featuredVenue.name}</ArchiveText>
+                      </>
+                    )}
+                  </p>
 
                   <Link
                     href={activityHref(featured)}
@@ -339,12 +389,17 @@ export default async function HomePage({ params }: HomePageProps) {
               {t('strandsTitle')}
             </Text>
 
-            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+            {/*
+             * Coluna única. Em duas colunas, uma frente ímpar sobra na segunda
+             * linha e a régua dela fica pendurada sob metade da página — e a
+             * lista de frentes é curta o bastante para não precisar da divisão.
+             */}
+            <ul className="mt-6 flex flex-col">
               {Object.entries(counts).map(([strand, count]) => (
                 <li key={strand}>
                   <Link
                     href={`/programacao?frente=${strand}`}
-                    className="flex min-h-11 items-baseline justify-between gap-4 border-b border-outline-variant/60 py-3 no-underline"
+                    className="flex min-h-11 items-baseline justify-between gap-4 border-b border-outline-variant/60 py-3 no-underline transition-colors hover:border-outline"
                   >
                     <span className="font-serif text-xl text-foreground">
                       {tAcervo(`strands.${strand}`)}
@@ -371,14 +426,23 @@ export default async function HomePage({ params }: HomePageProps) {
               <VenueSchematic />
 
               <div>
-                <ul className="flex flex-col gap-2">
+                {/*
+                 * Com o endereço: é o que o aviso do esquema promete, e é a
+                 * informação que resolve "como eu chego lá" sem mais um clique.
+                 */}
+                <ul className="flex flex-col">
                   {venues.slice(0, 4).map((venue) => (
                     <li key={venue.id}>
                       <Link
                         href={`/espacos/${venue.id}`}
-                        className="inline-flex min-h-11 items-center font-sans text-base"
+                        className="group flex min-h-11 flex-col justify-center gap-0.5 border-b border-outline-variant/60 py-3 no-underline transition-colors hover:border-outline"
                       >
-                        <ArchiveText>{venue.name}</ArchiveText>
+                        <ArchiveText className="font-sans text-base text-foreground group-hover:underline">
+                          {venue.name}
+                        </ArchiveText>
+                        <ArchiveText className="font-sans text-sm text-foreground-subtle">
+                          {venue.address}
+                        </ArchiveText>
                       </Link>
                     </li>
                   ))}
@@ -409,6 +473,10 @@ export default async function HomePage({ params }: HomePageProps) {
               {t('noticiasTitle')}
             </Text>
 
+            {/*
+             * Sem notícias, sem chamada. O estado vazio já diz tudo o que a
+             * rota de notícias diria; o botão só levaria ao mesmo vazio.
+             */}
             {newsNewestFirst.length === 0 ? (
               <EmptyState
                 className="mt-6"
@@ -429,9 +497,11 @@ export default async function HomePage({ params }: HomePageProps) {
               </ul>
             )}
 
-            <Link href="/noticias" className={`${buttonClassName('ghost')} mt-6`}>
-              {t('noticiasCta')}
-            </Link>
+            {newsNewestFirst.length > 0 && (
+              <Link href="/noticias" className={`${buttonClassName('ghost')} mt-6`}>
+                {t('noticiasCta')}
+              </Link>
+            )}
           </Reveal>
 
           {/* ------------------------------ Ato X: realização e parceiros */}
