@@ -1,9 +1,11 @@
 import { activities } from '@/content/activities';
+import { creativeProcesses } from '@/content/creative-processes';
 import { venues } from '@/content/venues';
+import { workshops } from '@/content/workshops';
 import { festivalDayOf } from '@/lib/utils/schedule';
 
 import type { ActivityFilters } from '@/lib/utils/schedule';
-import type { IsoDate, ProgramStrand } from '@/types/festival';
+import type { AccessibilityFeatureId, IsoDate, ProgramStrand } from '@/types/festival';
 
 /**
  * A tradução entre a URL e os filtros da programação.
@@ -30,10 +32,49 @@ export const STRANDS: readonly ProgramStrand[] = [
   'processo-criativo',
 ];
 
-/** Os dias que a edição exibida realmente tem. */
+/**
+ * Os dias que a edição exibida realmente tem.
+ *
+ * Lê as três fontes que a programação apresenta — sessões, oficinas e
+ * demonstrações de processo criativo —, e não só as sessões: um dia que só
+ * recebe oficina continua sendo um dia da edição.
+ */
 export const availableDays: readonly IsoDate[] = [
-  ...new Set(activities.map((activity) => festivalDayOf(activity.startsAt))),
+  ...new Set([
+    ...activities.map((activity) => festivalDayOf(activity.startsAt)),
+    ...workshops.flatMap((workshop) =>
+      workshop.sessions.map((session) => festivalDayOf(session.startsAt)),
+    ),
+    ...creativeProcesses.map((entry) => entry.date),
+  ]),
 ].sort((a, b) => a.localeCompare(b));
+
+/**
+ * A ordem canônica dos recursos de acessibilidade, para apresentação.
+ *
+ * Espelha a união do tipo. Nada aqui decide o que é oferecido ao visitante —
+ * quem decide é o acervo, em `accessibilityFilters`.
+ */
+const ACCESSIBILITY_ORDER: readonly AccessibilityFeatureId[] = [
+  'audioDescription',
+  'signLanguage',
+  'captions',
+  'wheelchairAccess',
+  'relaxedPerformance',
+];
+
+/**
+ * Os recursos de acessibilidade que a edição exibida **declara**.
+ *
+ * Derivado do conteúdo, nunca da união de tipos: oferecer "legendagem
+ * descritiva" como filtro numa edição que não a tem seria prometer um recorte
+ * que só devolve vazio.
+ */
+export const accessibilityFilters: readonly AccessibilityFeatureId[] = ACCESSIBILITY_ORDER.filter(
+  (feature) =>
+    activities.some((activity) => activity.accessibility.includes(feature)) ||
+    workshops.some((workshop) => workshop.accessibility.includes(feature)),
+);
 
 /** O primeiro valor de um parâmetro — a URL pode repetir a mesma chave. */
 function single(value: string | string[] | undefined): string | undefined {
@@ -49,6 +90,7 @@ export function parseProgramFilters(params: RawSearchParams): ActivityFilters {
   const day = single(params.dia);
   const strand = single(params.frente);
   const venueId = single(params.espaco);
+  const accessibility = single(params.acessibilidade);
 
   return {
     day: day !== undefined && availableDays.includes(day) ? day : undefined,
@@ -58,12 +100,22 @@ export function parseProgramFilters(params: RawSearchParams): ActivityFilters {
         : undefined,
     venueId:
       venueId !== undefined && venues.some((venue) => venue.id === venueId) ? venueId : undefined,
+    accessibility:
+      accessibility !== undefined &&
+      accessibilityFilters.includes(accessibility as AccessibilityFeatureId)
+        ? (accessibility as AccessibilityFeatureId)
+        : undefined,
   };
 }
 
 /** Algum filtro está ativo? É o que decide se "limpar filtros" aparece. */
 export function hasActiveFilters(filters: ActivityFilters): boolean {
-  return filters.day !== undefined || filters.strand !== undefined || filters.venueId !== undefined;
+  return (
+    filters.day !== undefined ||
+    filters.strand !== undefined ||
+    filters.venueId !== undefined ||
+    filters.accessibility !== undefined
+  );
 }
 
 /**
@@ -75,18 +127,19 @@ export function hasActiveFilters(filters: ActivityFilters): boolean {
  */
 export function programHref(
   filters: ActivityFilters,
-  changes: Partial<Record<'day' | 'strand' | 'venueId', string | null>> = {},
+  changes: Partial<Record<'day' | 'strand' | 'venueId' | 'accessibility', string | null>> = {},
   basePath = '/programacao',
 ): string {
   const merged = {
     dia: 'day' in changes ? changes.day : filters.day,
     frente: 'strand' in changes ? changes.strand : filters.strand,
     espaco: 'venueId' in changes ? changes.venueId : filters.venueId,
+    acessibilidade: 'accessibility' in changes ? changes.accessibility : filters.accessibility,
   };
 
   const query = new URLSearchParams();
 
-  for (const key of ['dia', 'frente', 'espaco'] as const) {
+  for (const key of ['dia', 'frente', 'espaco', 'acessibilidade'] as const) {
     const value = merged[key];
 
     if (value !== null && value !== undefined) {

@@ -77,6 +77,32 @@ export function formatWeekday(value: IsoDate, locale: string): string {
   return formatFestivalDate(value, locale, { weekday: 'long' });
 }
 
+/*
+ * As três partes de uma data, separadas.
+ *
+ * A composição editorial da programação empilha o número, o mês e o dia da
+ * semana em escalas diferentes — o número grande, o resto em rubrica —, e para
+ * isso precisa de cada parte isolada. Continuam vindo do `Intl`: em inglês o
+ * mês abreviado é "Oct" e em português é "out.", e nenhuma das duas é montada
+ * à mão. A caixa alta fica com o CSS, para que o leitor de tela receba o texto
+ * como o idioma o escreve.
+ */
+
+/** Só o número do dia: "13". */
+export function formatDayNumber(value: IsoDate, locale: string): string {
+  return formatFestivalDate(value, locale, { day: 'numeric' });
+}
+
+/** Só o mês abreviado: "out.", "Oct", "oct". */
+export function formatMonthShort(value: IsoDate, locale: string): string {
+  return formatFestivalDate(value, locale, { month: 'short' });
+}
+
+/** Só o dia da semana abreviado: "dom.", "Sun", "dom". */
+export function formatWeekdayShort(value: IsoDate, locale: string): string {
+  return formatFestivalDate(value, locale, { weekday: 'short' });
+}
+
 /**
  * Formata uma duração em minutos: "50 min", "1 h 40 min".
  *

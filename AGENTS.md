@@ -74,7 +74,7 @@ src/hooks/               Hooks reutilizáveis
 src/lib/animation/       gsap/, lenis/, three/
 src/lib/i18n/            Rotas, navegação, configuração do next-intl
 src/lib/seo/             Domínio canônico e constantes da imagem de compartilhamento
-src/lib/utils/           Funções puras (schedule, format, program-query)
+src/lib/utils/           Funções puras (schedule, format, program, program-query)
 src/providers/           Providers globais (hoje: smooth scroll)
 src/styles/              globals.css e design tokens
 src/test/                Setup do Vitest

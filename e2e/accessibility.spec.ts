@@ -88,6 +88,9 @@ test.describe('Acessibilidade', () => {
     '',
     '/programacao',
     '/programacao?dia=2024-10-19&frente=mostra-oficial',
+    '/programacao?frente=oficina',
+    '/programacao?frente=processo-criativo',
+    '/programacao?acessibilidade=signLanguage',
     '/programacao/grade?visao=espaco&dia=2024-10-13',
     '/programacao/grade?visao=horario&dia=2024-10-19',
     '/programacao/grade?visao=semana',
@@ -143,9 +146,14 @@ test.describe('Acessibilidade', () => {
 
   test('o painel de filtros aberto não apresenta violações do axe', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto('/programacao');
-    await page.getByRole('button', { name: 'Filtrar' }).first().click();
-    await expect(page.getByRole('dialog')).toBeVisible();
+
+    /*
+     * O painel abre sozinho quando um dos seus filtros está aplicado — é assim
+     * que a tela evita que ele se feche a cada navegação sem guardar estado de
+     * cliente. A URL abaixo é, portanto, o painel aberto.
+     */
+    await page.goto('/programacao?espaco=casa&acessibilidade=signLanguage');
+    await expect(page.getByRole('link', { name: /Audiodescrição/ }).first()).toBeVisible();
 
     expect(await varrer(page)).toEqual([]);
   });

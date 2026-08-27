@@ -1,4 +1,11 @@
-import type { Activity, IsoDate, IsoDateTime, ProgramStrand, Workshop } from '@/types/festival';
+import type {
+  AccessibilityFeatureId,
+  Activity,
+  IsoDate,
+  IsoDateTime,
+  ProgramStrand,
+  Workshop,
+} from '@/types/festival';
 
 /**
  * Derivações da programação — funções puras, sem componente e sem relógio.
@@ -24,6 +31,14 @@ export interface ActivityFilters {
   readonly day?: IsoDate | undefined;
   readonly strand?: ProgramStrand | undefined;
   readonly venueId?: string | undefined;
+  /**
+   * Recurso de acessibilidade que a atividade precisa declarar.
+   *
+   * É metadado da sessão — Libras, audiodescrição —, não configuração do
+   * portal: filtrar por ele responde "o que eu consigo assistir?", que é a
+   * pergunta de quem depende do recurso.
+   */
+  readonly accessibility?: AccessibilityFeatureId | undefined;
 }
 
 /**
@@ -142,7 +157,13 @@ export function filterActivities(
       return false;
     }
 
-    return filters.venueId === undefined || activity.venueId === filters.venueId;
+    if (filters.venueId !== undefined && activity.venueId !== filters.venueId) {
+      return false;
+    }
+
+    return (
+      filters.accessibility === undefined || activity.accessibility.includes(filters.accessibility)
+    );
   });
 }
 

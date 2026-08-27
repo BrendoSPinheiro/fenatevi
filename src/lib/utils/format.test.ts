@@ -2,11 +2,14 @@ import { describe, expect, it } from 'vitest';
 
 import {
   festivalDayFromDate,
+  formatDayNumber,
   formatDuration,
   formatFestivalDate,
+  formatMonthShort,
   formatSessionTime,
   formatShortDay,
   formatWeekday,
+  formatWeekdayShort,
   parseIsoDate,
 } from './format';
 
@@ -85,5 +88,34 @@ describe('festivalDayFromDate', () => {
   it('converte um instante qualquer para o dia em Vitória', () => {
     // 01h UTC de 14 de outubro ainda é 22h do dia 13 no fuso do festival.
     expect(festivalDayFromDate(new Date('2024-10-14T01:00:00Z'))).toBe('2024-10-13');
+  });
+});
+
+/*
+ * A composição editorial da programação empilha o número, o mês e o dia da
+ * semana em escalas diferentes, e para isso precisa de cada parte isolada. Elas
+ * continuam vindo do `Intl` — o mês abreviado é "out." em português e "Oct" em
+ * inglês, e nenhum dos dois é montado à mão. A caixa alta fica com o CSS.
+ */
+describe('as partes de uma data', () => {
+  it('devolve o número do dia sem o resto', () => {
+    expect(formatDayNumber('2024-10-13', 'pt-BR')).toBe('13');
+    expect(formatDayNumber('2024-10-13', 'en')).toBe('13');
+  });
+
+  it('abrevia o mês conforme o idioma', () => {
+    expect(formatMonthShort('2024-10-13', 'pt-BR')).toBe('out.');
+    expect(formatMonthShort('2024-10-13', 'en')).toBe('Oct');
+  });
+
+  it('abrevia o dia da semana conforme o idioma', () => {
+    expect(formatWeekdayShort('2024-10-13', 'pt-BR')).toBe('dom.');
+    expect(formatWeekdayShort('2024-10-13', 'en')).toBe('Sun');
+  });
+
+  it('não escorrega de dia pelo fuso de quem executa', () => {
+    // O dia 13 às 00h em UTC-3 ainda é dia 12 em UTC; a formatação é sempre UTC.
+    expect(formatDayNumber('2024-10-13', 'pt-BR')).toBe('13');
+    expect(formatWeekdayShort('2024-10-20', 'pt-BR')).toBe('dom.');
   });
 });

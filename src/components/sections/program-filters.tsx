@@ -1,114 +1,38 @@
-import { getLocale, getTranslations } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 
 import { ArchiveText } from '@/components/ui/archive-text';
 import { Chip } from '@/components/ui/chip';
 import { venues } from '@/content/venues';
-import { formatShortDay } from '@/lib/utils/format';
-import { availableDays, programHref, STRANDS } from '@/lib/utils/program-query';
+import { accessibilityFilters, programHref } from '@/lib/utils/program-query';
 
 import type { ActivityFilters } from '@/lib/utils/schedule';
 
 interface ProgramFiltersProps {
   readonly filters: ActivityFilters;
-  /**
-   * O dia de hoje, **quando ele cai dentro da edição exibida**; `null` quando
-   * não cai.
-   *
-   * Os chips de momento (hoje, amanhã) só existem enquanto significam alguma
-   * coisa. A edição exibida hoje é a de 2024, inteiramente no passado: um chip
-   * "hoje" ali levaria a um dia sem programação e a um estado vazio — pior do
-   * que não oferecer o atalho. Quando a edição vigente publicar sua
-   * programação, os chips aparecem sozinhos.
-   */
-  readonly today?: string | null;
 }
 
 /**
- * A barra de filtros da programação.
+ * Os filtros que **não** são a navegação principal da tela.
  *
- * Server Component inteiro, e **todos os controles são links**. Cada chip
- * aponta para a mesma rota com a query alterada, o que dá de uma vez: o link
- * profundo que a home usa, o compartilhamento do resultado filtrado, e a
- * filtragem funcionando com o JavaScript desligado.
+ * Dia e frente saíram desta barra: eles deixaram de ser filtros de catálogo e
+ * viraram a navegação editorial da página — a tira de dias e o índice de
+ * frentes. O que sobra aqui é o recorte mais específico, o que alguém procura
+ * depois de já estar passeando pela programação: o espaço da cidade e o recurso
+ * de acessibilidade de que precisa.
  *
- * Cada grupo é um `fieldset`-como-grupo anunciado por `aria-labelledby`, para
- * que o leitor de tela diga "Dia" antes de ler os treze chips de dia — sem
- * isso, seriam trinta links soltos sem contexto.
+ * Todos os controles continuam sendo links que alteram a query. É isso que dá
+ * de uma vez o link profundo, o compartilhamento do resultado filtrado e a
+ * filtragem funcionando **sem JavaScript**.
+ *
+ * Cada grupo é anunciado por `aria-labelledby`, para que o leitor de tela diga
+ * "Espaço" antes de ler os oito espaços — sem isso, seriam links soltos sem
+ * contexto.
  */
-export async function ProgramFilters({ filters, today = null }: ProgramFiltersProps) {
-  const locale = await getLocale();
+export async function ProgramFilters({ filters }: ProgramFiltersProps) {
   const t = await getTranslations('programacao');
-  const tAcervo = await getTranslations('acervo');
-
-  const todayIndex = today === null ? -1 : availableDays.indexOf(today);
-  const tomorrow = todayIndex >= 0 ? (availableDays[todayIndex + 1] ?? null) : null;
-
-  const momentOptions = [
-    ...(today === null
-      ? []
-      : [
-          {
-            key: 'hoje',
-            label: t('momentToday'),
-            href: programHref(filters, { day: today }),
-            isActive: filters.day === today,
-            isArchive: false,
-          },
-        ]),
-    ...(tomorrow === null
-      ? []
-      : [
-          {
-            key: 'amanha',
-            label: t('momentTomorrow'),
-            href: programHref(filters, { day: tomorrow }),
-            isActive: filters.day === tomorrow,
-            isArchive: false,
-          },
-        ]),
-  ];
+  const tFeatures = await getTranslations('accessibilityFeatures');
 
   const groups = [
-    ...(momentOptions.length === 0
-      ? []
-      : [
-          {
-            id: 'momento',
-            label: t('momentLabel'),
-            allLabel: t('momentAll'),
-            allHref: programHref(filters, { day: null }),
-            isAllActive: filters.day === undefined,
-            options: momentOptions,
-          },
-        ]),
-    {
-      id: 'dia',
-      label: t('dayLabel'),
-      allLabel: t('allDays'),
-      allHref: programHref(filters, { day: null }),
-      isAllActive: filters.day === undefined,
-      options: availableDays.map((day) => ({
-        key: day,
-        label: formatShortDay(day, locale),
-        href: programHref(filters, { day }),
-        isActive: filters.day === day,
-        isArchive: false,
-      })),
-    },
-    {
-      id: 'frente',
-      label: t('strandLabel'),
-      allLabel: t('allStrands'),
-      allHref: programHref(filters, { strand: null }),
-      isAllActive: filters.strand === undefined,
-      options: STRANDS.map((strand) => ({
-        key: strand,
-        label: tAcervo(`strands.${strand}`),
-        href: programHref(filters, { strand }),
-        isActive: filters.strand === strand,
-        isArchive: false,
-      })),
-    },
     {
       id: 'espaco',
       label: t('venueLabel'),
@@ -124,10 +48,33 @@ export async function ProgramFilters({ filters, today = null }: ProgramFiltersPr
         isArchive: true,
       })),
     },
+    /*
+     * A acessibilidade só vira filtro se a edição exibida declarar algum
+     * recurso. Oferecer "audiodescrição" numa edição que não a tem seria
+     * prometer um recorte que só devolve vazio.
+     */
+    ...(accessibilityFilters.length === 0
+      ? []
+      : [
+          {
+            id: 'acessibilidade',
+            label: t('accessibilityLabel'),
+            allLabel: t('allAccessibility'),
+            allHref: programHref(filters, { accessibility: null }),
+            isAllActive: filters.accessibility === undefined,
+            options: accessibilityFilters.map((feature) => ({
+              key: feature,
+              label: tFeatures(feature),
+              href: programHref(filters, { accessibility: feature }),
+              isActive: filters.accessibility === feature,
+              isArchive: false,
+            })),
+          },
+        ]),
   ];
 
   return (
-    <div aria-label={t('filtersLabel')} className="flex flex-col gap-5">
+    <div aria-label={t('filtersLabel')} className="flex flex-col gap-6">
       {groups.map((group) => (
         <div key={group.id} role="group" aria-labelledby={`filtro-${group.id}`}>
           <p
@@ -136,7 +83,7 @@ export async function ProgramFilters({ filters, today = null }: ProgramFiltersPr
           >
             {group.label}
           </p>
-          <ul className="mt-2 flex flex-wrap gap-2">
+          <ul className="mt-3 flex flex-wrap gap-2">
             <li>
               <Chip href={group.allHref} isActive={group.isAllActive}>
                 {group.allLabel}

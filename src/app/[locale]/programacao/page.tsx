@@ -1,24 +1,22 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { DayProgram } from '@/components/sections/day-program';
-import { PageHeader } from '@/components/sections/page-header';
-import { MobileFilterPanel } from '@/components/sections/mobile-filter-panel';
-import { ProgramFilters } from '@/components/sections/program-filters';
+import { ProgramDayNav } from '@/components/sections/program-day-nav';
+import { ProgramFilterDisclosure } from '@/components/sections/program-filter-disclosure';
+import { ProgramMasthead } from '@/components/sections/program-masthead';
+import { ProgramSection } from '@/components/sections/program-section';
+import { ProgramStrandNav } from '@/components/sections/program-strand-nav';
 import { buttonClassName } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
-import { DemoContentNotice } from '@/components/ui/demo-content-notice';
 import { EmptyState } from '@/components/ui/empty-state';
 import { MAIN_CONTENT_ID } from '@/components/ui/skip-link';
-import { activities } from '@/content/activities';
 import { Link } from '@/lib/i18n/navigation';
 import { festivalDayFromDate } from '@/lib/utils/format';
+import { editionScale, programGroups } from '@/lib/utils/program';
 import {
   availableDays,
-  hasActiveFilters,
   parseProgramFilters,
   type RawSearchParams,
 } from '@/lib/utils/program-query';
-import { filterActivities, groupByDay } from '@/lib/utils/schedule';
 
 import type { Metadata } from 'next';
 
@@ -37,11 +35,24 @@ export async function generateMetadata({
 }
 
 /**
- * A programação completa, filtrável e agrupada por dia.
+ * A programação da edição — a vitrine editorial do que há para assistir.
  *
- * Server Component: os filtros vêm de `searchParams`, não de estado. A página
- * renderiza sob demanda por causa da query, o que aqui é irrelevante — não há
- * I/O, só computação sobre um array em memória.
+ * **A tela responde "o que eu quero assistir?", e não "quando e onde".** Essa
+ * segunda pergunta é da grade diária, e a divisão explica cada decisão daqui: a
+ * programação se organiza pelas **frentes** do festival, não pelo relógio; o
+ * nome do espetáculo vem antes do horário; e os controles de filtragem entram
+ * depois do conteúdo, não antes dele. Quem chega é recebido pela programação, e
+ * não por uma parede de filtros.
+ *
+ * As cinco frentes são reais e vinham de três arquivos diferentes do acervo —
+ * espetáculos, oficinas e demonstrações de processo criativo. `lib/utils/program`
+ * as reúne; sem isso, "Oficina" e "Processo criativo" continuariam sendo
+ * filtros que nunca devolvem nada.
+ *
+ * Server Component. Os filtros vêm de `searchParams`, nunca de estado: é o que
+ * dá link profundo, resultado compartilhável e filtragem sem JavaScript de uma
+ * vez só. A página renderiza sob demanda por causa da query, o que aqui é
+ * irrelevante — não há I/O, só computação sobre arrays em memória.
  */
 export default async function ProgramacaoPage({ params, searchParams }: ProgramacaoPageProps) {
   const { locale } = await params;
@@ -49,8 +60,9 @@ export default async function ProgramacaoPage({ params, searchParams }: Programa
 
   const t = await getTranslations('programacao');
   const filters = parseProgramFilters(await searchParams);
-  const results = filterActivities(activities, filters);
-  const days = groupByDay(results);
+  const groups = programGroups(filters);
+  const total = groups.reduce((sum, group) => sum + group.items.length, 0);
+  const scale = editionScale(availableDays);
 
   /*
    * O dia de hoje só interessa se ele cair dentro da edição exibida. Como esta
@@ -63,56 +75,26 @@ export default async function ProgramacaoPage({ params, searchParams }: Programa
 
   return (
     <main id={MAIN_CONTENT_ID} tabIndex={-1}>
-      <PageHeader title={t('title')} description={t('description')} />
+      <ProgramMasthead scale={scale} />
 
-      <Container>
-        <DemoContentNotice className="mb-stack-md" />
-
+      <Container className="pb-stack-lg">
         {/*
-         * Uma única barra de filtros, apresentada de dois jeitos: inline a
-         * partir de `md`, e dentro do painel abaixo de `md`. O painel recebe a
-         * mesma árvore já renderizada no servidor — nada é reimplementado, e
-         * sem JavaScript a barra inline continua sendo a resposta.
+         * A navegação editorial vem antes dos filtros e no lugar deles: os dois
+         * eixos pelos quais alguém passeia por um programa de festival — o dia
+         * e a frente — deixaram de ser chips numa barra de busca.
          */}
-        <div className="hidden md:block">
-          <ProgramFilters filters={filters} today={today} />
+        <div className="flex flex-col gap-stack-md border-t border-outline-variant/60 pt-8">
+          <ProgramDayNav filters={filters} today={today} />
+          <ProgramStrandNav filters={filters} />
         </div>
 
-        <MobileFilterPanel resultLabel={t('resultCount', { count: results.length })}>
-          <ProgramFilters filters={filters} today={today} />
-        </MobileFilterPanel>
-
-        {/*
-         * Sem JavaScript o painel não abre — então o controle que o abriria
-         * desaparece, e a barra completa toma o seu lugar. Ver o par
-         * `.js-only` / `.no-js-only` em `globals.css`.
-         */}
-        <noscript>{'<style>.js-only{display:none}.no-js-only{display:block}</style>'}</noscript>
-
-        <div className="no-js-only mt-5 md:hidden">
-          <ProgramFilters filters={filters} today={today} />
+        <div className="mt-stack-md">
+          <ProgramFilterDisclosure filters={filters} total={total} />
         </div>
 
-        <div className="mt-stack-md flex flex-wrap items-center justify-between gap-4 border-t border-outline-variant/60 pt-6">
-          {/*
-           * A contagem é `aria-live="polite"`: sem JavaScript ela é apenas o
-           * texto da página nova, e com JavaScript quem navega por teclado ouve
-           * quantos resultados o filtro deixou, sem precisar procurar.
-           */}
-          <p aria-live="polite" className="font-sans text-sm text-foreground-muted">
-            {t('resultCount', { count: results.length })}
-          </p>
-
-          {hasActiveFilters(filters) && (
-            <Link href="/programacao" className={buttonClassName('secondary')}>
-              {t('clearFilters')}
-            </Link>
-          )}
-        </div>
-
-        {days.length === 0 ? (
+        {groups.length === 0 ? (
           <EmptyState
-            className="mt-stack-md mb-stack-lg"
+            className="mt-stack-md"
             title={t('emptyTitle')}
             description={t('emptyBody')}
             action={
@@ -122,11 +104,9 @@ export default async function ProgramacaoPage({ params, searchParams }: Programa
             }
           />
         ) : (
-          <div className="pb-stack-lg">
-            {days.map((day) => (
-              <DayProgram key={day.date} day={day} />
-            ))}
-          </div>
+          groups.map((group, index) => (
+            <ProgramSection key={group.strand} group={group} isFirst={index === 0} />
+          ))
         )}
       </Container>
     </main>
