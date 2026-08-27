@@ -286,7 +286,18 @@
       "acervo-completo": "Explore this edition"
     },
     "noPageNotice": "This edition does not have its own page yet.",
-    "scopeNote": "Each published edition may include visual identity, summary, complete programme, performances, photographs, honourees, news, graphic materials, documents, participants and sponsors."
+    "scopeNote": "Each published edition may include visual identity, summary, complete programme, performances, photographs, honourees, news, graphic materials, documents, participants and sponsors.",
+    "preview": {
+      "noticeTitle": "Layout preview",
+      "noticeBody": "The 2005–2023 editions are here so the timeline can be evaluated: the photographs are illustrative and do not depict the festival, and the archive percentage is an estimate. The 2024, 2025 and 2026 editions are real data.",
+      "summaries": {
+        "0": "Printed programmes and posters from the {edition}th edition await digitisation.",
+        "1": "Photographic records from {year} have not yet been added to the digital archive.",
+        "2": "The {edition}th edition is listed in the organisation’s files; the material has not been transcribed yet.",
+        "3": "Programme, productions and credits for {year} will be published as digitisation advances."
+      }
+    },
+    "axisLabel": "Jump to an edition"
   },
   "edicao": {
     "kicker": "Archive · edition ended",
@@ -363,6 +374,13 @@
     "avarento": "Performance poster: an elderly man clutching a strongbox, in a comic scene.",
     "homenageadoBere": "Portrait of Bere, Luiz Carlos Siqueira, honouree of the 2024 edition.",
     "homenageadoAlcides": "Portrait of Alcides Luiz Rodrigues Pereira, honouree of the 2024 edition.",
-    "capa2024": "Cover of the 2024 printed programme, with theatrical masks and the festival name."
+    "capa2024": "Cover of the 2024 printed programme, with theatrical masks and the festival name.",
+    "previaSilhuetas": "Illustrative photograph: three actors in silhouette against a lit red curtain.",
+    "previaCortina": "Illustrative photograph: a closed red velvet curtain over a stage.",
+    "previaPlateiaVazia": "Illustrative photograph: the empty auditorium of a historic theatre, seen from the back of the house.",
+    "previaTeatroHistorico": "Illustrative photograph: the interior of a historic theatre, with gilded boxes and a red curtain.",
+    "previaPlateiaDoPalco": "Illustrative photograph: a full audience seen from the stage during a performance.",
+    "previaCasaCheia": "Illustrative photograph: a packed theatre with boxes on several levels.",
+    "previaCorpoEmCena": "Illustrative photograph: a dancer in motion, lit against a dark background."
   }
 }

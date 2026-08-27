@@ -88,7 +88,36 @@ documento é descritivo; cada item vira tarefa quando for pedido.
     e atribuí-las a um teatro nomeado seria uma afirmação que o material não
     sustenta. Nenhum espaço declara fotografia; a página de espaço trata a
     ausência com área neutra, sem dizer nada ao visitante sobre isso.
-21. **`ImageAsset` não guarda as dimensões do arquivo, e o teto de largura é
+21. **A linha do tempo da memória apresenta conteúdo de prévia, ligado por
+    padrão.** As edições de 2005 a 2023 e as suas fotografias são ilustrativas —
+    a tela declara isso em texto, nenhuma delas vira link para uma página de
+    edição, e nada disso alimenta contagem, resumo ou página. Fica em
+    `src/content/mock/timeline-preview.ts`, atrás de `TIMELINE_PREVIEW_ENABLED`,
+    e é o único arquivo a apagar quando os dados reais chegarem. Decisão
+    consciente do mantenedor enquanto o acervo histórico não existir.
+22. **`src/content/images.test.ts` não cobre as fotografias de prévia.** Elas são
+    remotas (`images.unsplash.com`, autorizado em `next.config.ts`), e o teste
+    garante apenas que toda imagem **em `public/`** existe. O acervo real
+    continua inteiramente coberto; a lacuna some junto com a prévia.
+23. **`/memoria` deixou de ser gerada estaticamente.** A rota lê `searchParams`
+    para escolher entre as duas variantes de linha do tempo (`?linha=`). É
+    temporário por construção: quando a variante for escolhida, a leitura sai e
+    a rota volta a ser estática.
+24. **Duas variantes da linha do tempo convivem no repositório.**
+    `edition-timeline-spine.tsx` e `edition-timeline-rail.tsx` duplicam marcação
+    e classes **de propósito**, e o CSS do eixo é duplicado pelo mesmo motivo. A
+    que não for escolhida é apagada por inteiro. Não "conserte" a duplicação
+    extraindo um componente comum — isso encareceria justamente a deleção que a
+    duplicação existe para baratear.
+    A tira tem ainda uma folha de cliente própria,
+    `edition-timeline-rail-wheel.tsx`, que converte a rolagem vertical em avanço
+    horizontal; ela também some com a variante.
+25. **O cabeçalho vaza cerca de 36px na horizontal em 320px, em todas as telas.**
+    O grupo do seletor de idioma com o botão de áreas não cabe, e o documento
+    passa a rolar de lado — contra "A Regra do Documento Que Não Anda de Lado".
+    É anterior às mudanças da linha do tempo e não foi corrigido aqui; a suíte
+    da memória mede o vazamento **relativo** entre as variantes por causa disso.
+26. **`ImageAsset` não guarda as dimensões do arquivo, e o teto de largura é
     arbitrado por quem apresenta.** As capas de 2024 vão de **151 a 269px de
     largura** e de 3:5 a 3:2 de proporção — os dois extremos convivem no mesmo
     acervo. `ProvenancedImage` recebe `maxRenderedWidth` do chamador, e o padrão
