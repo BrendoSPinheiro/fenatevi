@@ -1,0 +1,573 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-25T00:00:00.000Z",
+  "title": "Design System: Nocturne Stage",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Palco",
+        "canonical": "#131312",
+        "tonalRamp": [
+          "#0e0e0d",
+          "#131312",
+          "#1c1c1a",
+          "#20201e",
+          "#2a2a28",
+          "#353533",
+          "#393937",
+          "#5c5c58"
+        ]
+      },
+      "surface-container-low": {
+        "role": "neutral",
+        "displayName": "Superfície de Cartão",
+        "canonical": "#1c1c1a",
+        "tonalRamp": [
+          "#0e0e0d",
+          "#131312",
+          "#1c1c1a",
+          "#20201e",
+          "#2a2a28",
+          "#353533",
+          "#393937",
+          "#5c5c58"
+        ]
+      },
+      "surface-bright": {
+        "role": "neutral",
+        "displayName": "Palco Iluminado",
+        "canonical": "#393937",
+        "tonalRamp": [
+          "#1c1c1a",
+          "#20201e",
+          "#2a2a28",
+          "#353533",
+          "#393937",
+          "#5c5c58",
+          "#8a8a85",
+          "#c6c3c0"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Ivory",
+        "canonical": "#e5e2df",
+        "tonalRamp": [
+          "#31302f",
+          "#4a4846",
+          "#6b6866",
+          "#8a8784",
+          "#a6a3a0",
+          "#c6c3c0",
+          "#e5e2df",
+          "#f5f3f1"
+        ]
+      },
+      "foreground-muted": {
+        "role": "neutral",
+        "displayName": "Ivory Recuado",
+        "canonical": "#c6c3c0",
+        "tonalRamp": [
+          "#31302f",
+          "#4a4846",
+          "#6b6866",
+          "#8a8784",
+          "#a6a3a0",
+          "#c6c3c0",
+          "#e5e2df",
+          "#f5f3f1"
+        ]
+      },
+      "foreground-subtle": {
+        "role": "neutral",
+        "displayName": "Ivory Distante",
+        "canonical": "#a6a3a0",
+        "tonalRamp": [
+          "#31302f",
+          "#4a4846",
+          "#6b6866",
+          "#8a8784",
+          "#a6a3a0",
+          "#c6c3c0",
+          "#e5e2df",
+          "#f5f3f1"
+        ]
+      },
+      "outline": {
+        "role": "neutral",
+        "displayName": "Contorno",
+        "canonical": "#a78a8a",
+        "tonalRamp": [
+          "#2e2020",
+          "#40292a",
+          "#584141",
+          "#725858",
+          "#8d7171",
+          "#a78a8a",
+          "#c4aeae",
+          "#e2d4d4"
+        ]
+      },
+      "outline-variant": {
+        "role": "neutral",
+        "displayName": "Contorno Recuado",
+        "canonical": "#584141",
+        "tonalRamp": [
+          "#2e2020",
+          "#40292a",
+          "#584141",
+          "#725858",
+          "#8d7171",
+          "#a78a8a",
+          "#c4aeae",
+          "#e2d4d4"
+        ]
+      },
+      "primary-container": {
+        "role": "primary",
+        "displayName": "Bordô de Cortina",
+        "canonical": "#800020",
+        "tonalRamp": [
+          "#2b0009",
+          "#4a0012",
+          "#680018",
+          "#800020",
+          "#af2b3e",
+          "#d95a68",
+          "#ffb3b5",
+          "#ffdada"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Rosa de Refletor",
+        "canonical": "#ffb3b5",
+        "tonalRamp": [
+          "#2b0009",
+          "#4a0012",
+          "#680018",
+          "#800020",
+          "#af2b3e",
+          "#d95a68",
+          "#ffb3b5",
+          "#ffdada"
+        ]
+      },
+      "inverse-primary": {
+        "role": "primary",
+        "displayName": "Bordô Invertido",
+        "canonical": "#af2b3e",
+        "tonalRamp": [
+          "#2b0009",
+          "#4a0012",
+          "#680018",
+          "#800020",
+          "#af2b3e",
+          "#d95a68",
+          "#ffb3b5",
+          "#ffdada"
+        ]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Âmbar de Palco",
+        "canonical": "#ffdb9d",
+        "tonalRamp": [
+          "#271900",
+          "#412d00",
+          "#5e4200",
+          "#8a6200",
+          "#c48c00",
+          "#feb700",
+          "#ffdb9d",
+          "#ffeed2"
+        ]
+      },
+      "secondary-container": {
+        "role": "secondary",
+        "displayName": "Âmbar Saturado",
+        "canonical": "#feb700",
+        "tonalRamp": [
+          "#271900",
+          "#412d00",
+          "#5e4200",
+          "#8a6200",
+          "#c48c00",
+          "#feb700",
+          "#ffdb9d",
+          "#ffeed2"
+        ]
+      },
+      "tertiary": {
+        "role": "tertiary",
+        "displayName": "Azul de Bastidor",
+        "canonical": "#bec6e0",
+        "tonalRamp": [
+          "#131b2e",
+          "#283044",
+          "#353d52",
+          "#4f5772",
+          "#7f88a5",
+          "#a0a8c1",
+          "#bec6e0",
+          "#dae2fd"
+        ]
+      },
+      "focus": {
+        "role": "secondary",
+        "displayName": "Âmbar de Foco",
+        "canonical": "#ffdb9d",
+        "tonalRamp": [
+          "#271900",
+          "#412d00",
+          "#5e4200",
+          "#8a6200",
+          "#c48c00",
+          "#feb700",
+          "#ffdb9d",
+          "#ffeed2"
+        ]
+      },
+      "error": {
+        "role": "error",
+        "displayName": "Erro",
+        "canonical": "#ffb4ab",
+        "tonalRamp": [
+          "#410002",
+          "#690005",
+          "#93000a",
+          "#c00011",
+          "#e33b32",
+          "#ff8a80",
+          "#ffb4ab",
+          "#ffdad6"
+        ]
+      },
+      "success": {
+        "role": "success",
+        "displayName": "Confirmação",
+        "canonical": "#7fd6a1",
+        "tonalRamp": [
+          "#042415",
+          "#0a3d25",
+          "#125838",
+          "#1c7a4f",
+          "#2fa06b",
+          "#54bd88",
+          "#7fd6a1",
+          "#b8ecca"
+        ]
+      },
+      "curtain": {
+        "role": "scenography",
+        "displayName": "Veludo",
+        "canonical": "#800020",
+        "tonalRamp": [
+          "#2b0009",
+          "#4a0012",
+          "#680018",
+          "#800020",
+          "#a8102f",
+          "#c93a4f",
+          "#e57b8a",
+          "#ffb3b5"
+        ]
+      },
+      "curtain-fold": {
+        "role": "scenography",
+        "displayName": "Prega",
+        "canonical": "#4a0012",
+        "tonalRamp": [
+          "#2b0009",
+          "#4a0012",
+          "#680018",
+          "#800020",
+          "#a8102f",
+          "#c93a4f",
+          "#e57b8a",
+          "#ffb3b5"
+        ]
+      },
+      "curtain-sheen": {
+        "role": "scenography",
+        "displayName": "Brilho",
+        "canonical": "#a8102f",
+        "tonalRamp": [
+          "#2b0009",
+          "#4a0012",
+          "#680018",
+          "#800020",
+          "#a8102f",
+          "#c93a4f",
+          "#e57b8a",
+          "#ffb3b5"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-lg": {
+        "displayName": "Display LG",
+        "purpose": "Nome do festival e título de abertura de cada tela. Um por página. Eixo WONK ligado."
+      },
+      "display-md": {
+        "displayName": "Display MD",
+        "purpose": "Abertura de seção dentro de uma tela longa. Eixo WONK ligado."
+      },
+      "headline-lg": {
+        "displayName": "Headline LG",
+        "purpose": "Título de espetáculo, oficina ou espaço. Sem WONK — aqui a fonte informa, não declama."
+      },
+      "body-lg": {
+        "displayName": "Body LG",
+        "purpose": "Release, statement, texto de leitura contínua."
+      },
+      "body-md": { "displayName": "Body MD", "purpose": "Corpo padrão do portal." },
+      "label-md": {
+        "displayName": "Label MD",
+        "purpose": "Rótulo, botão, categoria, rubrica de programa. Maiúsculas com wdth 110 — largura desenhada, não espaçamento forçado."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Crédito, proveniência, nota de rodapé."
+      }
+    },
+    "shadows": [
+      {
+        "name": "glow-refletor",
+        "value": "0 0 24px -6px var(--color-primary)",
+        "purpose": "Único box-shadow legítimo do sistema: hover do botão primário. É brilho, não sombra — sombra projetada não se vê sobre #131312."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 3px solid var(--color-focus); outline-offset: 3px",
+        "purpose": "Foco global em :focus-visible (WCAG 2.4.11/2.4.13). Âmbar, nunca removido, nunca substituído por sombra."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-stage",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Easing padrão de entrada e de estado — desacelera longo, como um objeto entrando em cena."
+      },
+      {
+        "name": "ease-curtain",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "purpose": "Movimento de cortina: simétrico, com peso nos dois extremos."
+      },
+      { "name": "duration-instant", "value": "0.12s", "purpose": "Resposta imediata a toque." },
+      {
+        "name": "duration-fast",
+        "value": "0.24s",
+        "purpose": "Transições de estado (hover, condensação do cabeçalho)."
+      },
+      { "name": "duration-normal", "value": "0.48s", "purpose": "Entrada de bloco de conteúdo." },
+      {
+        "name": "duration-slow",
+        "value": "0.9s",
+        "purpose": "Recolhimento da cortina de transição entre rotas."
+      },
+      {
+        "name": "duration-curtain",
+        "value": "1.6s",
+        "purpose": "Abertura das cortinas de veludo na intro teatral."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "@media (prefers-reduced-motion: reduce)",
+        "purpose": "A abertura teatral vira display: none — ausência, não versão curta. As demais animações colapsam para 0.01ms."
+      }
+    ],
+    "breakpoints": [
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "container-max", "value": "1280px" }
+    ],
+    "zLayers": [
+      { "name": "base", "value": "0" },
+      { "name": "scene", "value": "10" },
+      { "name": "content", "value": "20" },
+      { "name": "header", "value": "50" },
+      { "name": "overlay", "value": "80" },
+      { "name": "skip-link", "value": "100" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botão Primário",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal. Bordô sólido com ivory por cima (8,4:1); o hover acende um glow de refletor.",
+      "html": "<button class=\"ds-btn-primary\">Ver a programação</button>",
+      "css": ".ds-btn-primary { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 8px; background: var(--color-primary-container, #800020); color: var(--color-foreground, #e5e2df); border: none; border-radius: 2px; padding: 10px 20px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: box-shadow 0.2s cubic-bezier(0.22,1,0.36,1), background-color 0.2s; } .ds-btn-primary:hover { box-shadow: 0 0 24px -6px var(--color-primary, #ffb3b5); } .ds-btn-primary:focus-visible { outline: 3px solid var(--color-focus, #ffdb9d); outline-offset: 3px; } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Botão Secundário",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação alternativa. Contorno ivory de 1px que se preenche a 10% no hover.",
+      "html": "<button class=\"ds-btn-secondary\">Ver o acervo de 2024</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 8px; background: transparent; color: var(--color-foreground, #e5e2df); border: 1px solid rgba(229,226,223,0.6); border-radius: 2px; padding: 10px 20px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background-color 0.2s; } .ds-btn-secondary:hover { background: rgba(229,226,223,0.1); } .ds-btn-secondary:focus-visible { outline: 3px solid var(--color-focus, #ffdb9d); outline-offset: 3px; }"
+    },
+    {
+      "name": "Botão Ghost",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Ação terciária, sem caixa. O sublinhado no hover impede que a única pista de interação seja a cor.",
+      "html": "<button class=\"ds-btn-ghost\">Saiba mais</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; gap: 8px; background: transparent; color: var(--color-foreground, #e5e2df); border: none; border-radius: 2px; padding: 10px 20px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: color 0.2s; } .ds-btn-ghost:hover { text-decoration: underline; text-underline-offset: 4px; } .ds-btn-ghost:focus-visible { outline: 3px solid var(--color-focus, #ffdb9d); outline-offset: 3px; }"
+    },
+    {
+      "name": "Chip de Filtro",
+      "kind": "chip",
+      "refersTo": "chip-active",
+      "description": "Filtro da programação — sempre um link com aria-current, nunca um botão com estado. O ativo ganha preenchimento âmbar e um ✓, para não depender só da cor.",
+      "html": "<nav class=\"ds-chip-row\"><a class=\"ds-chip ds-chip--active\" href=\"#\" aria-current=\"true\"><span aria-hidden=\"true\">✓</span>Teatro adulto</a><a class=\"ds-chip\" href=\"#\">Infantil</a><a class=\"ds-chip\" href=\"#\">Mostra paralela</a></nav>",
+      "css": ".ds-chip-row { display: flex; flex-wrap: wrap; gap: 8px; } .ds-chip { display: inline-flex; min-height: 44px; align-items: center; gap: 8px; border: 1px solid var(--color-outline-variant, #584141); border-radius: 9999px; background: transparent; color: var(--color-foreground-muted, #c6c3c0); padding: 8px 16px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.04em; white-space: nowrap; text-decoration: none; transition: color 0.2s, border-color 0.2s; } .ds-chip:hover { border-color: var(--color-outline, #a78a8a); color: var(--color-foreground, #e5e2df); } .ds-chip:focus-visible { outline: 3px solid var(--color-focus, #ffdb9d); outline-offset: 3px; } .ds-chip--active { border-color: var(--color-secondary, #ffdb9d); background: var(--color-secondary, #ffdb9d); color: var(--color-on-secondary, #412d00); }"
+    },
+    {
+      "name": "Cartão",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Superfície de um item de conteúdo. A separação vem do degrau de superfície e da borda — nunca de sombra, que não se vê sobre preto.",
+      "html": "<article class=\"ds-card\"><span class=\"ds-tag\">Entrada franca</span><h3 class=\"ds-card__title\">O Corpo Que Eu Habito</h3><p class=\"ds-card__meta\">14 de outubro · 20h · Teatro SESI Jardim da Penha</p></article>",
+      "css": ".ds-card { display: block; border: 1px solid var(--color-outline-variant, #584141); border-radius: 8px; background: var(--color-surface-container-low, #1c1c1a); padding: 24px; transition: border-color 0.2s; } .ds-card:hover { border-color: var(--color-outline, #a78a8a); } .ds-card__title { margin: 12px 0 0; font-family: Fraunces, ui-serif, Georgia, serif; font-size: 2rem; font-weight: 500; line-height: 1.2; color: var(--color-foreground, #e5e2df); } .ds-card__meta { margin: 8px 0 0; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 1rem; line-height: 1.5; color: var(--color-foreground-muted, #c6c3c0); } .ds-tag { display: inline-flex; align-items: center; border: 1px solid var(--color-outline-variant, #584141); border-radius: 2px; padding: 4px 8px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-foreground-subtle, #a6a3a0); }"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag-neutral",
+      "description": "Marcador de leitura não interativo — frente, classificação, entrada franca. Nunca vira link: para isso existe o Chip.",
+      "html": "<p class=\"ds-tag-row\"><span class=\"ds-tag ds-tag--neutral\">Livre</span><span class=\"ds-tag ds-tag--primary\">Mostra paralela</span><span class=\"ds-tag ds-tag--secondary\">Libras</span></p>",
+      "css": ".ds-tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; } .ds-tag { display: inline-flex; align-items: center; border: 1px solid; border-radius: 2px; padding: 4px 8px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; } .ds-tag--neutral { border-color: var(--color-outline-variant, #584141); color: var(--color-foreground-subtle, #a6a3a0); } .ds-tag--primary { border-color: rgba(255,179,181,0.6); color: var(--color-primary, #ffb3b5); } .ds-tag--secondary { border-color: rgba(255,219,157,0.6); color: var(--color-secondary, #ffdb9d); }"
+    },
+    {
+      "name": "Cabeçalho do Portal",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Sticky com backdrop-blur. Na rolagem, só o respiro vertical muda — nenhum item se move, some ou troca de ordem.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-header__brand\" href=\"#\">FENATEVI</a><nav class=\"ds-header__nav\" aria-label=\"Navegação principal\"><a href=\"#\">Programação</a><a href=\"#\">Espaços</a><a href=\"#\">Memória</a><a href=\"#\">Notícias</a></nav></header>",
+      "css": ".ds-header { position: sticky; top: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid rgba(88,65,65,0.6); background: rgba(19,19,18,0.9); backdrop-filter: blur(4px); padding: 16px 20px; } .ds-header__brand { display: inline-flex; min-height: 44px; align-items: center; font-family: Fraunces, ui-serif, Georgia, serif; font-size: 1.25rem; font-weight: 700; letter-spacing: 0.16em; color: var(--color-foreground, #e5e2df); text-decoration: none; } .ds-header__nav { display: flex; align-items: center; gap: 24px; } .ds-header__nav a { display: inline-flex; min-height: 44px; align-items: center; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-foreground-muted, #c6c3c0); text-decoration: none; transition: color 0.2s; } .ds-header__nav a:hover { color: var(--color-foreground, #e5e2df); } .ds-header__nav a:focus-visible { outline: 3px solid var(--color-focus, #ffdb9d); outline-offset: 3px; }"
+    },
+    {
+      "name": "Navegação Mobile",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Barra inferior sticky de quatro colunas abaixo de 768px, sobre a superfície mais escura da escala.",
+      "html": "<nav class=\"ds-mobilenav\" aria-label=\"Áreas do portal\"><a href=\"#\"><span aria-hidden=\"true\">◆</span>Programa</a><a href=\"#\"><span aria-hidden=\"true\">◆</span>Espaços</a><a href=\"#\"><span aria-hidden=\"true\">◆</span>Memória</a><a href=\"#\"><span aria-hidden=\"true\">◆</span>Notícias</a></nav>",
+      "css": ".ds-mobilenav { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--color-outline-variant, #584141); background: var(--color-surface-container-lowest, #0e0e0d); } .ds-mobilenav a { display: flex; min-height: 56px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px; text-align: center; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-foreground-muted, #c6c3c0); text-decoration: none; transition: color 0.2s; } .ds-mobilenav a:hover { color: var(--color-foreground, #e5e2df); } .ds-mobilenav a span { font-family: Fraunces, ui-serif, Georgia, serif; font-size: 0.875rem; color: var(--color-secondary, #ffdb9d); } .ds-mobilenav a:focus-visible { outline: 3px solid var(--color-focus, #ffdb9d); outline-offset: -3px; }"
+    },
+    {
+      "name": "Estado Vazio",
+      "kind": "custom",
+      "refersTo": "empty-state",
+      "description": "Um resultado vazio é uma resposta, não uma falha: bloco de conteúdo comum, nunca alerta. A borda tracejada diz 'aqui caberia conteúdo' sem precisar de ilustração.",
+      "html": "<div class=\"ds-empty\"><p class=\"ds-empty__title\">Nenhum espetáculo com esses filtros</p><p class=\"ds-empty__body\">Ajuste a data ou a frente para ver mais da programação de 2024.</p><a class=\"ds-empty__action\" href=\"#\">Limpar filtros</a></div>",
+      "css": ".ds-empty { border: 1px dashed var(--color-outline-variant, #584141); border-radius: 8px; padding: 40px 24px; text-align: center; } .ds-empty__title { margin: 0; font-family: Fraunces, ui-serif, Georgia, serif; font-size: 1.5rem; color: var(--color-foreground, #e5e2df); } .ds-empty__body { margin: 8px auto 0; max-width: 60ch; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 1rem; line-height: 1.5; color: var(--color-foreground-muted, #c6c3c0); } .ds-empty__action { display: inline-flex; min-height: 44px; align-items: center; margin-top: 24px; border: 1px solid rgba(229,226,223,0.6); border-radius: 2px; padding: 10px 20px; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-foreground, #e5e2df); text-decoration: none; transition: background-color 0.2s; } .ds-empty__action:hover { background: rgba(229,226,223,0.1); }"
+    },
+    {
+      "name": "Aviso de Acervo",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "Comportamento, não texto fixo: aparece enquanto a edição vigente não tem programação publicada e desaparece sozinho quando ela entra. Título em âmbar — é sinal, não marca.",
+      "html": "<aside class=\"ds-notice\"><p class=\"ds-notice__title\">Acervo da edição de 2024</p><p class=\"ds-notice__body\">A programação da 22ª edição ainda não foi publicada. Até lá, o portal apresenta o acervo completo de 2024.</p></aside>",
+      "css": ".ds-notice { border: 1px solid var(--color-outline-variant, #584141); border-radius: 8px; background: var(--color-surface-container-low, #1c1c1a); padding: 12px 16px; } .ds-notice__title { margin: 0; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-secondary, #ffdb9d); } .ds-notice__body { margin: 4px 0 0; font-family: Archivo, ui-sans-serif, system-ui, sans-serif; font-size: 0.875rem; line-height: 1.5; color: var(--color-foreground-muted, #c6c3c0); }"
+    },
+    {
+      "name": "Cortina de Veludo",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "A assinatura do sistema. Veludo construído inteiramente em gradientes — profundidade radial, pregas em porcentagem e volume cilíndrico. A coreografia mora em CSS porque CSS é render-blocking e JavaScript não.",
+      "html": "<div class=\"ds-curtain\"><span class=\"ds-curtain__half ds-curtain__half--left\"></span><span class=\"ds-curtain__half ds-curtain__half--right\"></span></div>",
+      "css": ".ds-curtain { position: relative; height: 220px; overflow: hidden; border-radius: 8px; } .ds-curtain__half { position: absolute; top: 0; bottom: 0; width: 51%; background-image: radial-gradient(130% 100% at 50% 50%, transparent 45%, var(--color-curtain-fold, #4a0012) 100%), repeating-linear-gradient(to right, var(--color-curtain-fold, #4a0012) 0%, var(--color-curtain, #800020) 2.2%, var(--color-curtain-sheen, #a8102f) 4.2%, var(--color-curtain, #800020) 6.2%, var(--color-curtain-fold, #4a0012) 8.4%), linear-gradient(to bottom, var(--color-curtain-fold, #4a0012) 0%, var(--color-curtain, #800020) 45%, var(--color-curtain-fold, #4a0012) 100%); } .ds-curtain__half::after { content: ''; position: absolute; top: 0; bottom: 0; width: 14%; } .ds-curtain__half--left { left: 0; } .ds-curtain__half--left::after { right: 0; background-image: linear-gradient(to right, transparent, var(--color-curtain-fold, #4a0012)); } .ds-curtain__half--right { right: 0; } .ds-curtain__half--right::after { left: 0; background-image: linear-gradient(to left, transparent, var(--color-curtain-fold, #4a0012)); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "O Programa Impresso Iluminado",
+    "overview": "O acervo do FENATEVI não nasceu numa tela. Ele nasceu num programa impresso — títulos transcritos com a grafia original, fichas técnicas em coluna, capas de 270px extraídas de papel digitalizado. O sistema visual reconhece essa procedência em vez de disfarçá-la: o portal é aquele programa, colocado sob luz de teatro. Serifa Fraunces para as vozes de cartaz, Archivo em maiúsculas espaçadas para a rubrica, e um escuro que não é fundo de aplicativo — é palco vazio antes da entrada.\n\nA personalidade é editorial, contida e escura por convicção. O #131312 não é o preto neutro de um tema dark; é um carvão levemente quente, e sobre ele o texto assenta em ivory #e5e2df, não em branco. Toda a paleta de texto é fechada em três tons medidos — 14,4:1, 10,6:1 e 7,4:1 sobre a superfície mais escura — porque alfa arbitrário sobre preto é como a maioria dos temas escuros reprova em contraste sem perceber. Aqui isso é proibido por token, não por disciplina.\n\nA densidade é generosa: 1280px de conteúdo, margens de 64px no desktop, atos inteiros separados por 80px. Nada compete pela atenção ao mesmo tempo. O gesto teatral existe — a cortina de veludo que abre a home, a cortina que revela cada rota nova — mas é sempre cenografia acompanhando o conteúdo, nunca condição para lê-lo: a abertura se encerra sozinha em CSS, sem JavaScript, e sob prefers-reduced-motion ela simplesmente não acontece.",
+    "keyCharacteristics": [
+      "Escuro quente (#131312), não preto neutro nem cinza-azulado",
+      "Fraunces com eixo WONK ativo nos displays; Archivo com wdth 110 nos rótulos",
+      "Três tons de texto, todos ≥ 7,4:1 — nenhum alfa arbitrário",
+      "Elevação por degrau de superfície e por luz; nunca por sombra projetada",
+      "Raio pequeno (2px em controles, 8px em cartões, pill só em chips)",
+      "Bordô como identidade, âmbar como sinal — nunca o contrário",
+      "Movimento é cenografia removível; o conteúdo existe sem ele"
+    ],
+    "rules": [
+      {
+        "name": "A Regra do Bordô e do Âmbar",
+        "body": "O bordô identifica — cortina, botão primário, moldura da marca. O âmbar sinaliza — foco, filtro ativo, aviso de acervo. Se um elemento não está dizendo \"preste atenção aqui\", ele não é âmbar. Trocar os dois papéis quebra o sistema mais do que trocar os hexes.",
+        "section": "colors"
+      },
+      {
+        "name": "A Regra dos Três Tons",
+        "body": "Texto é foreground, foreground-muted ou foreground-subtle. Não existe quarta opção, e alfa arbitrário em texto é proibido: sobre #131312, α = 0,45 dá ≈ 4,2:1 e reprova em AA. Abaixo de subtle, apenas elemento decorativo com aria-hidden, separador ou traço.",
+        "section": "colors"
+      },
+      {
+        "name": "A Regra da Cenografia Isolada",
+        "body": "As três cores de cortina nunca aparecem em botão, link, superfície ou estado. Elas pertencem à cena; a interface não as importa.",
+        "section": "colors"
+      },
+      {
+        "name": "A Regra da Escala Amarrada",
+        "body": "Família, tamanho, peso, entrelinha e tracking andam juntos ou não andam. A escala vive em ui/text.tsx, deliberadamente não como utilitário do Tailwind — como utilitário, text-display-lg font-normal desmontaria a hierarquia pela metade e ninguém notaria na revisão.",
+        "section": "typography"
+      },
+      {
+        "name": "A Regra do WONK Reservado",
+        "body": "O eixo WONK só nos dois displays. Ele é a voz do festival no cartaz, não no corpo da grade — que precisa desaparecer para ser lida.",
+        "section": "typography"
+      },
+      {
+        "name": "A Regra do Acervo Marcado",
+        "body": "Todo texto de acervo (título, release, ficha técnica, biografia) permanece em pt-BR nas páginas em inglês e espanhol, e passa por ui/archive-text.tsx, que aplica lang=\"pt-BR\" quando a página não está em português. É requisito de pronúncia em leitor de tela (WCAG 3.1.2), não preferência editorial.",
+        "section": "typography"
+      },
+      {
+        "name": "A Regra do Documento Que Não Anda de Lado",
+        "body": "Nenhum container rolável pode vazar para o viewport. Em 375px, a página inteira andando de lado é o defeito mais visível que este layout pode ter — e html { overflow-x: hidden } foi verificado e não o resolve, apenas o esconde.",
+        "section": "layout"
+      },
+      {
+        "name": "A Regra dos Filtros na URL",
+        "body": "Todo filtro é um link que altera a query, nunca estado de cliente. É o que dá link profundo, resultado compartilhável e funcionamento sem JavaScript de uma vez só.",
+        "section": "layout"
+      },
+      {
+        "name": "A Regra da Luz, Não da Sombra",
+        "body": "Profundidade se declara com superfície mais clara ou com brilho. box-shadow com deslocamento (0 4px 12px …) está proibido neste sistema — é o gesto de um tema claro aplicado a um palco.",
+        "section": "elevation"
+      },
+      {
+        "name": "A Regra do Pill Reservado",
+        "body": "Só chip é pill. Um marcador não interativo com forma de chip promete uma ação que não existe; quando o marcador precisar levar a algum lugar, o componente certo é Chip, que já é um link.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do usar foreground, foreground-muted ou foreground-subtle para todo texto. Se um tom intermediário parece necessário, o problema é a hierarquia, não a paleta.",
+      "Do separar superfícies com um degrau de surface-container-* e uma borda de 1px em outline-variant.",
+      "Do consumir a tipografia por ui/text.tsx (ou textClassName), nunca montando família + tamanho + peso à mão.",
+      "Do aplicar largura e margens por ui/container.tsx, passando as para aproveitar o elemento semântico que já existe.",
+      "Do manter 44px de alvo mínimo em qualquer controle, e deixar o foco :focus-visible global intacto (âmbar 3px, offset 3px).",
+      "Do distinguir todo estado por forma e cor — o ✓ do chip ativo é o modelo.",
+      "Do conter rolagem horizontal com .scroll-x, e verificar em 375px que o documento não anda de lado.",
+      "Do tratar movimento como cenografia removível: a página precisa estar completa e legível com prefers-reduced-motion, sem WebGL e sem JavaScript.",
+      "Do marcar texto de acervo com ui/archive-text.tsx."
+    ],
+    "donts": [
+      "Don't usar box-shadow com deslocamento. Sombra projetada não se vê sobre #131312; o único box-shadow legítimo é o glow de refletor no hover do botão primário.",
+      "Don't escrever alfa arbitrário em texto (text-foreground/40, rgba(229,226,223,0.45)). Sobre a superfície escura isso reprova em AA — e o protótipo original fazia exatamente isso.",
+      "Don't usar as cores de cortina (curtain, curtain-fold, curtain-sheen) em botão, link, superfície ou estado. Elas são objeto de cena.",
+      "Don't promover o âmbar a cor de marca nem o bordô a cor de sinalização. Os papéis são fixos.",
+      "Don't dar forma de pill a algo que não é um chip acionável.",
+      "Don't ligar o eixo WONK fora dos dois tamanhos de display.",
+      "Don't derivar para site de festival de música: gradiente neon, cartaz lotado, contagem regressiva piscando, energia de line-up. Este é um festival de teatro público, e a sobriedade é parte do que ele comunica.",
+      "Don't derivar para dashboard escuro de SaaS: cinza-azulado, cards com sombra, ícone em toda parte, densidade de painel. O escuro aqui é palco, não produto.",
+      "Don't esticar imagem marcada como isLowResolution além do seu teto de largura renderizada — ampliar o borrão não é apresentar o acervo, é degradá-lo.",
+      "Don't condicionar leitura de conteúdo a animação, WebGL ou JavaScript. Esta é a regra que vence todas as outras deste documento."
+    ]
+  }
+}
