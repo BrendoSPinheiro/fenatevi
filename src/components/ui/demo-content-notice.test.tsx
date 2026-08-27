@@ -39,4 +39,23 @@ describe('DemoContentNotice', () => {
 
     expect(await DemoContentNotice({})).toBeNull();
   });
+
+  /*
+   * A variante muda a apresentação, nunca a regra nem o texto: na abertura da
+   * programação o aviso é marginália de programa impresso, e não alerta de
+   * painel — mas continua sendo o mesmo aviso, e continua desaparecendo sozinho
+   * quando a edição vigente publicar sua programação.
+   */
+  it('a variante editorial diz o mesmo, sem superfície de cartão', async () => {
+    const { container } = render(await DemoContentNotice({ variant: 'editorial' }));
+
+    expect(screen.getByText('demoNoticeTitle:2024')).toBeInTheDocument();
+    expect(container.querySelector('aside')).not.toHaveClass('bg-surface-container-low');
+  });
+
+  it('a variante editorial some junto com a de cartão', async () => {
+    festival.currentEdition.hasPublishedProgram = true;
+
+    expect(await DemoContentNotice({ variant: 'editorial' })).toBeNull();
+  });
 });

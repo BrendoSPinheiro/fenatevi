@@ -117,3 +117,15 @@ documento é descritivo; cada item vira tarefa quando for pedido.
     passa a rolar de lado — contra "A Regra do Documento Que Não Anda de Lado".
     É anterior às mudanças da linha do tempo e não foi corrigido aqui; a suíte
     da memória mede o vazamento **relativo** entre as variantes por causa disso.
+26. **`ImageAsset` não guarda as dimensões do arquivo, e o teto de largura é
+    arbitrado por quem apresenta.** As capas de 2024 vão de **151 a 269px de
+    largura** e de 3:5 a 3:2 de proporção — os dois extremos convivem no mesmo
+    acervo. `ProvenancedImage` recebe `maxRenderedWidth` do chamador, e o padrão
+    (320px) está acima de **todos** os arquivos: qualquer tela que aceite o
+    padrão amplia o material. A programação passa os seus tetos explicitamente
+    (152px no cartaz de abertura, 112px nas linhas, ambos ≤ o menor arquivo) e
+    usa `fit="contain"` em moldura quadrada, para não recortar as capas
+    horizontais. **As demais telas ainda não fazem isso** — a home apresenta a
+    capa em destaque a 240px, acima das que têm 151px. A correção definitiva é
+    gravar largura e altura em `ImageAsset` e derivar o teto do próprio arquivo;
+    é change própria, e vale para o portal inteiro.

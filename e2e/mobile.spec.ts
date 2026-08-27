@@ -11,6 +11,8 @@ const ROTAS = [
   '/',
   '/programacao',
   '/programacao?dia=2024-10-19',
+  '/programacao?frente=oficina',
+  '/programacao?frente=processo-criativo&espaco=casa',
   '/programacao/grade?visao=espaco&dia=2024-10-13',
   '/programacao/grade?visao=horario&dia=2024-10-19',
   '/programacao/grade?visao=semana',

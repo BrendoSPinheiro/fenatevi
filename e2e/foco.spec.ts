@@ -56,21 +56,35 @@ test.describe('Foco em diálogos', () => {
   });
 });
 
-test.describe('Foco no painel de filtros', () => {
+/**
+ * O painel de filtros da programação é um `<details>` nativo, e não um diálogo.
+ *
+ * A troca é deliberada: escolher um espaço não precisa interromper a leitura
+ * nem prender o foco, e o elemento nativo abre pelo teclado, anuncia o próprio
+ * estado e funciona **sem JavaScript** — o que um painel montado em React só
+ * consegue depois da hidratação.
+ */
+test.describe('Painel de filtros da programação', () => {
   test.use({ viewport: { width: 375, height: 812 } });
 
-  test('prende o foco, fecha por Escape e o devolve ao controle de origem', async ({ page }) => {
+  test('abre pelo teclado e revela os filtros que estavam recolhidos', async ({ page }) => {
     await page.goto('/programacao');
 
-    const abrir = page.getByRole('button', { name: 'Filtrar' }).first();
-    await abrir.click();
+    const espaco = page.getByRole('link', { name: /Teatro Universitário UFES/ }).first();
+    await expect(espaco).toBeHidden();
 
-    const dialogo = page.getByRole('dialog', { name: 'Filtros da programação' });
-    await expect(dialogo).toBeVisible();
+    const abrir = page.getByText('Filtrar programação', { exact: false }).first();
+    await abrir.focus();
+    await page.keyboard.press('Enter');
 
-    await page.keyboard.press('Escape');
+    await expect(espaco).toBeVisible();
+  });
 
-    await expect(dialogo).toBeHidden();
-    await expect(abrir).toBeFocused();
+  test('já vem aberto quando um dos seus filtros está aplicado', async ({ page }) => {
+    await page.goto('/programacao?espaco=ufes');
+
+    await expect(
+      page.getByRole('link', { name: /Teatro Universitário UFES/ }).first(),
+    ).toBeVisible();
   });
 });

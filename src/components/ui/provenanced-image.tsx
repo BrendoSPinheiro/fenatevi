@@ -24,6 +24,16 @@ interface ProvenancedImageProps {
    * pode subir quando a imagem sustentar (a capa do programa, por exemplo).
    */
   readonly maxRenderedWidth?: number;
+  /**
+   * Como a imagem preenche a moldura.
+   *
+   * `cover` recorta para preencher — o padrão, e o certo quando a moldura é
+   * decorativa. `contain` cabe inteira dentro dela, e é o certo para material
+   * de acervo cuja proporção varia: as capas de 2024 vão de 3:5 a 3:2, e
+   * forçá-las todas a um mesmo recorte decepa metade das que são horizontais.
+   * Uma capa recortada não é a capa — é um pedaço dela.
+   */
+  readonly fit?: 'cover' | 'contain';
   readonly priority?: boolean;
 }
 
@@ -46,6 +56,7 @@ export async function ProvenancedImage({
   sizes,
   className,
   maxRenderedWidth = 320,
+  fit = 'cover',
   priority = false,
 }: ProvenancedImageProps) {
   const t = await getTranslations('imagens');
@@ -61,7 +72,7 @@ export async function ProvenancedImage({
         fill
         sizes={sizes}
         priority={priority}
-        className="object-cover"
+        className={fit === 'contain' ? 'object-contain' : 'object-cover'}
       />
     </span>
   );

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  accessibilityFilters,
   availableDays,
   gridHref,
   hasActiveFilters,
@@ -43,6 +44,30 @@ describe('parseProgramFilters', () => {
   it('sem parâmetros, não filtra nada', () => {
     expect(hasActiveFilters(parseProgramFilters({}))).toBe(false);
   });
+
+  it('aceita um recurso de acessibilidade que a edição declara', () => {
+    expect(parseProgramFilters({ acessibilidade: 'signLanguage' }).accessibility).toBe(
+      'signLanguage',
+    );
+  });
+
+  /*
+   * A união de tipos conhece cinco recursos; a edição exibida declara dois. O
+   * que decide o filtro é o acervo, não o tipo — oferecer um recorte que só
+   * devolve vazio seria pior do que não oferecê-lo.
+   */
+  it('ignora um recurso que a edição exibida não declara', () => {
+    expect(accessibilityFilters).not.toContain('relaxedPerformance');
+    expect(
+      parseProgramFilters({ acessibilidade: 'relaxedPerformance' }).accessibility,
+    ).toBeUndefined();
+  });
+
+  it('o filtro de acessibilidade conta como filtro ativo', () => {
+    expect(hasActiveFilters(parseProgramFilters({ acessibilidade: 'audioDescription' }))).toBe(
+      true,
+    );
+  });
 });
 
 describe('programHref', () => {
@@ -69,6 +94,12 @@ describe('programHref', () => {
     const href = programHref({ day: '2024-10-13', strand: 'mostra-oficial' }, { strand: null });
 
     expect(href).toBe('/programacao?dia=2024-10-13');
+  });
+
+  it('leva o recurso de acessibilidade para a URL, no fim da ordem fixa', () => {
+    const href = programHref({ day: '2024-10-14' }, { accessibility: 'signLanguage' });
+
+    expect(href).toBe('/programacao?dia=2024-10-14&acessibilidade=signLanguage');
   });
 });
 
