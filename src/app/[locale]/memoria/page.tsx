@@ -1,22 +1,27 @@
-import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 
+import { EditionTimelineRail } from '@/components/sections/edition-timeline-rail';
+import { EditionTimelineSpine } from '@/components/sections/edition-timeline-spine';
 import { PageHeader } from '@/components/sections/page-header';
-import { buttonClassName } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Container } from '@/components/ui/container';
 import { MAIN_CONTENT_ID } from '@/components/ui/skip-link';
-import { Tag } from '@/components/ui/tag';
+import { Text } from '@/components/ui/text';
 import { editionTimeline } from '@/content/editions';
-import { Link } from '@/lib/i18n/navigation';
-import { formatFestivalDate } from '@/lib/utils/format';
+import { stagePhotos } from '@/content/images';
+import { previewStations, TIMELINE_PREVIEW_ENABLED } from '@/content/mock/timeline-preview';
+import { parseTimelineVariant, realStations } from '@/lib/utils/timeline';
 
+import type { RawSearchParams } from '@/lib/utils/timeline';
 import type { Metadata } from 'next';
 
 interface MemoriaPageProps {
   readonly params: Promise<{ locale: string }>;
+  readonly searchParams: Promise<RawSearchParams>;
 }
 
-export async function generateMetadata({ params }: MemoriaPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: Pick<MemoriaPageProps, 'params'>): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'memoria' });
 
@@ -24,115 +29,83 @@ export async function generateMetadata({ params }: MemoriaPageProps): Promise<Me
 }
 
 /**
- * A linha do tempo das edições.
+ * A linha do tempo das edições — uma estação por edição, da 1ª à vigente.
  *
- * Cada entrada oferece **a ação coerente com o seu estado de acervo**, e o
+ * Cada estação oferece **a ação coerente com o seu estado de acervo**, e o
  * portal nunca oferece um caminho para uma página de edição que não existe:
- * quando não há página, a entrada diz isso em texto e não vira link.
+ * quando não há página, a estação diz isso em texto e não vira link. A regra
+ * vale igualmente para as estações de prévia, que jamais têm destino.
+ *
+ * **Duas variantes vivem lado a lado**, escolhidas por `?linha=`, enquanto a
+ * decisão visual não é tomada; a que não for escolhida é apagada por inteiro,
+ * junto com a leitura de `searchParams` — que é o que hoje tira esta rota da
+ * geração estática. O plano de deleção está em
+ * `openspec/changes/redesenhar-linha-do-tempo-da-memoria/design.md`.
  */
-export default async function MemoriaPage({ params }: MemoriaPageProps) {
+export default async function MemoriaPage({ params, searchParams }: MemoriaPageProps) {
   const { locale: routeLocale } = await params;
   setRequestLocale(routeLocale);
 
-  const locale = await getLocale();
   const t = await getTranslations('memoria');
+  const variant = parseTimelineVariant(await searchParams);
+
+  const stations = TIMELINE_PREVIEW_ENABLED ? previewStations : realStations(editionTimeline);
 
   return (
     <main id={MAIN_CONTENT_ID} tabIndex={-1}>
-      <PageHeader title={t('title')} description={t('description')} />
+      {/*
+       * `stagePhotos.memoria` foi declarado para esta área desde o portal e
+       * nunca havia sido consumido. É atmosfera, não informação: `aria-hidden`,
+       * sob duas camadas de escurecimento, e o fundo sólido embaixo já é a
+       * superfície do tema — a abertura continua legível se a imagem não
+       * carregar.
+       */}
+      <div className="relative overflow-hidden">
+        <span aria-hidden="true" className="absolute inset-0 bg-surface" />
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 bg-cover bg-[position:50%_40%] opacity-25"
+          style={{ backgroundImage: `url(${stagePhotos.memoria})` }}
+        />
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(19,19,18,0.86)_0%,rgba(19,19,18,0.95)_65%,var(--color-surface)_100%)]"
+        />
 
-      <Container className="pb-stack-lg">
-        <ol aria-label={t('timelineLabel')} className="flex flex-col gap-4">
-          {editionTimeline.map((entry) => {
-            const yearLabel =
-              entry.firstYear === entry.lastYear
-                ? String(entry.firstYear)
-                : `${entry.firstYear}—${entry.lastYear}`;
+        <div className="relative">
+          <PageHeader title={t('title')} description={t('description')} />
+        </div>
+      </div>
 
-            const editionLabel =
-              entry.edition === null
-                ? t('editionsCount', { count: entry.editionCount })
-                : t('editionLabel', { edition: entry.edition });
+      {/*
+       * O aviso de prévia. Enquanto as edições de 2005 a 2023 forem
+       * ilustrativas, a tela diz isso — pelo mesmo princípio do aviso de acervo
+       * que a programação já exibe: o portal apresenta o que tem e declara o
+       * que está fazendo.
+       */}
+      {TIMELINE_PREVIEW_ENABLED && (
+        <Container className="pb-stack-sm">
+          <aside className="rounded-lg border border-outline-variant bg-surface-container-low px-4 py-3">
+            <Text variant="label-md" as="p" className="text-secondary">
+              {t('preview.noticeTitle')}
+            </Text>
+            <Text variant="body-md" className="mt-1 max-w-prose text-foreground-muted">
+              {t('preview.noticeBody')}
+            </Text>
+          </aside>
+        </Container>
+      )}
 
-            const period =
-              entry.startDate === null || entry.endDate === null
-                ? t('periodUnknown')
-                : `${formatFestivalDate(entry.startDate, locale)} — ${formatFestivalDate(
-                    entry.endDate,
-                    locale,
-                  )}`;
+      {variant === 'trilho' ? (
+        <EditionTimelineRail stations={stations} />
+      ) : (
+        <EditionTimelineSpine stations={stations} />
+      )}
 
-            const percent = Math.round(entry.completeness * 100);
-
-            return (
-              <li key={entry.id}>
-                <Card as="article" className="p-6">
-                  <div className="flex flex-wrap items-baseline gap-4">
-                    <p className="font-serif text-4xl text-foreground tabular-nums">{yearLabel}</p>
-                    <p className="font-sans text-base text-foreground-muted">{editionLabel}</p>
-                    {/*
-                     * O estado do acervo é **texto**, não uma bolinha colorida:
-                     * "Acervo completo" e "Em digitalização" precisam ser lidos,
-                     * não deduzidos de uma cor.
-                     */}
-                    <Tag tone={entry.archiveState === 'acervo-completo' ? 'primary' : 'neutral'}>
-                      {t(`states.${entry.archiveState}`)}
-                    </Tag>
-                  </div>
-
-                  <p className="mt-2 font-sans text-sm text-foreground-subtle">{period}</p>
-
-                  <p className="mt-3 max-w-prose font-sans text-base text-foreground-muted">
-                    {t(`entries.${entry.id}`)}
-                  </p>
-
-                  <div className="mt-4">
-                    <p className="font-sans text-xs tracking-[0.12em] text-foreground-subtle uppercase">
-                      {t('completeness', { percent })}
-                    </p>
-                    {/*
-                     * A barra é decorativa: o número acima já é o dado, e um
-                     * `role="progressbar"` faria o leitor de tela anunciar duas
-                     * vezes a mesma informação.
-                     */}
-                    <span
-                      aria-hidden="true"
-                      className="mt-2 block h-1 w-full overflow-hidden rounded-full bg-surface-container-high"
-                    >
-                      <span
-                        className="block h-full bg-secondary"
-                        style={{ width: `${percent}%` }}
-                      />
-                    </span>
-                  </div>
-
-                  <div className="mt-6">
-                    {entry.hasEditionPage ? (
-                      <Link
-                        href={`/edicoes/${entry.firstYear}`}
-                        className={buttonClassName('secondary')}
-                      >
-                        {t('actions.acervo-completo')}
-                      </Link>
-                    ) : entry.archiveState === 'edicao-vigente' ? (
-                      <Link href="/programacao" className={buttonClassName('secondary')}>
-                        {t('actions.edicao-vigente')}
-                      </Link>
-                    ) : (
-                      <p className="font-sans text-sm text-foreground-subtle">
-                        {t('noPageNotice')}
-                      </p>
-                    )}
-                  </div>
-                </Card>
-              </li>
-            );
-          })}
-        </ol>
-
-        <p className="mt-stack-md max-w-prose font-sans text-sm text-foreground-subtle">
+      <Container className="pt-stack-md pb-stack-lg">
+        <Text variant="caption" className="max-w-prose text-foreground-subtle">
           {t('scopeNote')}
-        </p>
+        </Text>
       </Container>
     </main>
   );

@@ -19,6 +19,7 @@ const ROTAS = [
   '/espacos',
   '/espacos/casa',
   '/memoria',
+  '/memoria?linha=trilho',
   '/edicoes/2024',
   '/noticias',
 ];

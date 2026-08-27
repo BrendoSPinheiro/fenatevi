@@ -269,7 +269,18 @@
       "acervo-completo": "Explorar esta edição"
     },
     "noPageNotice": "Esta edição ainda não tem página própria no portal.",
-    "scopeNote": "Cada edição publicada poderá conter identidade visual, resumo, programação completa, espetáculos, fotografias, homenageados, notícias, materiais gráficos, documentos, participantes e patrocinadores."
+    "scopeNote": "Cada edição publicada poderá conter identidade visual, resumo, programação completa, espetáculos, fotografias, homenageados, notícias, materiais gráficos, documentos, participantes e patrocinadores.",
+    "preview": {
+      "noticeTitle": "Prévia de layout",
+      "noticeBody": "As edições de 2005 a 2023 estão aqui para avaliar a linha do tempo: as fotografias são ilustrativas e não retratam o festival, e o percentual de acervo é estimado. As edições de 2024, 2025 e 2026 são dados reais.",
+      "summaries": {
+        "0": "Programas impressos e cartazes da {edition}ª edição aguardam digitalização.",
+        "1": "Registros fotográficos de {year} ainda não incorporados ao acervo digital.",
+        "2": "A {edition}ª edição consta nos arquivos da organização; o material ainda não foi transcrito.",
+        "3": "Programação, espetáculos e ficha técnica de {year} serão publicados conforme a digitalização avançar."
+      }
+    },
+    "axisLabel": "Ir para uma edição"
   },
   "edicao": {
     "kicker": "Acervo · edição encerrada",
@@ -346,6 +357,13 @@
     "avarento": "Cartaz do espetáculo: um homem idoso abraçado a um cofre, em cena de comédia.",
     "homenageadoBere": "Retrato de Bere, Luiz Carlos Siqueira, homenageado da edição de 2024.",
     "homenageadoAlcides": "Retrato de Alcides Luiz Rodrigues Pereira, homenageado da edição de 2024.",
-    "capa2024": "Capa do programa impresso de 2024, com máscaras teatrais e o nome do festival."
+    "capa2024": "Capa do programa impresso de 2024, com máscaras teatrais e o nome do festival.",
+    "previaSilhuetas": "Fotografia ilustrativa: três silhuetas de atores diante de uma cortina vermelha iluminada.",
+    "previaCortina": "Fotografia ilustrativa: uma cortina de veludo vermelho fechada sobre um palco.",
+    "previaPlateiaVazia": "Fotografia ilustrativa: a plateia vazia de um teatro histórico, vista do fundo da sala.",
+    "previaTeatroHistorico": "Fotografia ilustrativa: o interior de um teatro histórico, com camarotes dourados e cortina vermelha.",
+    "previaPlateiaDoPalco": "Fotografia ilustrativa: uma plateia cheia vista do palco, durante uma apresentação.",
+    "previaCasaCheia": "Fotografia ilustrativa: uma casa de espetáculos lotada, com camarotes em vários andares.",
+    "previaCorpoEmCena": "Fotografia ilustrativa: uma bailarina em movimento, iluminada sobre fundo escuro."
   }
 }

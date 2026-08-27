@@ -269,7 +269,18 @@
       "acervo-completo": "Explorar esta edición"
     },
     "noPageNotice": "Esta edición aún no tiene página propia.",
-    "scopeNote": "Cada edición publicada podrá incluir identidad visual, resumen, programación completa, espectáculos, fotografías, homenajeados, noticias, materiales gráficos, documentos, participantes y patrocinadores."
+    "scopeNote": "Cada edición publicada podrá incluir identidad visual, resumen, programación completa, espectáculos, fotografías, homenajeados, noticias, materiales gráficos, documentos, participantes y patrocinadores.",
+    "preview": {
+      "noticeTitle": "Vista previa de diseño",
+      "noticeBody": "Las ediciones de 2005 a 2023 están aquí para evaluar la línea de tiempo: las fotografías son ilustrativas y no retratan el festival, y el porcentaje de acervo es estimado. Las ediciones de 2024, 2025 y 2026 son datos reales.",
+      "summaries": {
+        "0": "Programas impresos y carteles de la {edition}ª edición esperan digitalización.",
+        "1": "Los registros fotográficos de {year} aún no se han incorporado al acervo digital.",
+        "2": "La {edition}ª edición consta en los archivos de la organización; el material aún no ha sido transcrito.",
+        "3": "Programación, espectáculos y ficha técnica de {year} se publicarán conforme avance la digitalización."
+      }
+    },
+    "axisLabel": "Ir a una edición"
   },
   "edicao": {
     "kicker": "Acervo · edición finalizada",
@@ -346,6 +357,13 @@
     "avarento": "Cartel del espectáculo: un hombre mayor abrazado a una caja fuerte, en escena cómica.",
     "homenageadoBere": "Retrato de Bere, Luiz Carlos Siqueira, homenajeado de la edición de 2024.",
     "homenageadoAlcides": "Retrato de Alcides Luiz Rodrigues Pereira, homenajeado de la edición de 2024.",
-    "capa2024": "Portada del programa impreso de 2024, con máscaras teatrales y el nombre del festival."
+    "capa2024": "Portada del programa impreso de 2024, con máscaras teatrales y el nombre del festival.",
+    "previaSilhuetas": "Fotografía ilustrativa: tres siluetas de actores ante un telón rojo iluminado.",
+    "previaCortina": "Fotografía ilustrativa: un telón de terciopelo rojo cerrado sobre un escenario.",
+    "previaPlateiaVazia": "Fotografía ilustrativa: la platea vacía de un teatro histórico, vista desde el fondo de la sala.",
+    "previaTeatroHistorico": "Fotografía ilustrativa: el interior de un teatro histórico, con palcos dorados y telón rojo.",
+    "previaPlateiaDoPalco": "Fotografía ilustrativa: un público lleno visto desde el escenario, durante una función.",
+    "previaCasaCheia": "Fotografía ilustrativa: una sala de espectáculos abarrotada, con palcos en varios niveles.",
+    "previaCorpoEmCena": "Fotografía ilustrativa: una bailarina en movimiento, iluminada sobre fondo oscuro."
   }
 }

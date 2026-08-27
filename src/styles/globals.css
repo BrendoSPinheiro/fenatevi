@@ -692,3 +692,116 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+ * Linha do tempo da memória — posição no eixo
+ *
+ * O marcador é o único movimento destas telas, e é **decorativo**: o elemento
+ * é `aria-hidden`, e nenhuma informação depende dele. Por isso ele nasce sem
+ * exibição nenhuma e só aparece onde o navegador tem `timeline-scope` — em vez
+ * de nascer visível numa posição falsa e esperar que a rolagem o corrija.
+ *
+ * Não há JavaScript envolvido: a linha do tempo é resolvida pelo próprio
+ * navegador. Sem suporte, e sob movimento reduzido, o eixo fica sem marcador e
+ * as vinte e duas edições continuam completas.
+ *
+ * **Os dois blocos abaixo são duplicados de propósito.** As variantes `espinha`
+ * e `trilho` existem só até a decisão visual; a que não for escolhida é apagada
+ * junto com o seu bloco, sem tocar no outro. Ver o plano de deleção em
+ * `openspec/changes/redesenhar-linha-do-tempo-da-memoria/design.md`.
+ * ========================================================================== */
+
+/* Variante `espinha`: a fonte é a lista de estações, no eixo de bloco. */
+.timeline-spine {
+  timeline-scope: --timeline-spine;
+}
+
+.timeline-spine__list {
+  view-timeline-name: --timeline-spine;
+  view-timeline-axis: block;
+}
+
+.timeline-spine__marker {
+  display: none;
+}
+
+@supports (timeline-scope: --probe) {
+  @media not (prefers-reduced-motion: reduce) {
+    .timeline-spine__marker {
+      display: block;
+      animation: timeline-marker-back linear both;
+      animation-timeline: --timeline-spine;
+      animation-range: contain 0% contain 100%;
+    }
+  }
+}
+
+/* Variante `trilho`: a fonte é o próprio contêiner rolável, no eixo horizontal. */
+.timeline-rail {
+  timeline-scope: --timeline-rail;
+}
+
+.timeline-rail__track {
+  scroll-timeline-name: --timeline-rail;
+  scroll-timeline-axis: x;
+  /* A âncora respeita a margem do contêiner, como o recuo do próprio trilho. */
+  scroll-padding-inline-start: var(--spacing-margin-mobile);
+}
+
+@media (width >= 64rem) {
+  .timeline-rail__track {
+    scroll-padding-inline-start: var(--spacing-margin-desktop);
+  }
+}
+
+.timeline-rail__marker {
+  display: none;
+}
+
+@supports (timeline-scope: --probe) {
+  @media not (prefers-reduced-motion: reduce) {
+    .timeline-rail__marker {
+      display: block;
+      animation: timeline-marker-back linear both;
+      animation-timeline: --timeline-rail;
+    }
+  }
+}
+
+/*
+ * O eixo diz que rola, quando rola.
+ *
+ * Em telas estreitas os vinte e dois anos não cabem e o último visível fica
+ * cortado a seco — o que se lê como defeito, não como "há mais adiante". O
+ * esmaecimento tem 2,5rem: mais que a margem do mobile (20px), de modo que
+ * apareça sobre um rótulo de verdade, e menos que a do desktop (64px), onde o
+ * eixo cabe inteiro e nada deve ser esmaecido.
+ *
+ * Duplicado por variante, como o resto do eixo.
+ */
+.timeline-spine__axis-scroll,
+.timeline-rail__axis-scroll {
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0,
+    #000 2.5rem,
+    #000 calc(100% - 2.5rem),
+    transparent 100%
+  );
+}
+
+/*
+ * O marcador anda da direita para a esquerda.
+ *
+ * O eixo é cronológico (a edição mais antiga à esquerda), mas a lista e o
+ * trilho abrem pela edição mais recente — como se consulta um arquivo. Avançar
+ * na leitura é, portanto, recuar no tempo, e o marcador precisa dizer isso.
+ */
+@keyframes timeline-marker-back {
+  from {
+    left: 100%;
+  }
+  to {
+    left: 0%;
+  }
+}
