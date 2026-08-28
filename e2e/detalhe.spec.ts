@@ -82,27 +82,59 @@ test.describe('Detalhe de oficina', () => {
 });
 
 test.describe('Espaços', () => {
-  test('o esquema é alcançável pelo teclado, com o nome de cada espaço', async ({ page }) => {
+  test('o mapa é alcançável pelo teclado, com o nome de cada espaço', async ({ page }) => {
     await page.goto('/espacos');
 
-    const marcador = page
-      .getByRole('group', { name: 'Esquema dos espaços do festival na cidade' })
-      .getByRole('link', { name: /Praça Costa Pereira/ });
+    const marcador = page.getByRole('link', { name: /Praça Costa Pereira/ }).first();
 
     await marcador.focus();
     await expect(marcador).toBeFocused();
 
+    /*
+     * O alvo é de 44px **em pixels de tela**, e não em unidades do `viewBox`:
+     * é por isso que os marcadores vivem fora do SVG. Dentro dele encolheriam
+     * junto com o mapa em telas estreitas.
+     */
     const box = await marcador.boundingBox();
     expect(box?.width).toBeGreaterThanOrEqual(44);
     expect(box?.height).toBeGreaterThanOrEqual(44);
   });
 
-  test('um espaço sem atividades diz isso, e continua navegável', async ({ page }) => {
-    // O Teatro Estrelas recebe apenas oficinas, que não são atividades da grade.
+  test('o mapa e a lista numeram o mesmo espaço com o mesmo número', async ({ page }) => {
+    await page.goto('/espacos');
+
+    /*
+     * A sala dentro da casa **não** recebe número: ela divide o marcador da
+     * casa porque divide o endereço dela. Numerá-la daria à lista um número
+     * que não existe no mapa.
+     */
+    const marcadores = await page
+      .getByRole('img', { name: 'Mapa de Vitória com os espaços do festival numerados' })
+      .locator('text')
+      .allTextContents();
+
+    // Seis marcadores numerados (1–6) mais o rótulo da barra de escala.
+    expect(marcadores).toContain('1');
+    expect(marcadores).toContain('6');
+    expect(marcadores).not.toContain('7');
+  });
+
+  test('um espaço que só recebe oficinas apresenta as oficinas', async ({ page }) => {
+    /*
+     * O Teatro Estrelas não recebe nenhuma sessão nesta edição — só as duas
+     * ações formativas. A página precisa apresentá-las: dizer "sem atividades"
+     * num espaço que abriga as duas oficinas do festival seria informação
+     * errada, e é o que ela dizia enquanto lia apenas as sessões.
+     */
     await page.goto('/espacos/estrelas');
 
     await expect(page.getByRole('heading', { level: 1, name: 'Teatro Estrelas' })).toBeVisible();
-    await expect(page.getByText('Este espaço não recebe atividades nesta edição.')).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: 'Ações formativas neste espaço' }),
+    ).toBeVisible();
+    await expect(page.getByRole('link', { name: 'O Corpo Que Habitamos' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Dissociando o Corpo' })).toBeVisible();
+    await expect(page.getByText('2 atividades')).toBeVisible();
   });
 
   test('uma sala declara o espaço que a abriga', async ({ page }) => {

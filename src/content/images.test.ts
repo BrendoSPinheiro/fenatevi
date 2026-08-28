@@ -31,9 +31,24 @@ describe('imagens do acervo', () => {
     }
   });
 
+  /*
+   * A regra que sustenta a apresentação: baixa resolução e proveniência andam
+   * juntas. Uma fotografia restaurada marcada como extração seria apresentada
+   * menor do que precisa; uma extração marcada como restaurada seria ampliada
+   * até o borrão. As duas direções são erro, e as duas falham aqui.
+   */
+  it('faz baixa resolução e proveniência concordarem', () => {
+    for (const image of allImages) {
+      expect(image.isLowResolution, image.src).toBe(image.provenance === 'programa-impresso-2024');
+    }
+  });
+
   it('registra as extrações do programa impresso como material a substituir', () => {
-    // Todas as capas de 2024 são extrações de baixa resolução do programa.
-    expect(imagesNeedingOriginals.length).toBe(allImages.length);
+    expect(imagesNeedingOriginals.every((image) => image.isLowResolution)).toBe(true);
+    // Ainda há material do programa impresso à espera do arquivo original.
+    expect(imagesNeedingOriginals.length).toBeGreaterThan(0);
+    // Mas a maior parte do acervo já é fotografia restaurada.
+    expect(imagesNeedingOriginals.length).toBeLessThan(allImages.length / 2);
   });
 });
 

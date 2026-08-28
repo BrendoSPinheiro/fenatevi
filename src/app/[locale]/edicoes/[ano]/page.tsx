@@ -16,7 +16,7 @@ import { books } from '@/content/books';
 import { creativeProcesses } from '@/content/creative-processes';
 import { editionCredits } from '@/content/edition-credits';
 import { editionPageYears, findEditionEntry } from '@/content/editions';
-import { archivedEdition2024 } from '@/content/festival';
+import { edition2024 } from '@/content/festival';
 import { honorees } from '@/content/honorees';
 import { findVenue, venues } from '@/content/venues';
 import { workshops } from '@/content/workshops';
@@ -51,9 +51,9 @@ export async function generateMetadata({ params }: EdicaoPageProps): Promise<Met
   return {
     title: `FENATEVI ${ano}`,
     description: t('headline', {
-      edition: archivedEdition2024.edition,
-      start: archivedEdition2024.startDate,
-      end: archivedEdition2024.endDate,
+      edition: edition2024.edition,
+      start: edition2024.startDate,
+      end: edition2024.endDate,
     }),
   };
 }
@@ -71,7 +71,7 @@ export default async function EdicaoPage({ params }: EdicaoPageProps) {
   }
 
   const locale = await getLocale();
-  const edition = archivedEdition2024;
+  const edition = edition2024;
   const t = await getTranslations('edicao');
   const tAcervo = await getTranslations('acervo');
   const tCommon = await getTranslations('common');

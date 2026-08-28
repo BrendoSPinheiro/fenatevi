@@ -80,8 +80,8 @@ export function StageIntro({ line, hint }: StageIntroProps) {
       className={cn('stage-intro', phase === 'dismissing' && 'stage-intro--dismissing')}
       onAnimationEnd={handleAnimationEnd}
     >
-      <div className="stage-intro__curtain stage-intro__curtain--left" />
-      <div className="stage-intro__curtain stage-intro__curtain--right" />
+      <div className="curtain-panel curtain-panel--left stage-intro__curtain" />
+      <div className="curtain-panel curtain-panel--right stage-intro__curtain" />
       <div className="stage-intro__beam stage-intro__beam--fill" />
       <div className="stage-intro__beam stage-intro__beam--key" />
 

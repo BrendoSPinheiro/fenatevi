@@ -9,24 +9,26 @@ import { expect, test } from '@playwright/test';
  * que não devolve o foco joga a pessoa de volta ao topo do documento.
  */
 test.describe('Foco em diálogos', () => {
-  test('o menu de áreas prende o foco, fecha por Escape e o devolve', async ({ page }) => {
+  test('o painel de acessibilidade prende o foco, fecha por Escape e o devolve', async ({
+    page,
+  }) => {
     await page.goto('/');
 
-    const abrir = page.getByRole('button', { name: 'Áreas do portal' });
+    const abrir = page.getByRole('button', { name: /Acessibilidade/ });
     await abrir.click();
 
-    const dialogo = page.getByRole('dialog', { name: 'Áreas do portal' });
+    const dialogo = page.getByRole('dialog', { name: 'Acessibilidade' });
     await expect(dialogo).toBeVisible();
 
     // O foco entrou no diálogo.
-    await expect(page.getByRole('button', { name: 'Fechar as áreas' })).toBeFocused();
+    await expect(page.getByRole('button', { name: 'Fechar' })).toBeFocused();
 
     // Tabulando até o fim, o ciclo reentra pelo primeiro elemento.
     const focaveis = await dialogo.locator('a[href], button').count();
     for (let i = 0; i < focaveis; i += 1) {
       await page.keyboard.press('Tab');
     }
-    await expect(page.getByRole('button', { name: 'Fechar as áreas' })).toBeFocused();
+    await expect(page.getByRole('button', { name: 'Fechar' })).toBeFocused();
 
     await page.keyboard.press('Escape');
 
@@ -34,25 +36,53 @@ test.describe('Foco em diálogos', () => {
     await expect(abrir).toBeFocused();
   });
 
-  test('o menu de áreas aponta só para telas que existem', async ({ page }) => {
+  /*
+   * O controle existia no protótipo como "estado de demonstração", anunciando
+   * quatro funcionalidades — uma delas Libras — que não estavam implementadas.
+   * Agora ele existe de verdade, e estes testes são o contrato: **cada opção
+   * oferecida precisa mudar alguma coisa**, e Libras continua de fora porque
+   * continua não sendo entregável.
+   */
+  test('cada preferência de acessibilidade muda o documento e sobrevive ao recarregamento', async ({
+    page,
+  }) => {
     await page.goto('/');
-    await page.getByRole('button', { name: 'Áreas do portal' }).click();
+    await page.getByRole('button', { name: /Acessibilidade/ }).click();
 
-    const dialogo = page.getByRole('dialog', { name: 'Áreas do portal' });
+    await page.getByRole('button', { name: 'Alto contraste' }).click();
+    await page.getByRole('button', { name: 'Texto maior' }).click();
+    await page.getByRole('button', { name: 'Reduzir movimento' }).click();
 
-    // O protótipo desenha "Ingressos" e "Experiência mobile"; nenhuma é rota.
-    await expect(dialogo.getByRole('link', { name: /Ingressos/ })).toHaveCount(0);
-    await expect(dialogo.getByRole('link', { name: /Experiência mobile/ })).toHaveCount(0);
+    const raiz = page.locator('html');
+    await expect(raiz).toHaveAttribute('data-contrast', 'alto');
+    await expect(raiz).toHaveAttribute('data-text-size', 'grande');
+    await expect(raiz).toHaveAttribute('data-motion', 'reduzido');
 
-    await expect(dialogo.getByRole('link')).toHaveCount(6);
+    // O texto maior é medida, não rótulo: a base do documento sobe de fato.
+    expect(await page.evaluate(() => getComputedStyle(document.documentElement).fontSize)).toBe(
+      '18px',
+    );
+
+    await page.reload();
+    await expect(raiz).toHaveAttribute('data-contrast', 'alto');
+    await expect(raiz).toHaveAttribute('data-text-size', 'grande');
+    await expect(raiz).toHaveAttribute('data-motion', 'reduzido');
+
+    // E dá para voltar atrás.
+    await page.getByRole('button', { name: /Acessibilidade/ }).click();
+    await page.getByRole('button', { name: 'Restaurar as preferências padrão' }).click();
+    await expect(raiz).not.toHaveAttribute('data-contrast', /.*/);
   });
 
-  test('o cabeçalho não oferece o controle "A11y" do protótipo', async ({ page }) => {
+  test('o painel não anuncia Libras como uma preferência do portal', async ({ page }) => {
     await page.goto('/');
+    await page.getByRole('button', { name: /Acessibilidade/ }).click();
 
-    // Exclusão deliberada, registrada na proposta: ele anunciava quatro
-    // funcionalidades que o protótipo não desenha.
-    await expect(page.getByRole('button', { name: /A11y|Acessibilidade/ })).toHaveCount(0);
+    const dialogo = page.getByRole('dialog', { name: 'Acessibilidade' });
+
+    // Libras não é ajuste do portal: é recurso de sessões, e o painel leva até elas.
+    await expect(dialogo.getByRole('button', { name: /Libras/ })).toHaveCount(0);
+    await expect(dialogo.getByRole('link', { name: /sessões com Libras/i })).toBeVisible();
   });
 });
 

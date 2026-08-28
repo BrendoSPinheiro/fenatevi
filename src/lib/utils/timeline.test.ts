@@ -54,8 +54,8 @@ describe('realStations', () => {
 describe('stationYearLabel', () => {
   it('mostra o ano de uma edição única e o intervalo de um bloco', () => {
     const [single, grouped] = realStations([
-      { ...editionTimeline[2]!, firstYear: 2024, lastYear: 2024 },
-      { ...editionTimeline[3]!, firstYear: 2004, lastYear: 2023 },
+      { ...editionTimeline[0]!, firstYear: 2024, lastYear: 2024 },
+      { ...editionTimeline[1]!, firstYear: 2004, lastYear: 2023 },
     ]);
 
     expect(stationYearLabel(single!)).toBe('2024');
@@ -68,6 +68,6 @@ describe('stationHasDestination', () => {
     const stations = realStations(editionTimeline);
     const withDestination = stations.filter(stationHasDestination).map((station) => station.id);
 
-    expect(withDestination).toEqual(['2026', '2024']);
+    expect(withDestination).toEqual(['2024']);
   });
 });

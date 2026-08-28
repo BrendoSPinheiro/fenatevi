@@ -23,9 +23,13 @@ grade diária, detalhe de espetáculo, detalhe de oficina, espaços, espaço,
 memória, edição e notícias — sobre o design system **Nocturne Stage**
 (`prototipo-fenatevi/uploads/DESIGN.md`).
 
-O acervo da edição de 2024 é conteúdo tipado em `src/content/`. Enquanto a edição
-vigente não publicar sua programação (`currentEdition.hasPublishedProgram`), o
-portal apresenta esse acervo **e diz que é isso que está fazendo**.
+O acervo da edição de 2024 é conteúdo tipado em `src/content/`. **Nesta branch
+(`demo/fenatevi-2024`) a edição de 2024 é a edição vigente**: `currentEdition`
+aponta para `edition2024` e o instante corrente vem de `DEMO_INSTANT`, em
+`src/lib/utils/festival-clock.ts` — nunca de `new Date()`. Se uma edição sem
+programação publicada voltar a ser a vigente
+(`currentEdition.hasPublishedProgram: false`), o portal volta a apresentar o
+acervo **e a dizer que é isso que está fazendo**, sem mudança de código.
 
 Não implemente CMS, backend, autenticação, pagamentos, busca no acervo,
 ingressos, mapa geográfico, notícias com conteúdo real ou deploy sem pedido
@@ -71,6 +75,7 @@ src/components/layout/   Cabeçalho, rodapé, shell
 src/components/sections/ Seções visuais de página
 src/content/             Conteúdo do festival, tipado
 src/hooks/               Hooks reutilizáveis
+src/lib/a11y/            Preferências de acessibilidade do visitante
 src/lib/animation/       gsap/, lenis/, three/
 src/lib/i18n/            Rotas, navegação, configuração do next-intl
 src/lib/seo/             Domínio canônico e constantes da imagem de compartilhamento

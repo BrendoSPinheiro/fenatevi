@@ -34,11 +34,15 @@ export const workshops: readonly FestivalWorkshop[] = [
     requirements:
       'É importante que o participante compareça aos 2 dias de oficina. Ao final do trabalho os participantes que quiserem estarão em cena, no espetáculo “O Corpo que Eu Habito”, juntamente com a Cia da Ideia.',
     accessibility: ['signLanguage'],
+    /*
+     * A fotografia é a do espetáculo de que a oficina deriva — é o que o
+     * programa impresso ilustra, e `relatedActivityId` registra o vínculo.
+     */
     image: {
-      src: '/imagens/2024/corpo-que-eu-habito.png',
-      altKey: 'corpo',
-      provenance: 'programa-impresso-2024',
-      isLowResolution: true,
+      src: '/imagens/2024/corpo-que-eu-habito-2.png',
+      altKey: 'corpo2',
+      provenance: 'registro-original',
+      isLowResolution: false,
     },
     relatedActivityId: 'corpo16',
   },
@@ -60,11 +64,12 @@ export const workshops: readonly FestivalWorkshop[] = [
     requirements:
       'Roupa confortável e levar algum instrumento de percussão. Exemplo: pandeiro, tambor, repenique, chocalho.',
     accessibility: [],
+    /* A fotografia da própria oficina no programa: André Forecchi em cena. */
     image: {
-      src: '/imagens/2024/homem-banda.png',
-      altKey: 'homembanda',
-      provenance: 'programa-impresso-2024',
-      isLowResolution: true,
+      src: '/imagens/2024/oficina-dissociando-o-corpo.png',
+      altKey: 'oficinaDissociando',
+      provenance: 'registro-original',
+      isLowResolution: false,
     },
     relatedActivityId: 'homembanda',
   },

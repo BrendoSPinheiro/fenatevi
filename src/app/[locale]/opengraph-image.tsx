@@ -1,7 +1,9 @@
 import { getTranslations } from 'next-intl/server';
 import { ImageResponse } from 'next/og';
 
+import { currentEdition } from '@/content/festival';
 import { routing } from '@/lib/i18n/routing';
+import { formatFestivalDate } from '@/lib/utils/format';
 import { OG_COLORS, OG_IMAGE_SIZE } from '@/lib/seo/site';
 
 /**
@@ -40,6 +42,20 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'metadata' });
   const tCommon = await getTranslations({ locale, namespace: 'common' });
+  const tMemoria = await getTranslations({ locale, namespace: 'memoria' });
+
+  /*
+   * As duas linhas são montadas antes do JSX porque o Satori exige que um
+   * `<div>` com mais de um filho declare `display: flex` — e aqui cada uma é um
+   * único nó de texto.
+   */
+  const editionLine = [
+    `${tCommon('festivalName')} ${currentEdition.year}`,
+    tMemoria('editionLabel', { edition: currentEdition.edition }),
+    `${formatFestivalDate(currentEdition.startDate, locale)} — ${formatFestivalDate(currentEdition.endDate, locale)}`,
+  ].join(' · ');
+
+  const placeLine = `${t('ogImageLocation')} · ${tCommon('freeEntry')}`;
 
   return new ImageResponse(
     <div
@@ -84,9 +100,15 @@ export default async function OpenGraphImage({ params }: OpenGraphImageProps) {
       >
         {tCommon('festivalFullName')}
       </div>
-      <div style={{ marginTop: '20px', fontSize: '32px', color: OG_COLORS.secondary }}>
-        {t('ogImageLocation')}
+      {/*
+       * A edição vigente entra no card porque é o que decide se o link vale um
+       * clique: quem vê "20ª edição · 13—20 out 2024 · entrada franca" já sabe
+       * quando é e quanto custa antes de abrir a página.
+       */}
+      <div style={{ marginTop: '28px', fontSize: '34px', color: OG_COLORS.secondary }}>
+        {editionLine}
       </div>
+      <div style={{ marginTop: '14px', fontSize: '30px', color: OG_COLORS.muted }}>{placeLine}</div>
     </div>,
     size,
   );

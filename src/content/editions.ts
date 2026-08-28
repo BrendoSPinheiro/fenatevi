@@ -4,37 +4,17 @@ import type { EditionTimelineEntry } from '@/types/festival';
  * A linha do tempo das edições.
  *
  * Cada entrada carrega seu **estado de acervo**, e é o estado que decide o que
- * a entrada oferece: só uma edição com `acervo-completo` tem página própria, de
- * modo que a linha do tempo nunca aponta para uma página que não existe.
+ * a entrada oferece: só uma edição com página própria vira link, de modo que a
+ * linha do tempo nunca aponta para uma página que não existe.
+ *
+ * A linha do tempo é **histórica por definição**: ela vai da fundação até a
+ * edição vigente, e a edição vigente é uma entre muitas — não o assunto da
+ * tela. Nenhuma entrada anterior sai daqui quando uma nova edição entra.
  *
  * A descrição de cada entrada é texto de interface, e vive em `messages/` sob
  * `memoria.entries.<id>` — não aqui.
  */
 export const editionTimeline: readonly EditionTimelineEntry[] = [
-  {
-    id: '2026',
-    firstYear: 2026,
-    lastYear: 2026,
-    edition: 22,
-    editionCount: 1,
-    startDate: '2026-10-13',
-    endDate: '2026-10-21',
-    archiveState: 'edicao-vigente',
-    completeness: 0.12,
-    hasEditionPage: false,
-  },
-  {
-    id: '2025',
-    firstYear: 2025,
-    lastYear: 2025,
-    edition: 21,
-    editionCount: 1,
-    startDate: null,
-    endDate: null,
-    archiveState: 'acervo-pendente',
-    completeness: 0.06,
-    hasEditionPage: false,
-  },
   {
     id: '2024',
     firstYear: 2024,
@@ -43,7 +23,7 @@ export const editionTimeline: readonly EditionTimelineEntry[] = [
     editionCount: 1,
     startDate: '2024-10-13',
     endDate: '2024-10-20',
-    archiveState: 'acervo-completo',
+    archiveState: 'edicao-vigente',
     completeness: 1,
     hasEditionPage: true,
   },

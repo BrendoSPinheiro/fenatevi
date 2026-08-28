@@ -91,11 +91,20 @@ export interface CreditLine {
   readonly value: string;
 }
 
-/** Posição no esquema de espaços — porcentagens, não coordenadas geográficas. */
-export interface SchematicPosition {
-  readonly x: number;
-  readonly y: number;
+/** Um ponto no mapa, em graus decimais. */
+export interface GeoCoordinates {
+  readonly latitude: number;
+  readonly longitude: number;
 }
+
+/**
+ * De onde veio a coordenada de um espaço.
+ *
+ * É campo, não comentário, pelo mesmo motivo de `ImageProvenance`: saber quais
+ * marcadores estão no equipamento e quais estão na rua é um `filter`, e é a
+ * diferença entre "o teatro é aqui" e "o teatro fica nesta quadra".
+ */
+export type CoordinatePrecision = 'poi' | 'numero' | 'via';
 
 export interface Venue {
   readonly id: string;
@@ -106,13 +115,9 @@ export interface Venue {
   /** Acervo, pt-BR: endereço como consta no programa. */
   readonly address: string;
   readonly kind: VenueKind;
-  /**
-   * Posição no esquema da cidade, em porcentagem do container.
-   *
-   * **Não é geolocalização.** O esquema do protótipo organiza os espaços em
-   * relação uns aos outros; uma base geográfica de verdade é outra change.
-   */
-  readonly position: SchematicPosition;
+  /** Onde o espaço fica, em graus decimais — coordenada real, do OpenStreetMap. */
+  readonly coordinates: GeoCoordinates;
+  readonly coordinatePrecision: CoordinatePrecision;
   readonly image: ImageAsset | null;
   readonly accessibility: readonly AccessibilityFeatureId[];
 }
@@ -261,11 +266,13 @@ export interface EditionStatement {
   readonly author: string;
   /** Acervo, pt-BR: como quem assina se identifica. */
   readonly authorRole: string;
+  /** Retrato de quem assina; `null` quando o programa não o traz. */
+  readonly portrait: ImageAsset | null;
 }
 
 export interface FestivalEdition {
   readonly id: string;
-  /** Número da edição, exibido como "22ª edição". */
+  /** Número da edição, exibido como "20ª edição". */
   readonly edition: number;
   readonly year: number;
   readonly startDate: IsoDate;

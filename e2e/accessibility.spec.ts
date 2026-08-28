@@ -48,20 +48,28 @@ test.describe('Acessibilidade', () => {
     ).toBeFocused();
   });
 
-  test('o esquema dos espaços tem equivalente textual', async ({ page }) => {
+  test('o mapa dos espaços tem equivalente textual', async ({ page }) => {
     await page.goto('/espacos');
 
     /*
-     * O esquema não é um mapa geográfico, e ele mesmo diz isso. Cada marcador
-     * carrega o nome do espaço no nome acessível, e a lista ao lado traz o
-     * endereço de verdade — quem não enxerga o esquema não perde nada.
+     * O mapa é ilustração de uma informação que não depende dele: cada
+     * marcador carrega o nome do espaço no nome acessível, a lista ao lado traz
+     * o endereço de verdade, e a nota declara a precisão de cada coordenada.
+     * Quem não enxerga o mapa não perde nada.
      */
-    await expect(page.getByText(/O esquema mostra a posição relativa dos espaços/)).toBeVisible();
+    await expect(
+      page.getByText(/Os marcadores seguem o endereço que o programa publica/),
+    ).toBeVisible();
+
+    // Atribuição da ODbL: obrigação de licença, não enfeite.
+    await expect(page.getByText(/colaboradores do OpenStreetMap/)).toBeVisible();
 
     await expect(
-      page
-        .getByRole('group', { name: 'Esquema dos espaços do festival na cidade' })
-        .getByRole('link', { name: /Casa da Música Sônia Cabral/ }),
+      page.getByRole('img', { name: 'Mapa de Vitória com os espaços do festival numerados' }),
+    ).toBeVisible();
+
+    await expect(
+      page.getByRole('link', { name: /Casa da Música Sônia Cabral/ }).first(),
     ).toBeVisible();
   });
 
@@ -136,10 +144,28 @@ test.describe('Acessibilidade', () => {
     }
   }
 
-  test('o menu de áreas aberto não apresenta violações do axe', async ({ page }) => {
+  test('o painel de acessibilidade aberto não apresenta violações do axe', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('button', { name: 'Áreas do portal' }).click();
+    await page.getByRole('button', { name: /Acessibilidade/ }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
+
+    expect(await varrer(page)).toEqual([]);
+  });
+
+  /*
+   * O modo de alto contraste é uma promessa de contraste: se ele próprio
+   * introduzisse uma violação de cor, seria a pior falha possível desta tela.
+   */
+  test('a home em alto contraste e texto maior não apresenta violações do axe', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: /Acessibilidade/ }).click();
+    await page.getByRole('button', { name: 'Alto contraste' }).click();
+    await page.getByRole('button', { name: 'Texto maior' }).click();
+    await page.keyboard.press('Escape');
+
+    await expect(page.locator('html')).toHaveAttribute('data-contrast', 'alto');
 
     expect(await varrer(page)).toEqual([]);
   });

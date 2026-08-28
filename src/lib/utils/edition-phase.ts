@@ -1,4 +1,5 @@
 import { displayedEdition } from '@/content/festival';
+import { festivalNow } from '@/lib/utils/festival-clock';
 
 import type { FestivalEdition } from '@/types/festival';
 
@@ -35,7 +36,7 @@ export function editionPhase(edition: FestivalEdition, now: Date): EditionPhase 
  * Client Component de folha refina o baseline depois da montagem, sem que o
  * primeiro render mude.
  */
-export const displayedEditionPhase: EditionPhase = editionPhase(displayedEdition, new Date());
+export const displayedEditionPhase: EditionPhase = editionPhase(displayedEdition, festivalNow());
 
 /** A edição exibida contém o instante corrente? */
 export const isEditionRunning: boolean = displayedEditionPhase === 'during';

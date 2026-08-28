@@ -112,31 +112,32 @@ async function AccessibilityLine({
 }
 
 /**
- * O cartaz, exatamente no que o arquivo do programa impresso sustenta.
+ * A imagem da atividade, no tratamento que o arquivo sustenta.
  *
- * Os dois números aqui vêm dos arquivos, não do gosto. As capas de 2024 são
- * extrações digitalizadas entre **151 e 269px de largura**, e o teto do cartaz
- * de abertura é a menor delas: em 152px de largura renderizada nenhuma capa da
- * edição é ampliada, e a que abre uma frente não fica mais borrada do que a que
- * fecha. Nas linhas o teto é 112px, bem abaixo de qualquer arquivo.
+ * A moldura é sempre **quadrada**, e é o que dá à lista o ritmo de catálogo:
+ * as proporções do acervo vão de 3:5 a 3:2, e sem uma moldura comum cada linha
+ * teria uma altura diferente. O que muda entre um arquivo e outro é o que
+ * acontece dentro dela, e a diferença não é de gosto:
  *
- * A moldura é **quadrada com a imagem contida**, e não um recorte 3:4. As
- * proporções do acervo vão de 3:5 a 3:2 — metade das capas é vertical, metade é
- * horizontal —, e um recorte único decepa uma das duas metades. A moldura
- * quadrada sobre `surface-container-lowest` é a lâmina escura em que a capa é
- * montada inteira: é o gesto de catálogo, e é o único que apresenta o acervo em
- * vez de editá-lo.
+ * - **Fotografia de cena restaurada** preenche a moldura (`cover`), recortada a
+ *   partir do terço superior, onde os rostos costumam estar. É foto de
+ *   espetáculo, e enquadrá-la é o gesto editorial normal.
+ * - **Extração do programa impresso** é contida (`contain`) e limitada à
+ *   largura do arquivo: são digitalizações de 151 a 269px, e ampliá-las só
+ *   aumentaria o borrão. Recortar uma reprodução de cartaz, além disso, entrega
+ *   um pedaço do cartaz em vez do cartaz.
  */
 function Cover({ image, variant }: { readonly image: ImageAsset; readonly variant: EntryVariant }) {
   return (
     <ProvenancedImage
       image={image}
-      fit="contain"
-      sizes={variant === 'lead' ? '152px' : '112px'}
+      fit={image.isLowResolution ? 'contain' : 'cover'}
+      position="50% 35%"
+      sizes={variant === 'lead' ? '208px' : '160px'}
       maxRenderedWidth={variant === 'lead' ? 152 : 112}
       className={cn(
         'aspect-square rounded-lg border border-outline-variant',
-        variant === 'lead' ? 'w-full max-w-[9.5rem]' : 'w-28',
+        variant === 'lead' ? 'w-full max-w-[13rem]' : 'w-40',
       )}
     />
   );

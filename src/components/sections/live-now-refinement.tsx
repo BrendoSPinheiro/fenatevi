@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
+import { festivalNow } from '@/lib/utils/festival-clock';
 import { festivalDayFromDate } from '@/lib/utils/format';
 
 interface LiveNowRefinementProps {
@@ -39,7 +40,7 @@ export function LiveNowRefinement({ sessions, liveLabel, emptyLabel }: LiveNowRe
 
   useEffect(() => {
     function refresh() {
-      const now = Date.now();
+      const now = festivalNow().getTime();
 
       setLiveIds(
         sessions
@@ -91,7 +92,7 @@ export function LiveNowRefinement({ sessions, liveLabel, emptyLabel }: LiveNowRe
     >
       <span aria-hidden="true" className="size-2 rounded-full bg-secondary" />
       {liveLabel}
-      <span className="sr-only"> — {festivalDayFromDate(new Date())}</span>
+      <span className="sr-only"> — {festivalDayFromDate(festivalNow())}</span>
     </p>
   );
 }

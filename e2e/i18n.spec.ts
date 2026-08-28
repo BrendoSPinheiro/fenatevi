@@ -10,7 +10,9 @@ test.describe('Internacionalização', () => {
     await expect(page).toHaveURL(/\/en$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(
-      page.getByText("Nine days of theatre on the city's stages and squares."),
+      page.getByText(
+        "Eight days of theatre on the city's stages, halls and squares — free admission from start to finish.",
+      ),
     ).toBeVisible();
 
     await page
@@ -21,7 +23,9 @@ test.describe('Internacionalização', () => {
     await expect(page).toHaveURL(/\/es$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'es');
     await expect(
-      page.getByText('Nueve días de teatro en los escenarios y plazas de la ciudad.'),
+      page.getByText(
+        'Ocho días de teatro en los escenarios, salas y plazas de la ciudad — con entrada libre de principio a fin.',
+      ),
     ).toBeVisible();
   });
 
@@ -42,7 +46,9 @@ test.describe('Internacionalização', () => {
     await expect(page).toHaveURL(/:\d+\/$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
     await expect(
-      page.getByText('Nove dias de teatro nos palcos e nas praças da cidade.'),
+      page.getByText(
+        'Oito dias de teatro nos palcos, nas salas e nas praças da cidade — de entrada franca, do começo ao fim.',
+      ),
     ).toBeVisible();
   });
 
@@ -58,9 +64,9 @@ test.describe('Internacionalização', () => {
 
   test('serve cada idioma com seu próprio título de página', async ({ page }) => {
     await page.goto('/');
-    await expect(page).toHaveTitle(/Festival Nacional de Teatro de Vitória/);
+    await expect(page).toHaveTitle(/Festival Nacional de Teatro Cidade de Vitória/);
 
     await page.goto('/en');
-    await expect(page).toHaveTitle(/Vitória National Theatre Festival/);
+    await expect(page).toHaveTitle(/Vitória City National Theatre Festival/);
   });
 });

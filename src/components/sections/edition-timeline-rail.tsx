@@ -43,7 +43,7 @@ interface EditionTimelineRailProps {
  * na horizontal. Ela não renderiza nada e o trilho funciona sem ela.
  *
  * Cada painel recebe `tabIndex` porque é uma região rolável
- * (WCAG 2.1.1): dezenove das vinte e duas estações não têm link nenhum, e sem
+ * (WCAG 2.1.1): quase nenhuma estação tem link, e sem
  * isso o seu conteúdo ficaria inalcançável para quem não usa mouse. O `h2` do
  * ano dá nome a essa parada, de modo que tabular pelo trilho anuncie o ano em
  * vez de "artigo".
@@ -217,7 +217,7 @@ export async function EditionTimelineRail({ stations }: EditionTimelineRailProps
        * compartilhável, e o navegador cuida da rolagem — inclusive dentro de um
        * contêiner que rola de lado.
        *
-       * Todos os vinte e dois anos ficam rotulados: rótulo condicional era o
+       * Todos os anos da linha do tempo ficam rotulados: rótulo condicional era o
        * jeito de caber uma régua decorativa, e um navegador com metade dos
        * destinos sem nome não é um navegador. Cada alvo tem 44×44px, o que em
        * 375px soma mais que a tela — o eixo então rola dentro de si, no mesmo

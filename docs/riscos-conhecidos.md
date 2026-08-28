@@ -53,57 +53,95 @@ documento é descritivo; cada item vira tarefa quando for pedido.
     invertida: a cortina é pintada já cobrindo a rota nova e se recolhe. Visual
     próximo, semântica melhor — **navegação não espera animação**. Divergência
     deliberada.
-14. **O controle "A11y" do cabeçalho não existe.** O protótipo o desenha, ainda
-    que rotulado "Estado de demonstração — integração real na implementação":
-    alto contraste, aumento de texto, redução de movimento e Libras são quatro
-    funcionalidades anunciadas e não desenhadas. O portal já entrega WCAG 2.2 AA
-    e respeita `prefers-reduced-motion` nativamente. Implementá-las de verdade é
-    uma change própria, com decisões próprias sobre persistência de preferência.
-    A ausência **será notada** por quem conhece o protótipo.
-15. **O mapa cultural é um esquema, não um mapa.** As posições dos espaços são
-    porcentagens dentro do container, herdadas do protótipo: mostram os espaços
-    em relação uns aos outros e nada mais. Não há base cartográfica, biblioteca
-    de mapa nem coordenada. A página declara isso em texto, e a lista de espaços
-    com endereços reais não depende do esquema.
+14. **O painel de acessibilidade entrega três das quatro opções do protótipo, e
+    Libras não é uma delas.** Alto contraste, texto maior e movimento reduzido
+    estão implementados de ponta a ponta (`lib/a11y/preferences.ts`), persistem
+    em `localStorage` e valem para o portal inteiro. Libras ficou de fora porque
+    exigiria intérprete em vídeo ou serviço de terceiros — anunciá-la sem
+    entregá-la enganaria exatamente quem depende dela. No lugar, o painel leva
+    ao filtro de acessibilidade da programação, que diz **quais sessões** têm
+    Libras e audiodescrição.
+    Duas limitações conhecidas: as preferências são aplicadas **depois da
+    hidratação**, porque lê-las antes do primeiro quadro exigiria um script
+    inline que o guia de segurança proíbe — quem escolheu alto contraste vê o
+    tema padrão por um quadro; e elas vivem em `localStorage`, ou seja, por
+    navegador, não por pessoa.
+15. **O menu "Áreas do portal" saiu do cabeçalho.** Era um diálogo em tela cheia
+    com as seis áreas; a navegação principal e o rodapé já levam às mesmas seis,
+    e o lugar dele na barra passou a ser o painel de acessibilidade. `portalAreas`
+    continua sendo a fonte única de destinos, agora lida pelo cabeçalho, pelo
+    rodapé e pela navegação inferior.
 16. **O acervo histórico não é traduzido.** Títulos, releases, fichas técnicas e
     biografias permanecem em pt-BR nas páginas em inglês e espanhol, marcados com
     `lang="pt-BR"` e precedidos de aviso traduzido. O visitante estrangeiro ainda
     encontra texto que não lê; traduzir material artístico de terceiros sem
     revisão humana seria pior.
-17. **A home mostra a programação de 2024 sob o cabeçalho da edição de 2026.** É
-    o que o protótipo desenha, e o aviso de conteúdo demonstrativo é explícito e
-    traduzido, acima da primeira lista de cada tela que apresenta programação. O
-    risco real é o aviso passar despercebido.
-18. **`stage-scene.tsx` e `use-webgl-support.ts` ficaram sem consumidor.** A home
+17. **O mapa dos espaços é geográfico, e a precisão de cada marcador varia.**
+    Linha de costa e malha viária são dados do OpenStreetMap congelados em
+    `content/city-map.ts`; as coordenadas dos espaços vieram do OSM a partir do
+    endereço que o programa publica. Três estão sobre o equipamento mapeado
+    (`poi`), uma sobre o número da rua (`numero`) e três sobre a rua ou a praça
+    do endereço (`via`) — `coordinatePrecision`, em `content/venues.ts`,
+    registra qual é qual, e a nota do mapa declara isso ao visitante. Não há
+    biblioteca de mapa nem requisição a terceiros: é `<svg>` inline, e funciona
+    sem JavaScript. A atribuição ao OpenStreetMap é **obrigação de licença**
+    (ODbL), não enfeite: não remova.
+    No mapa geral os cinco espaços do Centro cabem em quatro quarteirões e os
+    seus alvos de toque se sobreporiam, o que é violação de tamanho de alvo
+    (WCAG 2.5.8). Ali eles são desenho; quem os torna clicáveis é o detalhe
+    ampliado do Centro.
+18. **O portal apresenta a edição de 2024 como edição vigente, e o relógio é
+    fixo.** É a premissa da branch `demo/fenatevi-2024`: `currentEdition` aponta
+    para `edition2024` em `src/content/festival.ts`, com
+    `hasPublishedProgram: true` — e por isso o aviso de conteúdo demonstrativo
+    (`ui/demo-content-notice.tsx`) não aparece em tela nenhuma. O componente e as
+    chaves `acervo.demoNotice*` continuam no repositório, intactos: eles voltam a
+    aparecer sozinhos no dia em que uma edição sem programação publicada virar a
+    vigente.
+    O instante corrente vem de `DEMO_INSTANT`, em
+    `src/lib/utils/festival-clock.ts`, fixado em **18/10/2024 14h20** — meio da
+    edição. Sem ele, todo estado de tempo do portal ("em cena agora", "ainda
+    hoje", o dia que a grade abre, se uma oficina ainda recebe inscrição)
+    responderia "a edição terminou". Virar a constante para `null` devolve o
+    portal ao relógio real sem tocar em mais nenhum arquivo.
+19. **`stage-scene.tsx` e `use-webgl-support.ts` ficaram sem consumidor.** A home
     deixou de exibir a cena 3D; o código permanece no repositório, com seus
     testes, à espera de um uso previsto no design. Não é código morto por
     descuido — é uma decisão registrada na proposta da change.
-19. **As imagens são todas de baixa resolução.** As 23 capas e retratos de 2024
-    são extrações do programa impresso e não passam de 530px de largura; as
-    fotografias de palco têm 512px. Cada uma declara `isLowResolution` no
-    acervo, e `imagesNeedingOriginals` (em `src/content/images.ts`) é a lista de
-    pedidos a fazer às companhias e à organização.
-20. **As três fotografias de espaço distribuídas com o protótipo não são
+20. **Seis imagens ainda são extrações do programa impresso.** As fotografias de
+    cena de 2024 foram restauradas e estão em `public/imagens/2024` com mais de
+    1000px de largura; elas declaram `provenance: 'registro-original'` e
+    `isLowResolution: false`. Continuam de baixa resolução, e declaradas como
+    tal: `meus-olhos-verdes`, `corpo-que-eu-habito`, os dois retratos de
+    homenageados, o retrato de Beth Caser e a capa do programa. São essas que
+    `imagesNeedingOriginals` (em `src/content/images.ts`) lista — a lista de
+    pedidos a fazer às companhias e à organização. As fotografias de palco
+    (`/imagens/palco`) têm 512px e são decorativas.
+21. **As três fotografias de espaço distribuídas com o protótipo não são
     usadas.** `venue-a/b/c.jpg` não vêm identificadas com o espaço que retratam,
     e atribuí-las a um teatro nomeado seria uma afirmação que o material não
     sustenta. Nenhum espaço declara fotografia; a página de espaço trata a
     ausência com área neutra, sem dizer nada ao visitante sobre isso.
-21. **A linha do tempo da memória apresenta conteúdo de prévia, ligado por
-    padrão.** As edições de 2005 a 2023 e as suas fotografias são ilustrativas —
-    a tela declara isso em texto, nenhuma delas vira link para uma página de
-    edição, e nada disso alimenta contagem, resumo ou página. Fica em
-    `src/content/mock/timeline-preview.ts`, atrás de `TIMELINE_PREVIEW_ENABLED`,
-    e é o único arquivo a apagar quando os dados reais chegarem. Decisão
-    consciente do mantenedor enquanto o acervo histórico não existir.
-22. **`src/content/images.test.ts` não cobre as fotografias de prévia.** Elas são
+22. **A linha do tempo da memória apresenta conteúdo de prévia, ligado por
+    padrão — e a tela deixou de dizer isso.** As edições de 2005 a 2023 e as
+    suas fotografias são ilustrativas. Nenhuma delas vira link para uma página
+    de edição e nada disso alimenta contagem, resumo ou página, então a tela não
+    afirma nada falso; mas a nota "Prévia de layout", que ressalvava isso ao
+    visitante, **foi retirada nesta branch de demonstração** a pedido de quem
+    apresenta. É o item desta lista com maior chance de virar problema real:
+    antes de publicar para o público, ou a nota volta, ou
+    `TIMELINE_PREVIEW_ENABLED` vira `false`. Fica em
+    `src/content/mock/timeline-preview.ts`, e é o único arquivo a apagar quando
+    os dados reais chegarem.
+23. **`src/content/images.test.ts` não cobre as fotografias de prévia.** Elas são
     remotas (`images.unsplash.com`, autorizado em `next.config.ts`), e o teste
     garante apenas que toda imagem **em `public/`** existe. O acervo real
     continua inteiramente coberto; a lacuna some junto com a prévia.
-23. **`/memoria` deixou de ser gerada estaticamente.** A rota lê `searchParams`
+24. **`/memoria` deixou de ser gerada estaticamente.** A rota lê `searchParams`
     para escolher entre as duas variantes de linha do tempo (`?linha=`). É
     temporário por construção: quando a variante for escolhida, a leitura sai e
     a rota volta a ser estática.
-24. **Duas variantes da linha do tempo convivem no repositório.**
+25. **Duas variantes da linha do tempo convivem no repositório.**
     `edition-timeline-spine.tsx` e `edition-timeline-rail.tsx` duplicam marcação
     e classes **de propósito**, e o CSS do eixo é duplicado pelo mesmo motivo. A
     que não for escolhida é apagada por inteiro. Não "conserte" a duplicação
@@ -112,20 +150,18 @@ documento é descritivo; cada item vira tarefa quando for pedido.
     A tira tem ainda uma folha de cliente própria,
     `edition-timeline-rail-wheel.tsx`, que converte a rolagem vertical em avanço
     horizontal; ela também some com a variante.
-25. **O cabeçalho vaza cerca de 36px na horizontal em 320px, em todas as telas.**
-    O grupo do seletor de idioma com o botão de áreas não cabe, e o documento
-    passa a rolar de lado — contra "A Regra do Documento Que Não Anda de Lado".
-    É anterior às mudanças da linha do tempo e não foi corrigido aqui; a suíte
-    da memória mede o vazamento **relativo** entre as variantes por causa disso.
-26. **`ImageAsset` não guarda as dimensões do arquivo, e o teto de largura é
-    arbitrado por quem apresenta.** As capas de 2024 vão de **151 a 269px de
-    largura** e de 3:5 a 3:2 de proporção — os dois extremos convivem no mesmo
-    acervo. `ProvenancedImage` recebe `maxRenderedWidth` do chamador, e o padrão
-    (320px) está acima de **todos** os arquivos: qualquer tela que aceite o
-    padrão amplia o material. A programação passa os seus tetos explicitamente
-    (152px no cartaz de abertura, 112px nas linhas, ambos ≤ o menor arquivo) e
-    usa `fit="contain"` em moldura quadrada, para não recortar as capas
-    horizontais. **As demais telas ainda não fazem isso** — a home apresenta a
-    capa em destaque a 240px, acima das que têm 151px. A correção definitiva é
-    gravar largura e altura em `ImageAsset` e derivar o teto do próprio arquivo;
-    é change própria, e vale para o portal inteiro.
+26. ~~**O cabeçalho vaza cerca de 36px na horizontal em 320px.**~~ Resolvido: o
+    botão de áreas saiu da barra, e o painel de acessibilidade que ocupou o
+    lugar dele mostra só o pictograma abaixo de `lg`, com o rótulo no nome
+    acessível. Nenhuma rota rola de lado em 320px. A suíte da memória ainda mede
+    o vazamento **relativo** entre as variantes, o que continua correto — só
+    deixou de haver vazamento para medir.
+27. **`ImageAsset` não guarda as dimensões do arquivo.** O risco encolheu com a
+    restauração das fotografias — `maxRenderedWidth` só tem efeito onde
+    `isLowResolution` é verdadeiro, e hoje isso é só o material do programa
+    impresso —, mas a forma continua: o teto é arbitrado por quem apresenta, e o
+    padrão (320px) está acima das seis extrações que restam. As telas que as
+    exibem passam o seu teto explicitamente e usam `fit="contain"`, para não
+    ampliar nem recortar reprodução de cartaz. A correção definitiva é gravar
+    largura e altura em `ImageAsset` e derivar o teto do próprio arquivo; é
+    change própria, e vale para o portal inteiro.
