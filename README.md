@@ -146,9 +146,10 @@ Detalhes e justificativas em [`docs/architecture.md`](./docs/architecture.md).
 - Idiomas: **pt-BR** (padrão), **en**, **es**.
 - Estratégia de URL: `as-needed`. O português fica na raiz (`/`), inglês em
   `/en` e espanhol em `/es`.
-- O idioma preferido do visitante é detectado pelo cabeçalho `Accept-Language`
-  em `src/proxy.ts`. Quem chega em `/` com um navegador em inglês é levado a
-  `/en`; a escolha manual no seletor de idioma tem precedência e é lembrada.
+- **O português é o padrão para todo mundo.** A detecção por `Accept-Language`
+  está desligada (`localeDetection: false`): quem chega em `/` com o navegador
+  em inglês continua em português. Inglês e espanhol são escolha explícita, pelo
+  seletor do cabeçalho ou por link direto para `/en` e `/es`.
 - Nenhum texto exibido ao usuário fica escrito no JSX. Tudo vem de `messages/`.
 - Datas são formatadas por locale e sempre em UTC, para que o fuso do servidor
   nunca desloque o dia exibido.
@@ -289,10 +290,9 @@ O Next.js ajusta valores obrigatórios (como `jsx: "react-jsx"`) e pode alterar 
 formatação. Rode `pnpm format` depois — o CI executa a formatação antes do build,
 então isso não quebra a pipeline.
 
-**Os testes E2E redirecionam `/` para `/en`**
-É a detecção de idioma funcionando. O `playwright.config.ts` fixa
-`locale: 'pt-BR'` no contexto do navegador; testes de outros idiomas navegam para
-o prefixo explicitamente.
+**`/` não respeita o idioma do navegador**
+É de propósito: a detecção está desligada e a raiz serve sempre pt-BR. Para ver
+outro idioma, navegue para `/en` ou `/es`, ou use o seletor do cabeçalho.
 
 **A cena 3D não aparece**
 Esperado em ambientes sem WebGL — o fallback em gradiente e o texto alternativo

@@ -20,10 +20,11 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     /*
-     * O next-intl detecta o idioma pelo cabeçalho `Accept-Language`. Sem fixar o
-     * locale do navegador, o Chromium pediria `en-US` e `/` redirecionaria para
-     * `/en` — os testes passariam a medir a detecção, não o conteúdo. Os cenários
-     * em outros idiomas navegam para o prefixo explicitamente.
+     * O portal não detecta idioma (`localeDetection: false`), então `/` já
+     * serviria pt-BR de qualquer forma. O locale do navegador continua fixado
+     * porque ele também governa o `Intl` do lado do cliente — data, hora e
+     * número seriam formatados em `en-US` e as asserções de conteúdo
+     * quebrariam. Os cenários em outros idiomas navegam para o prefixo.
      */
     locale: 'pt-BR',
     /*

@@ -30,10 +30,13 @@ documento é descritivo; cada item vira tarefa quando for pedido.
    JSON-LD (`Event`/`Organization`), `x-default` no `hreflang`, `og:locale` e
    `alternates` derivadas do pathname — hoje o layout fixa os caminhos das três
    versões, o que só é correto porque a home é a única rota.
-9. **A detecção automática de idioma redireciona `/` conforme o
-   `Accept-Language`.** O Google desaconselha redirecionar por idioma percebido:
-   o rastreador chega majoritariamente dos EUA e pode nunca indexar a versão
-   pt-BR na raiz. Decisão em aberto, junto com a de manter ou não o multi-idioma.
+9. **A detecção automática de idioma foi desligada** (`localeDetection: false`
+   em `src/lib/i18n/routing.ts`). `/` serve pt-BR para todo mundo, inclusive
+   para quem tem o navegador em inglês ou espanhol; a troca é manual, pelo
+   seletor do cabeçalho, e `/en` e `/es` continuam sendo URLs de primeira
+   classe. Era o risco anterior desta lista — redirecionar por idioma percebido
+   é desaconselhado pelo Google e podia deixar a versão pt-BR fora do índice.
+   Continua em aberto apenas a decisão de manter ou não o multi-idioma.
 10. **A abertura teatral passa a ser o elemento de LCP da home.** Com a cortina
     pintada no primeiro quadro, o Largest Contentful Paint mede a cortina, não o
     título. O número tende a melhorar; ele simplesmente deixou de descrever

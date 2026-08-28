@@ -93,6 +93,29 @@ test.describe('Experiência em tela estreita', () => {
     expect(pequenos).toEqual([]);
   });
 
+  test('o hambúrguer do cabeçalho abre a navegação inteira', async ({ page }) => {
+    await page.goto('/');
+
+    // Abaixo de `md` a lista horizontal do cabeçalho não é o caminho.
+    await expect(page.getByRole('navigation', { name: 'Navegação principal' })).toBeHidden();
+
+    await page.getByRole('button', { name: 'Abrir o menu' }).click();
+
+    const menu = page.getByRole('dialog');
+    await expect(menu).toBeVisible();
+
+    // As duas áreas que a barra inferior não alcança.
+    await expect(menu.getByRole('link', { name: /Notícias/ })).toBeVisible();
+    await expect(menu.getByRole('link', { name: /Início/ })).toBeVisible();
+    // E o seletor de idioma, que saiu da barra do cabeçalho.
+    await expect(menu.getByRole('navigation', { name: 'Escolher idioma' })).toBeVisible();
+
+    await menu.getByRole('link', { name: /Notícias/ }).click();
+
+    await expect(page).toHaveURL(/\/noticias$/);
+    await expect(page.getByRole('dialog')).toBeHidden();
+  });
+
   test('a navegação inferior fica sempre ao alcance', async ({ page }) => {
     await page.goto('/programacao');
 
@@ -104,4 +127,56 @@ test.describe('Experiência em tela estreita', () => {
 
     await expect(nav.getByRole('link')).toHaveCount(4);
   });
+
+  /*
+   * Quatro colunas em 375px dão 94px a cada uma, e o rótulo mora dentro delas.
+   * Um rótulo largo demais não quebra nada de forma visível no teste de rolagem
+   * horizontal — ele apenas vaza da célula e é aparado pelas bordas, que foi
+   * exatamente o que aconteceu com "PROGRAMAÇÃO". Esta medida é por idioma
+   * porque é a tradução que muda o comprimento.
+   */
+  const BARRAS = [
+    { rota: '/', nav: 'Navegação rápida' },
+    { rota: '/en', nav: 'Quick navigation' },
+    { rota: '/es', nav: 'Navegación rápida' },
+  ] as const;
+
+  for (const { rota, nav: idioma } of BARRAS) {
+    test(`os rótulos da navegação inferior cabem na célula em ${rota}`, async ({ page }) => {
+      await page.goto(rota);
+
+      const vazando = await page
+        .getByRole('navigation', { name: idioma })
+        .locator('a')
+        .evaluateAll((links) =>
+          links.flatMap((link) => {
+            const rotulo = [...link.childNodes].find(
+              (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+            );
+
+            if (rotulo === undefined) {
+              return [];
+            }
+
+            const range = document.createRange();
+            range.selectNode(rotulo);
+
+            const estilo = getComputedStyle(link);
+            const util =
+              link.getBoundingClientRect().width -
+              parseFloat(estilo.paddingLeft) -
+              parseFloat(estilo.paddingRight);
+            const largura = range.getBoundingClientRect().width;
+
+            return largura > util
+              ? [
+                  `"${rotulo.textContent?.trim()}" ${Math.round(largura)}px em ${Math.round(util)}px`,
+                ]
+              : [];
+          }),
+        );
+
+      expect(vazando).toEqual([]);
+    });
+  }
 });

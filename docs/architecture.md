@@ -128,7 +128,9 @@ Hero, a abertura teatral, a cena 3D, o botão "voltar ao topo" e o error boundar
 - Estratégia de URL: `localePrefix: 'as-needed'` — `pt-BR` em `/`, os demais em
   `/en` e `/es`.
 - O idioma é resolvido em `src/proxy.ts` (convenção `proxy` do Next.js 16, antes
-  chamada `middleware`), que também detecta o `Accept-Language` do visitante.
+  chamada `middleware`). A detecção por `Accept-Language` está **desligada**
+  (`localeDetection: false`): `/` serve pt-BR para todo visitante, e a troca de
+  idioma é sempre uma escolha explícita.
 - O segmento `[locale]` é **sempre validado** com `hasLocale` antes de ser usado.
 - `setRequestLocale` é chamado no layout e na página para permitir renderização
   estática — as três variantes são geradas em build (`generateStaticParams`).

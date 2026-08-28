@@ -62,12 +62,21 @@
   "nav": {
     "primaryLabel": "Navegação principal",
     "mobileLabel": "Navegação rápida",
+    "menuTitle": "Menu",
+    "openMenu": "Abrir o menu",
+    "closeMenu": "Fechar o menu",
     "home": "Início",
     "programacao": "Programação",
     "grade": "Grade diária",
     "espacos": "Espaços",
     "memoria": "Memória",
     "noticias": "Notícias",
+    "short": {
+      "programacao": "Programa",
+      "grade": "Grade",
+      "espacos": "Espaços",
+      "memoria": "Memória"
+    },
     "backToProgramacao": "Voltar à programação",
     "backToEspacos": "Voltar aos espaços",
     "backToMemoria": "Voltar à linha do tempo"

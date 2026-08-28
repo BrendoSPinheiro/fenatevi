@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useId, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 import { cn } from '@/lib/utils/cn';
 
@@ -136,7 +137,23 @@ export function Dialog({ isOpen, onClose, title, children, className }: DialogPr
     return null;
   }
 
-  return (
+  /*
+   * O diálogo é pintado no `<body>`, e não onde o componente foi escrito.
+   *
+   * Quem o abre mora no `<header>`, que é `sticky` com `z-index` — ou seja, um
+   * contexto de empilhamento. Renderizado lá dentro, o `--z-overlay` do diálogo
+   * era medido **contra os irmãos do cabeçalho**, e a barra de navegação
+   * inferior, com o mesmo `z-index` do cabeçalho e depois dele no documento,
+   * ficava por cima do diálogo aberto. No `<body>` os dois voltam a ser
+   * comparáveis, e 80 vence 50.
+   *
+   * O portal também deixa `inertizarFundo` fazer um passo só: os irmãos do
+   * diálogo passam a ser o cabeçalho, o conteúdo, o rodapé e a barra inferior.
+   *
+   * Seguro no servidor: este ponto só é alcançado com o diálogo aberto, o que
+   * exige uma interação — nada disso participa da renderização inicial.
+   */
+  return createPortal(
     <div
       ref={rootRef}
       role="dialog"
@@ -150,6 +167,7 @@ export function Dialog({ isOpen, onClose, title, children, className }: DialogPr
         </h2>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

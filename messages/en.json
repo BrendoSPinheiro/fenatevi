@@ -62,12 +62,21 @@
   "nav": {
     "primaryLabel": "Main navigation",
     "mobileLabel": "Quick navigation",
+    "menuTitle": "Menu",
+    "openMenu": "Open the menu",
+    "closeMenu": "Close the menu",
     "home": "Home",
     "programacao": "Programme",
     "grade": "Daily grid",
     "espacos": "Venues",
     "memoria": "Memory",
     "noticias": "News",
+    "short": {
+      "programacao": "Programme",
+      "grade": "Grid",
+      "espacos": "Venues",
+      "memoria": "Memory"
+    },
     "backToProgramacao": "Back to the programme",
     "backToEspacos": "Back to venues",
     "backToMemoria": "Back to the timeline"
