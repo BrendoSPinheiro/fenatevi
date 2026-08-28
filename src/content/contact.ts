@@ -19,7 +19,7 @@ export const contacts: readonly FestivalContact[] = [
   { id: 'celular', kind: 'phone', value: '(27) 99698-0869' },
 ];
 
-/** Assessoria de imprensa — acervo em pt-BR. */
+/** Assessoria de imprensa — acervo em pt-BR */
 export const pressContact = {
   name: 'Márcia Almeida',
   organization: 'Golden Assessoria de Comunicação',
