@@ -155,6 +155,19 @@
   --duration-slow: 0.9s;
   --duration-curtain: 1.6s;
 
+  /*
+   * Altura da caixa do cabeçalho expandido: 44px de alvo mínimo, 2 × 16px de
+   * respiro e o filete de 1px da borda inferior. **O 1px é parte da conta**:
+   * sem ele a abertura começa um pixel abaixo do topo e sobra um fio da
+   * superfície do tema acima da fotografia.
+   *
+   * Existe porque a abertura da home precisa **começar debaixo dele**: o
+   * cabeçalho é transparente no topo, e sem essa sobreposição a faixa dele
+   * mostraria a superfície do tema em vez da fotografia — transparente e opaco
+   * ficariam idênticos, que é o oposto do efeito.
+   */
+  --header-height: calc(4.75rem + 1px);
+
   /* Camadas */
   --z-base: 0;
   --z-scene: 10;
@@ -299,13 +312,35 @@
 }
 
 /* ==========================================================================
- * Condensação do cabeçalho na rolagem
+ * O cabeçalho na rolagem: da transparência à moldura
  *
  * O estado vem de um atributo no `<html>`, escrito por `header-condense.tsx`, e
- * a mudança é só de respiro vertical: nenhum item do cabeçalho muda de posição,
- * some ou troca de ordem. Sem o atributo — JavaScript ausente ou ainda não
- * hidratado — o cabeçalho fica no estado expandido, que é o completo.
+ * a mudança é de **respiro e de superfície**: nenhum item do cabeçalho muda de
+ * posição, some ou troca de ordem.
+ *
+ * A polaridade dos seletores é deliberada. O estado **padrão — sem atributo —
+ * é o opaco**, com fundo e filete: é o que sai do servidor, é o que fica se o
+ * JavaScript não carregar, e é o único legível sobre qualquer fundo. A
+ * transparência é pedida explicitamente por `data-header-condensed='false'`,
+ * que só existe depois da hidratação. Invertendo isso, uma falha de bundle
+ * deixaria o cabeçalho transparente para sempre por cima da fotografia.
  * ========================================================================== */
+
+.site-header {
+  border-bottom: 1px solid --alpha(var(--color-outline-variant) / 60%);
+  background-color: --alpha(var(--color-surface) / 90%);
+  backdrop-filter: blur(4px);
+  transition:
+    background-color var(--duration-fast) var(--ease-stage),
+    border-color var(--duration-fast) var(--ease-stage);
+}
+
+/* No topo da página a barra desaparece e a fotografia da abertura a atravessa. */
+[data-header-condensed='false'] .site-header {
+  border-bottom-color: transparent;
+  background-color: transparent;
+  backdrop-filter: none;
+}
 
 .site-header__bar {
   transition: padding-block var(--duration-fast) var(--ease-stage);
@@ -316,13 +351,127 @@
 }
 
 /* ==========================================================================
+ * O veludo — a cortina, em um lugar só
+ *
+ * **A abertura teatral e a transição entre rotas usam exatamente este tecido.**
+ * A textura vivia duplicada, e uma cópia envelheceu: a cortina da transição
+ * ficou sem as pregas, sem a profundidade e sem o franzido da borda. Aqui as
+ * duas leem as mesmas regras, e a única coisa que cada uma declara por conta
+ * própria é **quando** a cortina se move.
+ *
+ * Só `transform` é animado pelas duas.
+ * ========================================================================== */
+
+.curtain-panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  /*
+   * 51% cada metade: os 2% de sobreposição no centro garantem que nenhuma
+   * fresta apareça em larguras que resultam em subpixel.
+   */
+  width: 51%;
+
+  background-image:
+    /* profundidade: as bordas recuam */
+    radial-gradient(130% 100% at 50% 50%, transparent 45%, var(--color-curtain-fold) 100%),
+    /*
+     * pregas: paradas em porcentagem, portanto proporcionais à largura. A
+     * contagem é constante em qualquer viewport — em ultrawide elas ficam
+     * largas, o que lê como "teatro grande", e nunca produzem emenda.
+     */
+    repeating-linear-gradient(
+        to right,
+        var(--color-curtain-fold) 0%,
+        var(--color-curtain) 2.2%,
+        var(--color-curtain-sheen) 4.2%,
+        var(--color-curtain) 6.2%,
+        var(--color-curtain-fold) 8.4%
+      ),
+    /* volume cilíndrico: a luz cai mais no meio da altura */
+    linear-gradient(
+        to bottom,
+        var(--color-curtain-fold) 0%,
+        var(--color-curtain) 45%,
+        var(--color-curtain-fold) 100%
+      );
+
+  animation-timing-function: var(--ease-curtain);
+  animation-fill-mode: forwards;
+}
+
+/*
+ * Sombra na borda interna de cada metade.
+ *
+ * Sem ela a sobreposição das duas metades no centro aparece como uma emenda
+ * reta — o padrão de pregas da metade de cima recomeça do zero e o corte fica
+ * evidente, sobretudo em telas largas. Com as duas sombras, o encontro vira um
+ * vale escuro: lê-se como duas cortinas se tocando, que é o que são.
+ */
+.curtain-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 14%;
+}
+
+.curtain-panel--left {
+  left: 0;
+  /* O franzido recolhe na direção da âncora, como tecido sendo recolhido. */
+  transform-origin: left center;
+  animation-name: curtain-open-left;
+}
+
+.curtain-panel--left::after {
+  right: 0;
+  background-image: linear-gradient(to right, transparent, var(--color-curtain-fold));
+}
+
+.curtain-panel--right {
+  right: 0;
+  transform-origin: right center;
+  animation-name: curtain-open-right;
+}
+
+.curtain-panel--right::after {
+  left: 0;
+  background-image: linear-gradient(to left, transparent, var(--color-curtain-fold));
+}
+
+@keyframes curtain-open-left {
+  from {
+    transform: translateX(0) scaleX(1);
+  }
+  to {
+    transform: translateX(-100%) scaleX(0.92);
+  }
+}
+
+@keyframes curtain-open-right {
+  from {
+    transform: translateX(0) scaleX(1);
+  }
+  to {
+    transform: translateX(100%) scaleX(0.92);
+  }
+}
+
+/* ==========================================================================
  * Cortina de transição entre rotas
  *
- * Ao contrário da abertura teatral, esta cortina **revela**: ela é pintada já
- * cobrindo a rota nova e se recolhe. A navegação nunca espera pela animação.
+ * **É o mesmo veludo da abertura, com outro relógio.** Herda `.curtain-panel`
+ * inteira — pregas, profundidade, volume e franzido — e declara só a duração:
+ * 0,52 s contra os 1,6 s da abertura. A abertura é um acontecimento; a
+ * passagem entre rotas é uma transição, e uma transição que se faz notar
+ * atrapalha quem está navegando.
  *
- * `pointer-events: none` do primeiro ao último quadro, e só `transform` é
- * animado. Sob movimento reduzido o componente nem é montado.
+ * Ao contrário da abertura, esta cortina **revela**: é pintada já cobrindo a
+ * rota nova e se recolhe. A navegação nunca espera pela animação.
+ *
+ * `pointer-events: none` do primeiro ao último quadro. Sob movimento reduzido o
+ * componente nem é montado.
  * ========================================================================== */
 
 .curtain-transition {
@@ -330,23 +479,10 @@
   inset: 0;
   z-index: var(--z-overlay);
   pointer-events: none;
-  background-image: linear-gradient(
-    to bottom,
-    var(--color-curtain-fold) 0%,
-    var(--color-curtain) 45%,
-    var(--color-curtain-fold) 100%
-  );
-  transform-origin: top center;
-  animation: curtain-transition-lift var(--duration-slow) var(--ease-curtain) forwards;
 }
 
-@keyframes curtain-transition-lift {
-  from {
-    transform: scaleY(1);
-  }
-  to {
-    transform: scaleY(0);
-  }
+.curtain-transition .curtain-panel {
+  animation-duration: 0.52s;
 }
 
 /* ==========================================================================
@@ -397,84 +533,15 @@
 }
 
 .stage-intro__curtain {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 1;
-
   /*
-   * 51% cada metade: os 2% de sobreposição no centro garantem que nenhuma
-   * fresta apareça em larguras que resultam em subpixel.
+   * A textura, a largura e o franzido vêm de `.curtain-panel`, compartilhada
+   * com a transição entre rotas. Aqui ficam só as três coisas que são desta
+   * cena: a camada (os fachos e a frase passam por cima), a duração e a espera
+   * até o momento de abrir.
    */
-  width: 51%;
-
-  background-image:
-    /* profundidade: as bordas recuam */
-    radial-gradient(130% 100% at 50% 50%, transparent 45%, var(--color-curtain-fold) 100%),
-    /*
-     * pregas: paradas em porcentagem, portanto proporcionais à largura. A
-     * contagem é constante em qualquer viewport — em ultrawide elas ficam
-     * largas, o que lê como "teatro grande", e nunca produzem emenda.
-     */
-    repeating-linear-gradient(
-        to right,
-        var(--color-curtain-fold) 0%,
-        var(--color-curtain) 2.2%,
-        var(--color-curtain-sheen) 4.2%,
-        var(--color-curtain) 6.2%,
-        var(--color-curtain-fold) 8.4%
-      ),
-    /* volume cilíndrico: a luz cai mais no meio da altura */
-    linear-gradient(
-        to bottom,
-        var(--color-curtain-fold) 0%,
-        var(--color-curtain) 45%,
-        var(--color-curtain-fold) 100%
-      );
-
+  z-index: 1;
   animation-duration: var(--duration-curtain);
-  animation-timing-function: var(--ease-curtain);
   animation-delay: 2.85s;
-  animation-fill-mode: forwards;
-}
-
-/*
- * Sombra na borda interna de cada metade.
- *
- * Sem ela a sobreposição das duas metades no centro aparece como uma emenda
- * reta — o padrão de pregas da metade de cima recomeça do zero e o corte fica
- * evidente, sobretudo em telas largas. Com as duas sombras, o encontro vira um
- * vale escuro: lê-se como duas cortinas se tocando, que é o que são.
- */
-.stage-intro__curtain::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 14%;
-}
-
-.stage-intro__curtain--left {
-  left: 0;
-  /* O franzido recolhe na direção da âncora, como tecido sendo recolhido. */
-  transform-origin: left center;
-  animation-name: stage-intro-curtain-left;
-}
-
-.stage-intro__curtain--left::after {
-  right: 0;
-  background-image: linear-gradient(to right, transparent, var(--color-curtain-fold));
-}
-
-.stage-intro__curtain--right {
-  right: 0;
-  transform-origin: right center;
-  animation-name: stage-intro-curtain-right;
-}
-
-.stage-intro__curtain--right::after {
-  left: 0;
-  background-image: linear-gradient(to left, transparent, var(--color-curtain-fold));
 }
 
 .stage-intro__beam {
@@ -542,24 +609,6 @@
 .stage-intro--dismissing {
   pointer-events: none;
   animation: stage-intro-out 0.25s linear forwards;
-}
-
-@keyframes stage-intro-curtain-left {
-  from {
-    transform: translateX(0) scaleX(1);
-  }
-  to {
-    transform: translateX(-100%) scaleX(0.92);
-  }
-}
-
-@keyframes stage-intro-curtain-right {
-  from {
-    transform: translateX(0) scaleX(1);
-  }
-  to {
-    transform: translateX(100%) scaleX(0.92);
-  }
 }
 
 @keyframes stage-intro-key-in {
@@ -674,6 +723,10 @@
   }
 }
 
+:root[data-motion='reduzido'] .stage-intro {
+  display: none;
+}
+
 /*
  * Movimento reduzido: nenhuma animação essencial para a compreensão do conteúdo.
  * As bibliotecas JS também consultam essa media query (ver use-reduced-motion.ts).
@@ -694,6 +747,187 @@
 }
 
 /* ==========================================================================
+ * A fotografia da abertura
+ *
+ * A fotografia é atmosfera, não informação: `aria-hidden`, e nunca a única
+ * fonte de nada. O que estas regras administram é o **orçamento de contraste**
+ * entre ela e o texto que a atravessa.
+ *
+ * Medições sobre `/imagens/palco/stage-hero.jpg`: luminância média 0,074,
+ * percentil 99,9 em 0,766 (os fachos de palco). O pior caso realista é um
+ * glifo sobre um facho, e é contra ele que as contas abaixo foram feitas —
+ * com `--color-foreground-muted` (#c6c3c0), que é o tom mais fraco que a
+ * abertura usa em texto de corpo.
+ *
+ * A ideia é direcional em vez de uniforme: **o véu é denso onde o texto mora e
+ * rala onde não mora**. A partir de `md` o texto vive na metade esquerda, e a
+ * fotografia respira à direita com quatro a oito vezes mais presença do que
+ * teria sob um véu uniforme. Em telas estreitas o texto ocupa a largura
+ * inteira, então o véu volta a ser vertical — e afrouxa só no topo, acima da
+ * primeira linha, que é por onde a fotografia atravessa o cabeçalho
+ * transparente.
+ * ========================================================================== */
+
+.hero-photo {
+  background-position: 50% 45%;
+  background-size: cover;
+  opacity: 0.9;
+}
+
+/*
+ * A faixa do cabeçalho, que agora passa por cima da fotografia.
+ *
+ * É o único véu que existe por causa de **outro** componente: o cabeçalho é
+ * transparente no topo, e o seletor de idioma cai justamente sobre a parte
+ * mais clara da fotografia. Sem esta faixa, os idiomas inativos
+ * (`foreground-muted`) medem 4,2:1 ali — abaixo do piso. Com ela, 7,3:1. Ela
+ * se desfaz em 5,5rem, logo abaixo do cabeçalho, e por isso não custa nada ao
+ * resto da abertura.
+ */
+/*
+ * Telas estreitas: T (transmitância) = 7% na faixa do texto.
+ * L_fundo ≈ 0,007 + 0,07 × (0,9 × 0,766) = 0,055
+ *   → foreground        13,0:1
+ *   → foreground-muted   5,8:1   (piso de 4,5:1 para texto de corpo)
+ * Na faixa do cabeçalho: T = 9% → foreground-muted 5,1:1.
+ */
+.hero-scrim {
+  background-image:
+    linear-gradient(
+      180deg,
+      --alpha(var(--color-surface) / 70%) 0,
+      --alpha(var(--color-surface) / 30%) 3.5rem,
+      transparent 5.5rem
+    ),
+    linear-gradient(
+      180deg,
+      --alpha(var(--color-surface) / 70%) 0%,
+      --alpha(var(--color-surface) / 93%) 20%,
+      --alpha(var(--color-surface) / 94%) 68%,
+      var(--color-surface) 100%
+    );
+}
+
+@media (width >= 48rem) {
+  /*
+   * A partir de `md`, três véus sobrepostos: a faixa do cabeçalho, o
+   * horizontal que protege a coluna de texto, e o vertical que costura a
+   * abertura com o resto da página.
+   * Na coluna de texto (até 38%): T = 8% → foreground-muted 5,4:1.
+   * À direita (100%): T = 66% → a fotografia aparece de verdade.
+   */
+  .hero-scrim {
+    background-image:
+      linear-gradient(
+        180deg,
+        --alpha(var(--color-surface) / 70%) 0,
+        --alpha(var(--color-surface) / 30%) 3.5rem,
+        transparent 5.5rem
+      ),
+      linear-gradient(180deg, transparent 58%, var(--color-surface) 100%),
+      linear-gradient(
+        95deg,
+        --alpha(var(--color-surface) / 95%) 0%,
+        --alpha(var(--color-surface) / 92%) 38%,
+        --alpha(var(--color-surface) / 58%) 72%,
+        --alpha(var(--color-surface) / 34%) 100%
+      );
+  }
+}
+
+/* ==========================================================================
+ * Preferências de acessibilidade escolhidas no portal
+ *
+ * Escritas por `lib/a11y/preferences.ts` como atributos no `<html>`. Cada uma
+ * é **aditiva** ao que o sistema operacional já pede: quem pediu movimento
+ * reduzido ao sistema continua recebendo, tenha ou não escolhido algo aqui.
+ * Nenhuma delas desliga um recurso de acessibilidade — só reforça.
+ * ========================================================================== */
+
+/*
+ * Movimento reduzido **por escolha**, e não só por configuração do sistema.
+ * Repete a regra acima em vez de fatorá-la: uma media query e um seletor de
+ * atributo não podem ser combinados numa lista, e duplicar sete linhas é mais
+ * barato do que a indireção que evitaria a duplicação.
+ */
+:root[data-motion='reduzido'] {
+  scroll-behavior: auto;
+}
+
+:root[data-motion='reduzido'] *,
+:root[data-motion='reduzido'] *::before,
+:root[data-motion='reduzido'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/*
+ * Texto maior: sobe a base do documento de 16px para 18px (112,5%).
+ *
+ * Tudo no projeto é dimensionado em `rem` — tipografia, respiro, alvos de
+ * toque —, então a página inteira cresce junto e nenhum layout quebra por
+ * texto que passou a caber pior no seu contêiner. É a mesma razão pela qual o
+ * aumento é modesto: 18px é o degrau que a maioria dos navegadores oferece, e
+ * dobrar a base seria um zoom, que o navegador já faz melhor.
+ */
+:root[data-text-size='grande'] {
+  font-size: 112.5%;
+}
+
+/*
+ * Alto contraste: só os tokens de cor mudam, e nenhuma outra regra do projeto
+ * precisa saber disso.
+ *
+ * Contraste medido sobre `--color-surface` (#131312), como o bloco de tokens
+ * do topo deste arquivo:
+ *
+ *   --color-foreground          #ffffff  →  18,4:1  (era 14,4:1)
+ *   --color-foreground-muted    #f2f0ee  →  16,5:1  (era 10,6:1)
+ *   --color-foreground-subtle   #dedad6  →  13,0:1  (era  7,4:1)
+ *
+ * `foreground-subtle` é o tom mais fraco que o projeto admite em texto, e aqui
+ * ele passa a superar o `foreground` do tema padrão — que é o ponto: no modo
+ * de alto contraste não existe texto na faixa dos 7:1.
+ *
+ * Os contornos sobem junto: um contraste alto de texto sobre bordas invisíveis
+ * deixaria os cartões e os campos sem limite perceptível (WCAG 1.4.11).
+ */
+:root[data-contrast='alto'] {
+  --color-foreground: #ffffff;
+  --color-foreground-muted: #f2f0ee;
+  --color-foreground-subtle: #dedad6;
+
+  --color-outline: #e0d2d2;
+  --color-outline-variant: #9c8585;
+
+  --color-primary: #ffd4d5;
+  --color-secondary: #ffecc9;
+
+  /* Superfícies um degrau mais separadas entre si, pelo mesmo motivo. */
+  --color-surface-container-low: #232320;
+  --color-surface-container: #2b2b28;
+  --color-surface-container-high: #35352f;
+}
+
+/*
+ * Em alto contraste o cabeçalho não fica transparente: a barra sobre a
+ * fotografia é justamente o lugar onde o texto perde contraste, e é o que a
+ * preferência existe para evitar.
+ */
+:root[data-contrast='alto'][data-header-condensed='false'] .site-header {
+  border-bottom-color: --alpha(var(--color-outline-variant) / 60%);
+  background-color: var(--color-surface);
+  backdrop-filter: none;
+}
+
+/* Pelo mesmo motivo, a fotografia da abertura recua para trás do texto. */
+:root[data-contrast='alto'] .hero-photo {
+  opacity: 0.18;
+}
+
+/* ==========================================================================
  * Linha do tempo da memória — posição no eixo
  *
  * O marcador é o único movimento destas telas, e é **decorativo**: o elemento
@@ -703,7 +937,7 @@
  *
  * Não há JavaScript envolvido: a linha do tempo é resolvida pelo próprio
  * navegador. Sem suporte, e sob movimento reduzido, o eixo fica sem marcador e
- * as vinte e duas edições continuam completas.
+ * as edições da linha do tempo continuam completas.
  *
  * **Os dois blocos abaixo são duplicados de propósito.** As variantes `espinha`
  * e `trilho` existem só até a decisão visual; a que não for escolhida é apagada
@@ -771,7 +1005,7 @@
 /*
  * O eixo diz que rola, quando rola.
  *
- * Em telas estreitas os vinte e dois anos não cabem e o último visível fica
+ * Em telas estreitas os anos da linha do tempo não cabem e o último visível fica
  * cortado a seco — o que se lê como defeito, não como "há mais adiante". O
  * esmaecimento tem 2,5rem: mais que a margem do mobile (20px), de modo que
  * apareça sobre um rótulo de verdade, e menos que a do desktop (64px), onde o

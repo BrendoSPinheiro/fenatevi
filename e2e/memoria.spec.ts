@@ -5,25 +5,48 @@ test.describe('Memória', () => {
   test('apresenta uma estação por edição, da 1ª à vigente', async ({ page }) => {
     await page.goto('/memoria');
 
-    // Vinte e duas edições, cada uma com o seu próprio cabeçalho de ano.
-    await expect(page.getByRole('heading', { level: 2 })).toHaveCount(22);
-    await expect(page.getByRole('heading', { level: 2, name: '2026' })).toBeVisible();
+    /*
+     * Vinte edições, cada uma com o seu próprio cabeçalho de ano — da 1ª, em
+     * 2005, à vigente, em 2024. É a tela que continua sendo histórica: a edição
+     * vigente é uma estação entre muitas, e não o assunto da página.
+     */
+    await expect(page.getByRole('heading', { level: 2 })).toHaveCount(20);
+    await expect(page.getByRole('heading', { level: 2, name: '2024' })).toBeVisible();
     await expect(page.getByRole('heading', { level: 2, name: '2005' })).toBeVisible();
   });
 
-  test('declara que as edições sem acervo são conteúdo de prévia', async ({ page }) => {
+  /*
+   * A nota "Prévia de layout" foi retirada da tela nesta branch de
+   * demonstração. O que **não** pode cair junto é a regra dura: uma estação de
+   * prévia nunca vira link. Sem a ressalva na tela, este teste passa a ser a
+   * única coisa que impede o conteúdo ilustrativo de virar destino navegável —
+   * e é por isso que ele fica aqui, e não só na suíte de variantes.
+   */
+  test('nenhuma edição de prévia vira link, mesmo sem a nota na tela', async ({ page }) => {
     await page.goto('/memoria');
 
-    await expect(page.getByText('Prévia de layout')).toBeVisible();
-    await expect(page.getByText(/fotografias são ilustrativas/)).toBeVisible();
+    await expect(page.getByText('Prévia de layout')).toHaveCount(0);
+
+    /*
+     * Só a edição com acervo publicado leva a uma página de edição. Os links do
+     * eixo são âncoras dentro da própria tela (`#edicao-2005`) e continuam
+     * valendo — o que não pode existir é um `/edicoes/` para uma edição que não
+     * tem página.
+     */
+    await expect(page.getByRole('link', { name: 'Explorar esta edição' })).toHaveCount(1);
+    await expect(page.locator('a[href*="/edicoes/"]')).toHaveCount(1);
+    await expect(page.locator('a[href*="/edicoes/"]')).toHaveAttribute('href', /\/edicoes\/2024$/);
   });
 
   test('o estado do acervo de cada edição é texto, não só cor', async ({ page }) => {
     await page.goto('/memoria');
 
-    await expect(page.getByText('Edição vigente')).toBeVisible();
-    await expect(page.getByText('Acervo completo')).toBeVisible();
-    await expect(page.getByText('Acervo pendente')).toBeVisible();
+    /*
+     * Os dois estados que a linha do tempo tem hoje. `exact` importa: o resumo
+     * da edição vigente começa com as mesmas palavras do distintivo, e sem ele
+     * o seletor casaria com os dois.
+     */
+    await expect(page.getByText('Edição vigente', { exact: true })).toBeVisible();
     await expect(page.getByText('Em digitalização').first()).toBeVisible();
   });
 
@@ -31,7 +54,7 @@ test.describe('Memória', () => {
     await page.goto('/memoria');
 
     await expect(page.getByText('Acervo 100% completo')).toBeVisible();
-    await expect(page.getByText('Acervo 12% completo').first()).toBeVisible();
+    await expect(page.getByText(/Acervo \d+% completo/).first()).toBeVisible();
   });
 
   test('só a edição com acervo completo leva a uma página de edição', async ({ page }) => {
@@ -67,7 +90,7 @@ test.describe('Memória — variante de percurso', () => {
     await expect(
       page.getByRole('heading', { level: 1, name: 'Memória do festival' }),
     ).toBeVisible();
-    await expect(page.getByRole('heading', { level: 2 })).toHaveCount(22);
+    await expect(page.getByRole('heading', { level: 2 })).toHaveCount(20);
     // A espinha é uma lista do documento; o trilho é uma região rolável.
     await expect(page.getByRole('region', { name: 'Linha do tempo das edições' })).toHaveCount(0);
   });
@@ -80,12 +103,12 @@ test.describe('Memória — variante de percurso', () => {
     await expect(page.getByRole('region', { name: 'Linha do tempo das edições' })).toBeVisible();
 
     /*
-     * Dezenove das vinte e duas estações não têm link nenhum: sem foco no
-     * próprio painel, o seu conteúdo rolável ficaria inalcançável sem mouse.
+     * Dezenove das vinte estações não têm link nenhum: sem foco no próprio
+     * painel, o seu conteúdo rolável ficaria inalcançável sem mouse.
      */
     const station2005 = page.getByRole('article', { name: '2005' });
     await expect(station2005).toHaveAttribute('tabindex', '0');
-    await expect(page.getByRole('article')).toHaveCount(22);
+    await expect(page.getByRole('article')).toHaveCount(20);
   });
 
   test('o trilho contém a própria rolagem em 320px', async ({ page }) => {
@@ -127,12 +150,12 @@ test.describe('Memória — variante de percurso', () => {
 });
 
 test.describe('Memória — o eixo leva a uma edição', () => {
-  test('o eixo é uma navegação com as vinte e duas edições', async ({ page }) => {
+  test('o eixo é uma navegação com as vinte edições', async ({ page }) => {
     await page.goto('/memoria');
 
     const eixo = page.getByRole('navigation', { name: 'Ir para uma edição' });
     await expect(eixo).toBeVisible();
-    await expect(eixo.getByRole('link')).toHaveCount(22);
+    await expect(eixo.getByRole('link')).toHaveCount(20);
   });
 
   test('o salto leva à edição pedida, e não a um vizinho', async ({ page }) => {
@@ -202,11 +225,25 @@ test.describe('Memória — a roda avança o trilho', () => {
    */
   const railOf = (page: import('@playwright/test').Page) => page.locator('#timeline-rail-track');
 
+  /*
+   * O gesto é dado sobre a **primeira estação**, e não sobre o meio da tira.
+   *
+   * A primeira regra do ouvinte é deliberada: quando a estação sob o cursor
+   * ainda tem texto para rolar, o gesto é dela e a tira não anda. Algumas
+   * estações de prévia trazem fotografia e transbordam a altura do painel, e
+   * cair sobre uma delas mediria a regra 1 achando que mede a regra 2. A
+   * estação vigente cabe inteira no painel, e é sobre ela que a prioridade da
+   * tira pode ser observada.
+   */
+  const hoverFirstStation = async (page: import('@playwright/test').Page) => {
+    await railOf(page).locator('article').first().hover();
+  };
+
   test('rolar para baixo sobre a tira a faz andar para o lado', async ({ page }) => {
     await page.goto('/memoria?linha=trilho');
 
     const rail = railOf(page);
-    await rail.hover();
+    await hoverFirstStation(page);
 
     await page.mouse.wheel(0, 600);
     await expect.poll(() => rail.evaluate((el) => el.scrollLeft)).toBeGreaterThan(300);
@@ -216,7 +253,7 @@ test.describe('Memória — a roda avança o trilho', () => {
     await page.goto('/memoria?linha=trilho');
 
     const rail = railOf(page);
-    await rail.hover();
+    await hoverFirstStation(page);
     const before = await page.evaluate(() => window.scrollY);
 
     await page.mouse.wheel(0, 600);
@@ -240,7 +277,7 @@ test.describe('Memória — a roda avança o trilho', () => {
     await page.goto('/memoria?linha=trilho');
 
     const rail = railOf(page);
-    await rail.hover();
+    await hoverFirstStation(page);
     await rail.evaluate((el) => {
       el.scrollLeft = el.scrollWidth - el.clientWidth;
     });
@@ -293,7 +330,7 @@ test.describe('Memória — a roda avança o trilho, com movimento normal', () =
     await page.keyboard.press('Escape');
 
     const rail = page.locator('#timeline-rail-track');
-    await rail.hover();
+    await rail.locator('article').first().hover();
     await page.mouse.wheel(0, 700);
 
     await expect.poll(() => rail.evaluate((el) => el.scrollLeft)).toBeGreaterThan(300);
@@ -318,16 +355,16 @@ test.describe('Memória sem JavaScript', () => {
 
   /*
    * A regra que vence as outras no projeto: a experiência continua completa sem
-   * animação e sem JavaScript. As vinte e duas estações são HTML do servidor, e
-   * a escolha de variante vive na URL — não em estado de cliente.
+   * animação e sem JavaScript. As vinte estações são HTML do servidor, e a
+   * escolha de variante vive na URL — não em estado de cliente.
    */
-  test('as vinte e duas estações estão no HTML, nas duas variantes', async ({ page }) => {
+  test('as vinte estações estão no HTML, nas duas variantes', async ({ page }) => {
     await page.goto('/memoria');
-    await expect(page.getByRole('heading', { level: 2 })).toHaveCount(22);
+    await expect(page.getByRole('heading', { level: 2 })).toHaveCount(20);
     await expect(page.getByRole('link', { name: 'Explorar esta edição' })).toBeVisible();
 
     await page.goto('/memoria?linha=trilho');
-    await expect(page.getByRole('article')).toHaveCount(22);
+    await expect(page.getByRole('article')).toHaveCount(20);
     await expect(page.getByRole('region', { name: 'Linha do tempo das edições' })).toBeVisible();
   });
 });
@@ -336,7 +373,7 @@ test.describe('Edição 2024', () => {
   test('apresenta a identidade e o resumo numérico derivado do acervo', async ({ page }) => {
     await page.goto('/edicoes/2024');
 
-    await expect(page.getByText('Acervo · edição encerrada')).toBeVisible();
+    await expect(page.getByText('A edição vigente')).toBeVisible();
     await expect(page.getByText('20ª edição · de 13 de outubro a 20 de outubro')).toBeVisible();
     await expect(page.getByText('A arte cura!')).toBeVisible();
   });
@@ -373,7 +410,7 @@ test.describe('Notícias', () => {
   test('declara que ainda não há notícias, sem manchete nem data fictícias', async ({ page }) => {
     await page.goto('/noticias');
 
-    await expect(page.getByText('Ainda não há notícias publicadas')).toBeVisible();
+    await expect(page.getByText('Nenhum aviso publicado até agora')).toBeVisible();
 
     // Nenhum "slot editorial" do protótipo sobrevive como conteúdo.
     await expect(page.getByText(/Espaço reservado para/)).toHaveCount(0);

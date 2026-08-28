@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "FENATEVI — Festival Nacional de Teatro de Vitória",
-    "description": "O Festival Nacional de Teatro de Vitória reúne espetáculos, encontros e formação nos teatros e praças da cidade.",
+    "title": "FENATEVI {year} — Festival Nacional de Teatro Cidade de Vitória",
+    "description": "{edition}ª edição do Festival Nacional de Teatro Cidade de Vitória, de {start} a {end}, em Vitória (ES). Entrada franca em toda a programação.",
     "localeLabel": "Português (Brasil)",
     "ogImageLocation": "Vitória · Espírito Santo · Brasil"
   },
@@ -9,7 +9,7 @@
     "skipToContent": "Pular para o conteúdo",
     "backToTop": "Voltar ao topo",
     "festivalName": "FENATEVI",
-    "festivalFullName": "Festival Nacional de Teatro de Vitória",
+    "festivalFullName": "Festival Nacional de Teatro Cidade de Vitória",
     "freeEntry": "Entrada franca",
     "at": "em",
     "close": "Fechar",
@@ -31,27 +31,43 @@
     "wheelchairAccess": "Acesso para cadeirantes",
     "relaxedPerformance": "Sessão relaxada"
   },
+  "acessibilidade": {
+    "trigger": "Acessibilidade",
+    "title": "Acessibilidade",
+    "description": "Estas três preferências valem para o portal inteiro e ficam guardadas neste navegador. Elas somam-se ao que o seu sistema já pede — nenhuma delas desliga um recurso de acessibilidade.",
+    "close": "Fechar",
+    "reset": "Restaurar as preferências padrão",
+    "activeNotice": "há preferências de acessibilidade ativas",
+    "contrast": {
+      "label": "Contraste",
+      "hint": "Aumenta o contraste do texto e das bordas, e assenta o cabeçalho e a fotografia da abertura.",
+      "padrao": "Padrão",
+      "alto": "Alto contraste"
+    },
+    "textSize": {
+      "label": "Tamanho do texto",
+      "hint": "Aumenta a base tipográfica do portal. Para ampliações maiores, o zoom do navegador continua funcionando por cima desta escolha.",
+      "padrao": "Padrão",
+      "grande": "Texto maior"
+    },
+    "motion": {
+      "label": "Movimento",
+      "hint": "Desliga a abertura teatral, a cortina entre páginas, a rolagem suave e as revelações por rolagem.",
+      "sistema": "Seguir o sistema",
+      "reduzido": "Reduzir movimento"
+    },
+    "sessionsNotice": "Libras e audiodescrição não são ajustes do portal: são recursos oferecidos em sessões específicas do festival. A programação diz quais.",
+    "sessionsCta": "Ver as sessões com Libras"
+  },
   "nav": {
     "primaryLabel": "Navegação principal",
     "mobileLabel": "Navegação rápida",
-    "openAreas": "Áreas do portal",
-    "closeAreas": "Fechar as áreas",
-    "areasTitle": "Áreas do portal",
-    "areasDescription": "Tudo o que este portal apresenta sobre o festival.",
     "home": "Início",
     "programacao": "Programação",
     "grade": "Grade diária",
     "espacos": "Espaços",
     "memoria": "Memória",
     "noticias": "Notícias",
-    "areaDescriptions": {
-      "home": "A edição vigente, o que está em cena e o convite ao acervo.",
-      "programacao": "Descubra o que a edição apresenta, frente por frente.",
-      "grade": "O dia inteiro em três visões: por espaço, por horário e a semana.",
-      "espacos": "Os espaços do festival na cidade, com endereço e programação.",
-      "memoria": "A linha do tempo das edições e o estado de cada acervo.",
-      "noticias": "Avisos, bastidores e chamadas publicados pela organização."
-    },
     "backToProgramacao": "Voltar à programação",
     "backToEspacos": "Voltar aos espaços",
     "backToMemoria": "Voltar à linha do tempo"
@@ -60,7 +76,7 @@
     "navigationLabel": "Navegação principal"
   },
   "footer": {
-    "identification": "Festival Nacional de Teatro de Vitória",
+    "identification": "Festival Nacional de Teatro Cidade de Vitória",
     "navigationLabel": "Navegação do rodapé",
     "contactTitle": "Contato",
     "city": "Vitória, Espírito Santo, Brasil",
@@ -104,8 +120,8 @@
   "home": {
     "eyebrow": "{edition}ª edição · {year}",
     "title": "FENATEVI",
-    "subtitle": "Festival Nacional de Teatro de Vitória",
-    "signature": "Nove dias de teatro nos palcos e nas praças da cidade.",
+    "subtitle": "Festival Nacional de Teatro Cidade de Vitória",
+    "signature": "Oito dias de teatro nos palcos, nas salas e nas praças da cidade — de entrada franca, do começo ao fim.",
     "dates": "De {start} a {end}",
     "city": "Vitória, Espírito Santo",
     "ctaProgramacao": "Ver a programação",
@@ -132,10 +148,19 @@
     "cityCta": "Ver todos os espaços",
     "memoriaTitle": "A memória do festival",
     "memoriaBody": "Duas décadas de edições, com o acervo sendo digitalizado e publicado aos poucos.",
+    "memoriaEditions": "Edições realizadas",
+    "memoriaPublished": "Com acervo publicado",
+    "memoriaDigitising": "Em digitalização",
     "memoriaCta": "Ver a linha do tempo",
     "noticiasTitle": "Notícias",
     "noticiasCta": "Ver todas as notícias",
-    "partnersTitle": "Realização e parceiros"
+    "partnersTitle": "Realização e parceiros",
+    "nowEmptyBody": "O festival continua: veja o que ainda acontece hoje e nos próximos dias.",
+    "nowLiveVenue": "Agora em {venue}",
+    "editionTitle": "A {edition}ª edição",
+    "editionCta": "Conhecer a edição por inteiro",
+    "honoreesTitle": "Homenageados de {year}",
+    "honoreesBody": "A edição reconhece dois técnicos que sustentam o palco capixaba há quatro décadas."
   },
   "programacao": {
     "title": "Programação",
@@ -238,8 +263,13 @@
   "espacos": {
     "title": "Espaços culturais",
     "description": "Os espaços que recebem o festival, distribuídos pela cidade.",
-    "schemaLabel": "Esquema dos espaços do festival na cidade",
-    "schemaNotice": "O esquema mostra a posição relativa dos espaços, não sua localização geográfica. Cada espaço da lista traz o seu endereço.",
+    "mapLabel": "Mapa de Vitória com os espaços do festival numerados",
+    "mapInsetTitle": "Detalhe: o Centro",
+    "mapInsetLabel": "Mapa ampliado do Centro de Vitória com os espaços numerados",
+    "scaleBarMeters": "{m} m",
+    "mapNotice": "Os marcadores seguem o endereço que o programa publica. Onde o equipamento não está mapeado, o marcador fica na rua ou na praça do endereço — a lista ao lado traz o endereço completo de cada espaço.",
+    "mapAttribution": "Dados do mapa © colaboradores do OpenStreetMap",
+    "scaleBar": "{km} km",
     "listTitle": "Todos os espaços",
     "activityCount": "{count, plural, =0 {sem atividades} one {# atividade} other {# atividades}}",
     "insideOf": "Dentro de {venue}",
@@ -259,7 +289,8 @@
     "addressLabel": "Endereço",
     "kindLabel": "Tipo de espaço",
     "parentLabel": "Dentro de",
-    "activitiesLabel": "Atividades nesta edição"
+    "activitiesLabel": "Atividades nesta edição",
+    "workshopsTitle": "Ações formativas neste espaço"
   },
   "memoria": {
     "title": "Memória do festival",
@@ -276,9 +307,7 @@
       "em-digitalizacao": "Em digitalização"
     },
     "entries": {
-      "2026": "Curadoria em andamento. Programação, espetáculos e homenageados serão publicados pela organização.",
-      "2025": "Registros, programação e fotografias a serem incorporados ao acervo digital.",
-      "2024": "Mostra Oficial, mostra paralela, oficinas, lançamentos de livros, processos criativos e dois homenageados.",
+      "2024": "Edição vigente. Mostra Oficial, 7ª Mostra Paralela Vera Viana, ações formativas, lançamentos de livros, processos criativos e dois homenageados.",
       "2004-2023": "Programas impressos, cartazes, fotografias e registros em vídeo a serem digitalizados e publicados progressivamente."
     },
     "actions": {
@@ -288,8 +317,6 @@
     "noPageNotice": "Esta edição ainda não tem página própria no portal.",
     "scopeNote": "Cada edição publicada poderá conter identidade visual, resumo, programação completa, espetáculos, fotografias, homenageados, notícias, materiais gráficos, documentos, participantes e patrocinadores.",
     "preview": {
-      "noticeTitle": "Prévia de layout",
-      "noticeBody": "As edições de 2005 a 2023 estão aqui para avaliar a linha do tempo: as fotografias são ilustrativas e não retratam o festival, e o percentual de acervo é estimado. As edições de 2024, 2025 e 2026 são dados reais.",
       "summaries": {
         "0": "Programas impressos e cartazes da {edition}ª edição aguardam digitalização.",
         "1": "Registros fotográficos de {year} ainda não incorporados ao acervo digital.",
@@ -300,7 +327,7 @@
     "axisLabel": "Ir para uma edição"
   },
   "edicao": {
-    "kicker": "Acervo · edição encerrada",
+    "kicker": "A edição vigente",
     "headline": "{edition}ª edição · de {start} a {end}",
     "statementTitle": "A edição",
     "strandsTitle": "Núcleos desta edição",
@@ -317,8 +344,8 @@
   "noticias": {
     "title": "Notícias",
     "description": "Avisos de programação, bastidores e chamadas publicados pela organização durante o festival.",
-    "emptyTitle": "Ainda não há notícias publicadas",
-    "emptyBody": "Quando a organização publicar a primeira notícia, ela aparece aqui.",
+    "emptyTitle": "Nenhum aviso publicado até agora",
+    "emptyBody": "Alterações de horário, sessões extras e avisos de última hora são publicados aqui durante os oito dias do festival.",
     "listLabel": "Notícias, da mais recente à mais antiga",
     "categories": {
       "alteracao": "Alteração de programação",
@@ -353,25 +380,25 @@
     "retry": "Tentar novamente"
   },
   "imagens": {
-    "lenda": "Cartaz do espetáculo: um homem de chapéu diante de uma pedra escura, em tons de terra.",
-    "violeta": "Cartaz do espetáculo: uma mulher com violão, sobre fundo de montanhas andinas.",
-    "corpus": "Cartaz do espetáculo: corpos em performance coletiva, sobrepostos em vermelho e preto.",
-    "olhos": "Cartaz do espetáculo: um rosto masculino em close, iluminado de lado.",
-    "corpo": "Cartaz do espetáculo: bailarinos em movimento, silhuetas sobre fundo claro.",
-    "corpo2": "Cartaz da segunda apresentação: um duo de bailarinos em contato, visto de perto.",
-    "charanga": "Cartaz do espetáculo: dois artistas com instrumentos de sopro ao lado de um fusca.",
-    "dona": "Cartaz do espetáculo: personagens coloridos em torno de uma faixa de pedestres.",
-    "saga": "Cartaz do espetáculo: dois atores negros em cena, iluminados em tons quentes.",
-    "homembanda": "Cartaz do espetáculo: um músico cercado por instrumentos ligados por cordas e roldanas.",
-    "metamorfose": "Cartaz do espetáculo: uma figura encolhida em um quarto escuro, vista de cima.",
-    "carambolas": "Cartaz do espetáculo: mulheres em cena diante de uma chaminé de fábrica ao fundo.",
-    "kala": "Cartaz do espetáculo: figuras com máscaras balinesas, em tons de vermelho e ouro.",
-    "calunga": "Cartaz do espetáculo: uma boneca de pano ao lado de uma contadora de histórias.",
-    "divertida": "Cartaz do espetáculo: um artista de terno diante de uma plateia iluminada.",
-    "boi": "Cartaz do espetáculo: uma figura de boi enfeitada, típica das festas populares.",
-    "cabrabo": "Cartaz do espetáculo: um elenco numeroso em cena, em figurinos coloridos.",
-    "couro": "Cartaz do espetáculo: personagens em roupas de couro sob um sol nordestino.",
-    "avarento": "Cartaz do espetáculo: um homem idoso abraçado a um cofre, em cena de comédia.",
+    "lenda": "Elenco de “A Lenda de Um Homem Sem Nome” reunido no palco sob um varal de lâmpadas; ao centro, uma atriz de vestido rosa e rendas.",
+    "violeta": "A atriz que interpreta Violeta Parra, de cabelo verde, sentada e envolta em um xale bordado em vermelho e rosa.",
+    "corpus": "Performers de “Corpus Em Vidas” erguem um longo tecido branco sobre a cena, sob luz violeta.",
+    "olhos": "Rosto masculino de cabeça para baixo, iluminado pela chama de uma vela, em “Meus Olhos Verdes”.",
+    "corpo": "Bailarino de “O Corpo Que Eu Habito” em cena diante de uma cortina vermelha atravessada por fitas.",
+    "corpo2": "Intérprete de “O Corpo Que Eu Habito” toca saxofone no centro do palco, com outros bailarinos ao fundo.",
+    "charanga": "Fotografia em preto e branco: dois artistas mascarados de “A Charanga dos Proscritos” atrás de uma mesa iluminada, ao ar livre.",
+    "dona": "Quatro palhaços de “Dona Rua Gentileza” posam diante de placas coloridas de trânsito; um deles veste camisa vermelha com o número 88.",
+    "saga": "Ator de “SAGA” abre os braços em cena, com manto de palha e miçangas; atrás dele, outro ator usa máscara branca.",
+    "homembanda": "André Forecchi toca saxofone de chapéu, com um bumbo preso às costas, em “Homem Banda, O Show”.",
+    "metamorfose": "Rosto masculino espia por uma fresta entre tecidos estampados, em tom sépia, em “A Metamorfose”.",
+    "carambolas": "Duas atrizes de “Carambolas” sentadas a uma mesa sob luz azulada; uma delas lê um livro.",
+    "kala": "Dois atores de “A Maldição e o Mistério de Kalá” em cena diante de uma parede de madeira: ele de casaco azul, ela de colete bordado.",
+    "calunga": "Ator ergue uma boneca iluminada diante de uma atriz de vestido amarelo, no escuro, em “Calunga”.",
+    "divertida": "O ator e hipnólogo de “Divertida Mente”, de terno escuro, sorri diante de uma cortina vermelha com um cérebro luminoso na palma da mão.",
+    "boi": "Elenco de “A História do Boi de Sol” posa com uma cabeça de boi enfeitada, em figurinos dourados e chapéus de palha.",
+    "cabrabo": "Elenco numeroso de “O Auto de Cabrabó” em cena diante das fachadas de uma cidade cenográfica, com cartazes erguidos.",
+    "couro": "Casal de “Couro de Cabra e a Promessa” de perfil, testa contra testa; ela de vestido branco, ele de colete bordado.",
+    "avarento": "Elenco de “O Avarento” em figurinos de época e perucas empoadas, em torno de um homem sentado com bengala.",
     "homenageadoBere": "Retrato de Bere, Luiz Carlos Siqueira, homenageado da edição de 2024.",
     "homenageadoAlcides": "Retrato de Alcides Luiz Rodrigues Pereira, homenageado da edição de 2024.",
     "capa2024": "Capa do programa impresso de 2024, com máscaras teatrais e o nome do festival.",
@@ -381,6 +408,8 @@
     "previaTeatroHistorico": "Fotografia ilustrativa: o interior de um teatro histórico, com camarotes dourados e cortina vermelha.",
     "previaPlateiaDoPalco": "Fotografia ilustrativa: uma plateia cheia vista do palco, durante uma apresentação.",
     "previaCasaCheia": "Fotografia ilustrativa: uma casa de espetáculos lotada, com camarotes em vários andares.",
-    "previaCorpoEmCena": "Fotografia ilustrativa: uma bailarina em movimento, iluminada sobre fundo escuro."
+    "previaCorpoEmCena": "Fotografia ilustrativa: uma bailarina em movimento, iluminada sobre fundo escuro.",
+    "oficinaDissociando": "André Forecchi toca saxofone com bumbo e pratos acoplados ao corpo, na oficina “Dissociando o Corpo”.",
+    "bethCaser": "Retrato de Beth Caser, atriz, gestora e idealizadora do festival."
   }
 }

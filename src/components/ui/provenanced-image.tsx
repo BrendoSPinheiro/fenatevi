@@ -34,6 +34,14 @@ interface ProvenancedImageProps {
    * Uma capa recortada não é a capa — é um pedaço dela.
    */
   readonly fit?: 'cover' | 'contain';
+  /**
+   * Onde a moldura corta, no formato do `object-position`.
+   *
+   * Só faz efeito com `fit="cover"`. As fotografias de cena têm rostos acima do
+   * centro geométrico com frequência, e um recorte quadrado centrado corta
+   * cabeças; subir o ponto de interesse resolve sem editar o arquivo.
+   */
+  readonly position?: string;
   readonly priority?: boolean;
 }
 
@@ -57,6 +65,7 @@ export async function ProvenancedImage({
   className,
   maxRenderedWidth = 320,
   fit = 'cover',
+  position,
   priority = false,
 }: ProvenancedImageProps) {
   const t = await getTranslations('imagens');
@@ -73,6 +82,7 @@ export async function ProvenancedImage({
         sizes={sizes}
         priority={priority}
         className={fit === 'contain' ? 'object-contain' : 'object-cover'}
+        style={fit === 'cover' && position !== undefined ? { objectPosition: position } : undefined}
       />
     </span>
   );

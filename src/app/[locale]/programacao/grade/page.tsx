@@ -1,17 +1,22 @@
 import { getLocale, getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { activityHref } from '@/components/sections/activity-row';
 import { PageHeader } from '@/components/sections/page-header';
+import { activityDetailHref } from '@/components/sections/program-entry';
 import { ArchiveText } from '@/components/ui/archive-text';
 import { Chip } from '@/components/ui/chip';
 import { Container } from '@/components/ui/container';
 import { DemoContentNotice } from '@/components/ui/demo-content-notice';
 import { MAIN_CONTENT_ID } from '@/components/ui/skip-link';
 import { Tag } from '@/components/ui/tag';
-import { activities } from '@/content/activities';
 import { venues } from '@/content/venues';
 import { Link } from '@/lib/i18n/navigation';
-import { formatSessionTime, formatShortDay, formatWeekday } from '@/lib/utils/format';
+import { festivalNow } from '@/lib/utils/festival-clock';
+import {
+  festivalDayFromDate,
+  formatSessionTime,
+  formatShortDay,
+  formatWeekday,
+} from '@/lib/utils/format';
 import {
   availableDays,
   GRID_VIEWS,
@@ -19,10 +24,11 @@ import {
   parseGridQuery,
   type RawSearchParams,
 } from '@/lib/utils/program-query';
-import { festivalDayOf } from '@/lib/utils/schedule';
+import { daySchedule } from '@/lib/utils/program';
 
+import type { DayScheduleEntry } from '@/lib/utils/program';
 import type { Metadata } from 'next';
-import type { Activity, IsoDate } from '@/types/festival';
+import type { IsoDate } from '@/types/festival';
 
 interface GradePageProps {
   readonly params: Promise<{ locale: string }>;
@@ -38,11 +44,27 @@ export async function generateMetadata({
   return { title: t('title'), description: t('description') };
 }
 
-/** As atividades de um dia, em ordem de horário. */
-function activitiesOfDay(day: IsoDate): readonly Activity[] {
-  return activities
-    .filter((activity) => festivalDayOf(activity.startsAt) === day)
-    .sort((a, b) => new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime());
+/**
+ * O que a grade mostra de cada item: um destino, um nome e quem o assina.
+ *
+ * As demonstrações de processo criativo não têm título nem página — o programa
+ * as registra como companhia e espaço —, então elas aparecem pelo nome da
+ * companhia e sem link. Inventar um destino seria oferecer uma página que não
+ * existe.
+ */
+function entryLabel(entry: DayScheduleEntry): {
+  readonly href: string | null;
+  readonly title: string;
+} {
+  if (entry.item.kind === 'activity') {
+    return { href: activityDetailHref(entry.item.activity.id), title: entry.item.activity.title };
+  }
+
+  if (entry.item.kind === 'workshop') {
+    return { href: `/oficinas/${entry.item.workshop.id}`, title: entry.item.workshop.title };
+  }
+
+  return { href: null, title: entry.item.item.company };
 }
 
 /**
@@ -59,8 +81,9 @@ export default async function GradePage({ params, searchParams }: GradePageProps
   const locale = await getLocale();
   const t = await getTranslations('grade');
   const tProgramacao = await getTranslations('programacao');
-  const query = parseGridQuery(await searchParams);
-  const dayActivities = activitiesOfDay(query.day);
+  const today = festivalDayFromDate(festivalNow());
+  const query = parseGridQuery(await searchParams, today);
+  const entries = daySchedule(query.day);
 
   return (
     <main id={MAIN_CONTENT_ID} tabIndex={-1}>
@@ -114,7 +137,7 @@ export default async function GradePage({ params, searchParams }: GradePageProps
 
         <div className="mt-stack-md border-t border-outline-variant/60 pt-6 pb-stack-lg">
           {query.view === 'espaco' && <ByVenueView day={query.day} />}
-          {query.view === 'horario' && <ByTimeView activities={dayActivities} />}
+          {query.view === 'horario' && <ByTimeView entries={entries} />}
           {query.view === 'semana' && <WeekView />}
         </div>
       </Container>
@@ -132,7 +155,8 @@ export default async function GradePage({ params, searchParams }: GradePageProps
 async function ByVenueView({ day }: { readonly day: IsoDate }) {
   const locale = await getLocale();
   const t = await getTranslations('grade');
-  const dayActivities = activitiesOfDay(day);
+  const tSessao = await getTranslations('sessao');
+  const entries = daySchedule(day);
 
   return (
     <section aria-labelledby="grade-conteudo">
@@ -142,7 +166,7 @@ async function ByVenueView({ day }: { readonly day: IsoDate }) {
 
       <div className="mt-6 flex flex-col gap-6">
         {venues.map((venue) => {
-          const venueActivities = dayActivities.filter((activity) => activity.venueId === venue.id);
+          const venueEntries = entries.filter((entry) => entry.venueId === venue.id);
 
           return (
             <article key={venue.id} className="border-t border-outline-variant/60 pt-4">
@@ -150,27 +174,48 @@ async function ByVenueView({ day }: { readonly day: IsoDate }) {
                 <ArchiveText>{venue.name}</ArchiveText>
               </h3>
 
-              {venueActivities.length === 0 ? (
+              {venueEntries.length === 0 ? (
                 <p className="mt-2 font-sans text-sm text-foreground-subtle">
                   {t('noActivitiesInVenue')}
                 </p>
               ) : (
                 <ul className="mt-3 flex flex-col gap-2">
-                  {venueActivities.map((activity) => (
-                    <li key={activity.id} className="flex flex-wrap items-baseline gap-3">
-                      <span className="font-serif text-lg text-secondary">
-                        <time dateTime={activity.startsAt}>
-                          {formatSessionTime(activity.startsAt, locale)}
-                        </time>
-                      </span>
-                      <Link
-                        href={activityHref(activity)}
-                        className="inline-flex min-h-11 items-center font-sans text-base"
-                      >
-                        <ArchiveText>{activity.title}</ArchiveText>
-                      </Link>
-                    </li>
-                  ))}
+                  {venueEntries.map((entry) => {
+                    const { href, title } = entryLabel(entry);
+
+                    return (
+                      <li key={entry.item.key} className="flex flex-wrap items-baseline gap-3">
+                        {/*
+                         * Sem horário, o programa diz "após a sessão" — e é
+                         * isso que a coluna do relógio mostra, em vez de uma
+                         * hora inventada só para preencher a coluna.
+                         */}
+                        <span className="font-serif text-lg text-secondary">
+                          {entry.startsAt === null ? (
+                            <span className="font-sans text-sm tracking-[0.06em] uppercase">
+                              {tSessao('afterSession')}
+                            </span>
+                          ) : (
+                            <time dateTime={entry.startsAt}>
+                              {formatSessionTime(entry.startsAt, locale)}
+                            </time>
+                          )}
+                        </span>
+                        {href === null ? (
+                          <ArchiveText className="font-sans text-base text-foreground-muted">
+                            {title}
+                          </ArchiveText>
+                        ) : (
+                          <Link
+                            href={href}
+                            className="inline-flex min-h-11 items-center font-sans text-base"
+                          >
+                            <ArchiveText>{title}</ArchiveText>
+                          </Link>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               )}
             </article>
@@ -182,24 +227,26 @@ async function ByVenueView({ day }: { readonly day: IsoDate }) {
 }
 
 /** Visão por horário: o que acontece ao mesmo tempo, junto. */
-async function ByTimeView({
-  activities: dayActivities,
-}: {
-  readonly activities: readonly Activity[];
-}) {
+async function ByTimeView({ entries }: { readonly entries: readonly DayScheduleEntry[] }) {
   const locale = await getLocale();
   const t = await getTranslations('grade');
+  const tSessao = await getTranslations('sessao');
 
-  const byTime = new Map<string, Activity[]>();
+  const byTime = new Map<string, DayScheduleEntry[]>();
 
-  for (const activity of dayActivities) {
-    const time = formatSessionTime(activity.startsAt, locale);
+  for (const entry of entries) {
+    /*
+     * As demonstrações caem todas num balde só, rotulado "após a sessão": elas
+     * não competem por horário porque não têm horário.
+     */
+    const time =
+      entry.startsAt === null ? tSessao('afterSession') : formatSessionTime(entry.startsAt, locale);
     const bucket = byTime.get(time);
 
     if (bucket === undefined) {
-      byTime.set(time, [activity]);
+      byTime.set(time, [entry]);
     } else {
-      bucket.push(activity);
+      bucket.push(entry);
     }
   }
 
@@ -209,21 +256,28 @@ async function ByTimeView({
 
   return (
     <div className="flex flex-col gap-6">
-      {[...byTime.entries()].map(([time, timeActivities]) => (
+      {[...byTime.entries()].map(([time, timeEntries]) => (
         <section key={time} className="border-t border-outline-variant/60 pt-4">
           <h2 className="font-serif text-2xl text-secondary">{time}</h2>
           <ul className="mt-3 flex flex-col gap-3">
-            {timeActivities.map((activity) => {
-              const venue = venues.find((item) => item.id === activity.venueId);
+            {timeEntries.map((entry) => {
+              const venue = venues.find((item) => item.id === entry.venueId);
+              const { href, title } = entryLabel(entry);
 
               return (
-                <li key={activity.id}>
-                  <Link
-                    href={activityHref(activity)}
-                    className="inline-flex min-h-11 items-center font-sans text-base"
-                  >
-                    <ArchiveText>{activity.title}</ArchiveText>
-                  </Link>
+                <li key={entry.item.key}>
+                  {href === null ? (
+                    <ArchiveText className="font-sans text-base text-foreground-muted">
+                      {title}
+                    </ArchiveText>
+                  ) : (
+                    <Link
+                      href={href}
+                      className="inline-flex min-h-11 items-center font-sans text-base"
+                    >
+                      <ArchiveText>{title}</ArchiveText>
+                    </Link>
+                  )}
                   {venue !== undefined && (
                     <span className="ml-2 font-sans text-sm text-foreground-subtle">
                       <ArchiveText>{venue.name}</ArchiveText>
@@ -253,6 +307,7 @@ async function ByTimeView({
 async function WeekView() {
   const locale = await getLocale();
   const t = await getTranslations('grade');
+  const tSessao = await getTranslations('sessao');
 
   return (
     <section aria-labelledby="grade-semana">
@@ -295,9 +350,7 @@ async function WeekView() {
                   <ArchiveText>{venue.name}</ArchiveText>
                 </th>
                 {availableDays.map((day) => {
-                  const cell = activitiesOfDay(day).filter(
-                    (activity) => activity.venueId === venue.id,
-                  );
+                  const cell = daySchedule(day).filter((entry) => entry.venueId === venue.id);
 
                   return (
                     <td key={day} className="p-3 align-top">
@@ -305,19 +358,31 @@ async function WeekView() {
                         <span className="sr-only">{t('noActivitiesInVenue')}</span>
                       ) : (
                         <ul className="flex flex-col gap-2">
-                          {cell.map((activity) => (
-                            <li key={activity.id}>
-                              <Link
-                                href={activityHref(activity)}
-                                className="inline-flex min-h-11 items-center font-sans text-sm"
-                              >
-                                <ArchiveText>{activity.title}</ArchiveText>
-                              </Link>
-                              <Tag className="mt-1 block w-fit">
-                                {formatSessionTime(activity.startsAt, locale)}
-                              </Tag>
-                            </li>
-                          ))}
+                          {cell.map((entry) => {
+                            const { href, title } = entryLabel(entry);
+
+                            return (
+                              <li key={entry.item.key}>
+                                {href === null ? (
+                                  <ArchiveText className="font-sans text-sm text-foreground-muted">
+                                    {title}
+                                  </ArchiveText>
+                                ) : (
+                                  <Link
+                                    href={href}
+                                    className="inline-flex min-h-11 items-center font-sans text-sm"
+                                  >
+                                    <ArchiveText>{title}</ArchiveText>
+                                  </Link>
+                                )}
+                                <Tag className="mt-1 block w-fit">
+                                  {entry.startsAt === null
+                                    ? tSessao('afterSession')
+                                    : formatSessionTime(entry.startsAt, locale)}
+                                </Tag>
+                              </li>
+                            );
+                          })}
                         </ul>
                       )}
                     </td>

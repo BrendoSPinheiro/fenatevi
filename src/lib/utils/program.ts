@@ -9,6 +9,7 @@ import type {
   Activity,
   CreativeProcessItem,
   IsoDate,
+  IsoDateTime,
   ProgramStrand,
   Workshop,
 } from '@/types/festival';
@@ -230,6 +231,91 @@ export function editionScale(days: readonly IsoDate[]): EditionScale {
     venues: usedVenues.size,
     strands: STRANDS.filter((strand) => counts[strand] > 0).length,
   };
+}
+
+/**
+ * Um item do dia, com o espaço e o horário resolvidos.
+ *
+ * `startsAt` é `null` nas demonstrações de processo criativo: o programa
+ * impresso não lhes dá hora, apenas "após a sessão" daquele espaço. Manter o
+ * `null` é o que impede a grade de inventar um horário para poder ordená-las.
+ */
+export interface DayScheduleEntry {
+  readonly item: ProgramItem;
+  readonly venueId: string;
+  readonly startsAt: IsoDateTime | null;
+}
+
+/** O instante em que uma oficina começa neste dia, se ela acontecer nele. */
+function workshopStartOn(workshop: Workshop, day: IsoDate): IsoDateTime | null {
+  return (
+    workshop.sessions.find((session) => festivalDayOf(session.startsAt) === day)?.startsAt ?? null
+  );
+}
+
+/**
+ * Tudo o que acontece em um dia, em ordem de horário.
+ *
+ * **É a fonte única da grade diária.** Antes, a grade lia apenas `activities`,
+ * e por isso 14, 15 e 16 de outubro apareciam sem as oficinas do Teatro
+ * Estrelas e nenhum dia mostrava as demonstrações de processo criativo — a tela
+ * que responde "o que acontece hoje?" respondia por metade da programação.
+ *
+ * Os itens sem horário vão para o fim, que é onde eles acontecem.
+ */
+export function daySchedule(day: IsoDate): readonly DayScheduleEntry[] {
+  const entries: DayScheduleEntry[] = [
+    ...activities
+      .filter((activity) => festivalDayOf(activity.startsAt) === day)
+      .map((activity) => ({
+        item: { kind: 'activity', key: activity.id, activity } as const,
+        venueId: activity.venueId,
+        startsAt: activity.startsAt,
+      })),
+    ...workshops
+      .filter((workshop) => workshopHappensOn(workshop, day))
+      .map((workshop) => ({
+        item: { kind: 'workshop', key: workshop.id, workshop } as const,
+        venueId: workshop.venueId,
+        startsAt: workshopStartOn(workshop, day),
+      })),
+    ...(creativeProcesses
+      .find((entry) => entry.date === day)
+      ?.items.map((item) => ({
+        item: {
+          kind: 'process',
+          key: `${day}-${item.company}-${item.venueId}`,
+          date: day,
+          item,
+        } as const,
+        venueId: item.venueId,
+        startsAt: null,
+      })) ?? []),
+  ];
+
+  return entries.sort((a, b) => {
+    if (a.startsAt === null || b.startsAt === null) {
+      return a.startsAt === b.startsAt ? 0 : a.startsAt === null ? 1 : -1;
+    }
+
+    return new Date(a.startsAt).getTime() - new Date(b.startsAt).getTime();
+  });
+}
+
+/**
+ * Quantos itens cada espaço recebe, mantidos os demais filtros.
+ *
+ * Conta as três fontes, e não só as sessões. Sem isso o Teatro Estrelas
+ * apareceria com "sem atividades" numa edição em que ele recebe as duas
+ * oficinas — a contagem estaria dizendo que o espaço está fora do festival.
+ */
+export function countsByVenue(
+  filters: ActivityFilters,
+  venueIds: readonly string[],
+): Readonly<Record<string, number>> {
+  return Object.fromEntries(
+    venueIds.map((venueId) => [venueId, programCount({ ...filters, venueId })]),
+  ) as Record<string, number>;
 }
 
 /** Quantos itens cada dia teria, mantidos os demais filtros. */

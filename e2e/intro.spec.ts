@@ -144,7 +144,9 @@ test.describe('Abertura teatral', () => {
 
     await expect(page).toHaveURL(/\/en$/);
     await expect(
-      page.getByText("Nine days of theatre on the city's stages and squares."),
+      page.getByText(
+        "Eight days of theatre on the city's stages, halls and squares — free admission from start to finish.",
+      ),
     ).toBeVisible();
     await expect(page.getByText('All it takes is a seed...')).toBeHidden();
   });

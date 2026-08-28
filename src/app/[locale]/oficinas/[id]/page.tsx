@@ -6,6 +6,7 @@ import { ArchiveText } from '@/components/ui/archive-text';
 import { buttonClassName } from '@/components/ui/button';
 import { Container } from '@/components/ui/container';
 import { DefinitionList } from '@/components/ui/definition-list';
+import { ProvenancedImage } from '@/components/ui/provenanced-image';
 import { MAIN_CONTENT_ID } from '@/components/ui/skip-link';
 import { Tag } from '@/components/ui/tag';
 import { Text } from '@/components/ui/text';
@@ -15,9 +16,9 @@ import { findVenue } from '@/content/venues';
 import { findWorkshop, workshops } from '@/content/workshops';
 import { Link } from '@/lib/i18n/navigation';
 import { routing } from '@/lib/i18n/routing';
-import { displayedEditionPhase } from '@/lib/utils/edition-phase';
+import { festivalNow } from '@/lib/utils/festival-clock';
 import { formatFestivalDate, formatSessionTime } from '@/lib/utils/format';
-import { festivalDayOf } from '@/lib/utils/schedule';
+import { festivalDayOf, workshopHasEnded } from '@/lib/utils/schedule';
 
 import type { Metadata } from 'next';
 import type { Definition } from '@/components/ui/definition-list';
@@ -76,6 +77,13 @@ export default async function OficinaPage({ params }: OficinaPageProps) {
 
   const days = workshop.sessions.map((session) => festivalDayOf(session.startsAt));
   const firstSession = workshop.sessions[0];
+
+  /*
+   * O aviso é **desta oficina**, não da edição: durante o festival umas já
+   * aconteceram e outras ainda recebem inscrição, e a diferença é justamente o
+   * que quem chega precisa saber.
+   */
+  const hasEnded = workshopHasEnded(workshop, festivalNow());
 
   const details: readonly Definition[] = [
     {
@@ -152,6 +160,22 @@ export default async function OficinaPage({ params }: OficinaPageProps) {
       </PageHeader>
 
       <Container className="pb-stack-lg">
+        {/*
+         * A fotografia é a mesma que a oficina carrega na programação — vem do
+         * acervo, não de uma escolha desta tela, e por isso é a mesma imagem em
+         * toda parte.
+         */}
+        {workshop.image !== null && (
+          <ProvenancedImage
+            image={workshop.image}
+            sizes="(min-width: 768px) 640px, 92vw"
+            maxRenderedWidth={280}
+            fit={workshop.image.isLowResolution ? 'contain' : 'cover'}
+            position="50% 30%"
+            className="mb-stack-md aspect-[4/3] w-full max-w-2xl rounded-lg border border-outline-variant"
+          />
+        )}
+
         <section aria-labelledby="descricao">
           <Text variant="headline-lg" as="h2" id="descricao" className="text-foreground">
             {t('descriptionTitle')}
@@ -189,7 +213,7 @@ export default async function OficinaPage({ params }: OficinaPageProps) {
 
           <DefinitionList className="mt-6" items={details} />
 
-          {displayedEditionPhase === 'after' && (
+          {hasEnded && (
             <p className="mt-6 rounded-lg border border-outline-variant bg-surface-container-low px-4 py-3 font-sans text-base text-foreground-muted">
               {t('endedNotice')}
             </p>

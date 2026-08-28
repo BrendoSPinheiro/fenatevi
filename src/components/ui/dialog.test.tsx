@@ -14,7 +14,7 @@ function Harness() {
       <button type="button" onClick={() => setIsOpen(true)}>
         Abrir áreas
       </button>
-      <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)} title="Áreas do portal">
+      <Dialog isOpen={isOpen} onClose={() => setIsOpen(false)} title="Acessibilidade">
         <a href="#programacao">Programação</a>
         <a href="#memoria">Memória</a>
         <button type="button" onClick={() => setIsOpen(false)}>
@@ -86,6 +86,6 @@ describe('Dialog', () => {
 
     await user.click(screen.getByRole('button', { name: 'Abrir áreas' }));
 
-    expect(screen.getByRole('dialog', { name: 'Áreas do portal' })).toBeInTheDocument();
+    expect(screen.getByRole('dialog', { name: 'Acessibilidade' })).toBeInTheDocument();
   });
 });

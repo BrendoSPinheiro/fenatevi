@@ -8,6 +8,13 @@ import { useReducedMotion } from '@/hooks/use-reduced-motion';
 /**
  * A troca de cena entre rotas.
  *
+ * **É a cortina da abertura teatral, encurtada.** Literalmente: os dois painéis
+ * usam a classe `.curtain-panel`, a mesma da `StageIntro`, com as suas pregas,
+ * a sua profundidade e o seu franzido de borda. O portal tem um só gesto de
+ * troca de cena, e vê-lo de novo a cada navegação é o que faz a casa parecer a
+ * mesma. A duração é a única diferença — 0,52 s contra os 1,6 s da abertura,
+ * porque uma transição que se faz notar atrapalha quem navega.
+ *
  * O protótipo faz a cortina descer, espera 300 ms, troca de tela e a recolhe —
  * 300 ms de espera artificial em toda navegação. Aqui a ordem é invertida:
  * quando o caminho muda, a cortina é pintada **já cobrindo a página nova** e se
@@ -47,5 +54,10 @@ export function CurtainTransition() {
     return null;
   }
 
-  return <div key={scene} aria-hidden="true" className="curtain-transition" />;
+  return (
+    <div key={scene} aria-hidden="true" className="curtain-transition">
+      <div className="curtain-panel curtain-panel--left" />
+      <div className="curtain-panel curtain-panel--right" />
+    </div>
+  );
 }

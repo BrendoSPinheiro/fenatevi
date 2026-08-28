@@ -1,5 +1,5 @@
 import { activities } from '@/content/activities';
-import { archivedEdition2024, currentEdition } from '@/content/festival';
+import { edition2024 } from '@/content/festival';
 import { honorees } from '@/content/honorees';
 import { venues } from '@/content/venues';
 import { workshops } from '@/content/workshops';
@@ -21,8 +21,8 @@ export const allImages: readonly ImageAsset[] = [
   ...workshops.map((workshop) => workshop.image),
   ...venues.map((venue) => venue.image),
   ...honorees.map((honoree) => honoree.portrait),
-  currentEdition.coverImage,
-  archivedEdition2024.coverImage,
+  edition2024.coverImage,
+  edition2024.statement?.portrait ?? null,
 ].filter((image): image is ImageAsset => image !== null);
 
 /**

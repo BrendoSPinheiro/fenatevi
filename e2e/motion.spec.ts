@@ -8,7 +8,9 @@ test.describe('Movimento reduzido', () => {
 
     await expect(page.getByRole('heading', { level: 1, name: 'FENATEVI' })).toBeVisible();
     await expect(
-      page.getByText('Nove dias de teatro nos palcos e nas praças da cidade.'),
+      page.getByText(
+        'Oito dias de teatro nos palcos, nas salas e nas praças da cidade — de entrada franca, do começo ao fim.',
+      ),
     ).toBeVisible();
 
     /*

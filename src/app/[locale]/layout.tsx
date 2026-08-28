@@ -8,7 +8,9 @@ import { MobileNav } from '@/components/layout/mobile-nav';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { SiteHeader } from '@/components/layout/site-header';
 import { SkipLink } from '@/components/ui/skip-link';
+import { currentEdition } from '@/content/festival';
 import { localeHtmlLang, routing, type Locale } from '@/lib/i18n/routing';
+import { formatFestivalDate } from '@/lib/utils/format';
 import { SITE_URL } from '@/lib/seo/site';
 import { SmoothScrollProvider } from '@/providers/smooth-scroll-provider';
 import '@/styles/globals.css';
@@ -63,6 +65,26 @@ export async function generateMetadata({
   // Caminho desta versão de idioma: `pt-BR` mora na raiz (`localePrefix: 'as-needed'`).
   const path = locale === routing.defaultLocale ? '/' : `/${locale}`;
 
+  /*
+   * Título e descrição descrevem a **edição vigente**, e a descrevem a partir
+   * do acervo: ano, número da edição e janela de datas vêm de
+   * `currentEdition`. Quando a organização publicar a próxima edição, o título
+   * do site acompanha sem que ninguém edite `messages/`.
+   */
+  const editionParams = {
+    year: currentEdition.year,
+    edition: currentEdition.edition,
+    start: formatFestivalDate(currentEdition.startDate, locale),
+    end: formatFestivalDate(currentEdition.endDate, locale, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }),
+  };
+
+  const title = t('title', editionParams);
+  const description = t('description', editionParams);
+
   return {
     /*
      * Base para toda URL relativa desta árvore. Sem ela o Next não consegue
@@ -70,11 +92,11 @@ export async function generateMetadata({
      */
     metadataBase: new URL(SITE_URL),
     title: {
-      default: t('title'),
+      default: title,
       // Rotas futuras informam só o próprio título; o sufixo vem daqui.
-      template: `%s — ${tCommon('festivalName')}`,
+      template: `%s — ${tCommon('festivalName')} ${currentEdition.year}`,
     },
-    description: t('description'),
+    description,
     /*
      * Canonical consolida as variações de URL da mesma página — sobretudo os
      * parâmetros de campanha (`?utm_source=...`), que de outro modo o buscador
@@ -99,14 +121,14 @@ export async function generateMetadata({
     openGraph: {
       type: 'website',
       siteName: tCommon('festivalName'),
-      title: t('title'),
-      description: t('description'),
+      title,
+      description,
       url: path,
     },
     twitter: {
       card: 'summary_large_image',
-      title: t('title'),
-      description: t('description'),
+      title,
+      description,
     },
   };
 }

@@ -36,6 +36,15 @@ export async function generateMetadata({
  * quando não há página, a estação diz isso em texto e não vira link. A regra
  * vale igualmente para as estações de prévia, que jamais têm destino.
  *
+ * **A nota de prévia foi retirada da tela nesta branch de demonstração.** As
+ * edições de 2005 a 2023 continuam sendo conteúdo ilustrativo — o que mudou é
+ * que a tela deixou de dizer isso ao visitante, a pedido de quem apresenta a
+ * demo. Nenhuma estação de prévia vira link, e nada dela alimenta contagem,
+ * resumo ou página, então a tela não afirma nada falso; ela apenas não mais
+ * ressalva. Antes de publicar para o público, ou a nota volta, ou
+ * `TIMELINE_PREVIEW_ENABLED` vira `false`. Registrado em
+ * `docs/riscos-conhecidos.md`.
+ *
  * **Duas variantes vivem lado a lado**, escolhidas por `?linha=`, enquanto a
  * decisão visual não é tomada; a que não for escolhida é apagada por inteiro,
  * junto com a leitura de `searchParams` — que é o que hoje tira esta rota da
@@ -76,25 +85,6 @@ export default async function MemoriaPage({ params, searchParams }: MemoriaPageP
           <PageHeader title={t('title')} description={t('description')} />
         </div>
       </div>
-
-      {/*
-       * O aviso de prévia. Enquanto as edições de 2005 a 2023 forem
-       * ilustrativas, a tela diz isso — pelo mesmo princípio do aviso de acervo
-       * que a programação já exibe: o portal apresenta o que tem e declara o
-       * que está fazendo.
-       */}
-      {TIMELINE_PREVIEW_ENABLED && (
-        <Container className="pb-stack-sm">
-          <aside className="rounded-lg border border-outline-variant bg-surface-container-low px-4 py-3">
-            <Text variant="label-md" as="p" className="text-secondary">
-              {t('preview.noticeTitle')}
-            </Text>
-            <Text variant="body-md" className="mt-1 max-w-prose text-foreground-muted">
-              {t('preview.noticeBody')}
-            </Text>
-          </aside>
-        </Container>
-      )}
 
       {variant === 'trilho' ? (
         <EditionTimelineRail stations={stations} />

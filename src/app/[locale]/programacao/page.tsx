@@ -10,6 +10,7 @@ import { Container } from '@/components/ui/container';
 import { EmptyState } from '@/components/ui/empty-state';
 import { MAIN_CONTENT_ID } from '@/components/ui/skip-link';
 import { Link } from '@/lib/i18n/navigation';
+import { festivalNow } from '@/lib/utils/festival-clock';
 import { festivalDayFromDate } from '@/lib/utils/format';
 import { editionScale, programGroups } from '@/lib/utils/program';
 import {
@@ -70,7 +71,7 @@ export default async function ProgramacaoPage({ params, searchParams }: Programa
    * não custa estaticidade — e como nada neste trecho hidrata, não há risco de
    * o cliente discordar do servidor.
    */
-  const todayInFestival = festivalDayFromDate(new Date());
+  const todayInFestival = festivalDayFromDate(festivalNow());
   const today = availableDays.includes(todayInFestival) ? todayInFestival : null;
 
   return (

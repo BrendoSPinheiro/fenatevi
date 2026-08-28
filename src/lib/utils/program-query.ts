@@ -164,17 +164,25 @@ export interface GridQuery {
 /**
  * A visão e o dia da grade, validados.
  *
- * O padrão é a visão por espaço no primeiro dia da edição — é o que o protótipo
- * abre, e é a leitura mais próxima do programa impresso.
+ * A visão padrão é por espaço — é o que o protótipo abre, e é a leitura mais
+ * próxima do programa impresso.
+ *
+ * O dia padrão é parâmetro, e não o primeiro dia da edição: durante o festival
+ * a grade precisa abrir no **dia corrente**, que é a pergunta de quem a
+ * consulta. Quem decide qual é esse dia é a tela, que tem acesso ao relógio do
+ * portal; aqui só se valida que o dia existe na edição.
  */
-export function parseGridQuery(params: RawSearchParams): GridQuery {
+export function parseGridQuery(params: RawSearchParams, fallbackDay?: IsoDate): GridQuery {
   const view = single(params.visao);
   const day = single(params.dia);
-  const firstDay = availableDays[0] ?? '';
+  const preferred =
+    fallbackDay !== undefined && availableDays.includes(fallbackDay)
+      ? fallbackDay
+      : (availableDays[0] ?? '');
 
   return {
     view: GRID_VIEWS.includes(view as GridView) ? (view as GridView) : 'espaco',
-    day: day !== undefined && availableDays.includes(day) ? day : firstDay,
+    day: day !== undefined && availableDays.includes(day) ? day : preferred,
   };
 }
 

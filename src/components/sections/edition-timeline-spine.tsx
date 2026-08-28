@@ -22,7 +22,7 @@ interface EditionTimelineSpineProps {
  *
  * O que faz isto se ler como linha do tempo não é a rolagem — é a espinha
  * contínua ligando os marcos, o numeral do ano como instrumento de ritmo, e o
- * eixo fixo ao pé da tela dizendo onde se está entre as vinte e duas edições.
+ * eixo fixo ao pé da tela dizendo onde se está entre as edições.
  *
  * **Duplicação deliberada.** Este componente repete marcação e classes de
  * `edition-timeline-rail.tsx` de propósito: as duas variantes existem apenas
@@ -214,7 +214,7 @@ export async function EditionTimelineSpine({ stations }: EditionTimelineSpinePro
        * compartilhável, e o navegador cuida da rolagem — inclusive dentro de um
        * contêiner que rola de lado.
        *
-       * Todos os vinte e dois anos ficam rotulados: rótulo condicional era o
+       * Todos os anos da linha do tempo ficam rotulados: rótulo condicional era o
        * jeito de caber uma régua decorativa, e um navegador com metade dos
        * destinos sem nome não é um navegador. Cada alvo tem 44×44px, o que em
        * 375px soma mais que a tela — o eixo então rola dentro de si, no mesmo

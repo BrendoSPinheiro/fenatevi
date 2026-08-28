@@ -3,9 +3,14 @@ import type { Venue } from '@/types/festival';
 /**
  * Os espaços da edição 2024, como o programa impresso os lista.
  *
- * Nome e endereço são acervo em pt-BR; o tipo é chave de tradução. As posições
- * são as do esquema do protótipo — porcentagens dentro do container, **não**
- * coordenadas geográficas.
+ * Nome e endereço são acervo em pt-BR; o tipo é chave de tradução.
+ *
+ * **As coordenadas são reais**, em graus decimais, e vieram do OpenStreetMap a
+ * partir do endereço que o programa impresso publica. A precisão varia com o
+ * que o OSM tem, e está anotada em cada espaço: `poi` quando o próprio
+ * equipamento está mapeado, `numero` quando o número da rua existe, `via`
+ * quando só a rua ou a praça existem. Nenhuma foi arbitrada — um marcador no
+ * lugar errado de um mapa de verdade é pior do que não ter mapa.
  */
 const RAW_VENUES = [
   {
@@ -14,7 +19,9 @@ const RAW_VENUES = [
     parentVenueId: null,
     address: 'Praça João Clímaco, s/n — Centro, Vitória/ES',
     kind: 'teatro-casa-de-musica',
-    position: { x: 46, y: 58 },
+    /* Praça João Clímaco, o endereço que o programa publica (a casa é "s/n"). */
+    coordinates: { latitude: -20.3212649, longitude: -40.3390521 },
+    coordinatePrecision: 'via',
   },
   {
     id: 'milson',
@@ -22,7 +29,9 @@ const RAW_VENUES = [
     parentVenueId: 'casa',
     address: 'Praça João Clímaco, s/n — Centro, Vitória/ES',
     kind: 'sala',
-    position: { x: 52, y: 63 },
+    /* A sala fica dentro da Casa da Música: mesma coordenada. */
+    coordinates: { latitude: -20.3212649, longitude: -40.3390521 },
+    coordinatePrecision: 'via',
   },
   {
     id: 'sesi',
@@ -30,7 +39,9 @@ const RAW_VENUES = [
     parentVenueId: null,
     address: 'R. Tupinambás, 240 — Jardim da Penha, Vitória/ES',
     kind: 'teatro',
-    position: { x: 76, y: 22 },
+    /* O "Teatro do SESI" está mapeado no OSM. */
+    coordinates: { latitude: -20.2853641, longitude: -40.2996321 },
+    coordinatePrecision: 'poi',
   },
   {
     id: 'ufes',
@@ -38,7 +49,9 @@ const RAW_VENUES = [
     parentVenueId: null,
     address: 'Av. Fernando Ferrari, 514 — Goiabeiras, Vitória/ES',
     kind: 'teatro-universitario',
-    position: { x: 86, y: 34 },
+    /* O "Teatro Universitário" está mapeado no OSM. */
+    coordinates: { latitude: -20.2775368, longitude: -40.3020344 },
+    coordinatePrecision: 'poi',
   },
   {
     id: 'praca',
@@ -46,7 +59,9 @@ const RAW_VENUES = [
     parentVenueId: null,
     address: 'Av. Jerônimo Monteiro — Centro, Vitória/ES',
     kind: 'ar-livre',
-    position: { x: 33, y: 70 },
+    /* A praça está mapeada no OSM. */
+    coordinates: { latitude: -20.3200186, longitude: -40.3354631 },
+    coordinatePrecision: 'poi',
   },
   {
     id: 'ma',
@@ -54,7 +69,9 @@ const RAW_VENUES = [
     parentVenueId: null,
     address: 'R. Prof. Baltazar, 152 — Centro, Vitória/ES',
     kind: 'espaco-independente',
-    position: { x: 24, y: 80 },
+    /* A Rua Prof. Baltazar existe no OSM; o número 152, não. */
+    coordinates: { latitude: -20.3193347, longitude: -40.3371225 },
+    coordinatePrecision: 'via',
   },
   {
     id: 'estrelas',
@@ -62,7 +79,9 @@ const RAW_VENUES = [
     parentVenueId: null,
     address: 'Rua Pereira Pinto, 180 — Centro, Vitória/ES',
     kind: 'teatro-formacao',
-    position: { x: 38, y: 86 },
+    /* Rua Pereira Pinto, 180, com número mapeado no OSM. */
+    coordinates: { latitude: -20.3187818, longitude: -40.3342697 },
+    coordinatePrecision: 'numero',
   },
 ] as const;
 
@@ -97,6 +116,18 @@ export const venues: readonly FestivalVenue[] = RAW_VENUES.map((venue) => ({
   image: null,
   accessibility: [],
 }));
+
+/**
+ * Os espaços que ganham marcador no mapa — os de primeiro nível, nesta ordem.
+ *
+ * **É a numeração que o mapa e a lista compartilham.** Uma sala dentro de uma
+ * casa tem a coordenada da casa; dois marcadores no mesmo pixel seriam dois
+ * alvos sobrepostos, e um número no mapa que não existisse na lista seria pior
+ * do que não numerar.
+ */
+export const mappedVenues: readonly FestivalVenue[] = venues.filter(
+  (venue) => venue.parentVenueId === null,
+);
 
 /** O espaço de um id, ou `undefined` quando o id não existe. */
 export function findVenue(id: string): FestivalVenue | undefined {

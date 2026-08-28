@@ -23,8 +23,8 @@ import {
   formatSessionTime,
   formatWeekday,
 } from '@/lib/utils/format';
-import { displayedEditionPhase } from '@/lib/utils/edition-phase';
-import { festivalDayOf, sessionEndsAt } from '@/lib/utils/schedule';
+import { festivalNow } from '@/lib/utils/festival-clock';
+import { festivalDayOf, sessionEndsAt, sessionStatus } from '@/lib/utils/schedule';
 
 import type { Metadata } from 'next';
 import type { Definition } from '@/components/ui/definition-list';
@@ -88,11 +88,18 @@ export default async function EspetaculoPage({ params }: EspetaculoPageProps) {
   const endsAt = sessionEndsAt(activity);
 
   /*
-   * A situação vem da fase da edição, não de um relógio no cliente. A edição
-   * exibida está inteiramente no passado, e esse fato não expira — o servidor
-   * grava "sessão encerrada" no HTML e ninguém precisa hidratar nada.
+   * A situação é **desta sessão**, não da edição inteira: no quinto dia do
+   * festival, a sessão de domingo ainda está por vir e a de segunda já
+   * terminou, e um rótulo único mentiria para uma das duas. O instante vem de
+   * `festival-clock`, decidido no servidor — nada aqui hidrata.
    */
-  const sessionLabel = displayedEditionPhase === 'after' ? tSessao('ended') : tSessao('upcoming');
+  const status = sessionStatus(activity, festivalNow());
+  const sessionLabel =
+    status === 'ended'
+      ? tSessao('ended')
+      : status === 'live'
+        ? tSessao('live')
+        : tSessao('upcoming');
 
   const process = creativeProcesses
     .find((entry) => entry.date === day)
@@ -179,11 +186,20 @@ export default async function EspetaculoPage({ params }: EspetaculoPageProps) {
 
       <Container className="pb-stack-lg">
         {activity.image !== null && (
+          /*
+           * A largura é declarada, e não deixada a cargo do container: sem o
+           * teto, uma fotografia restaurada ocuparia a coluna inteira num
+           * recorte 3:4 e ficaria com mais de 1500px de altura. O recorte é
+           * 4:3, a partir do terço superior, que é a proporção em que a maior
+           * parte das fotografias de cena foi tirada.
+           */
           <ProvenancedImage
             image={activity.image}
-            sizes="(min-width: 768px) 320px, 60vw"
+            sizes="(min-width: 768px) 640px, 92vw"
             maxRenderedWidth={280}
-            className="mb-stack-md aspect-[3/4] rounded-lg border border-outline-variant"
+            fit={activity.image.isLowResolution ? 'contain' : 'cover'}
+            position="50% 30%"
+            className="mb-stack-md aspect-[4/3] w-full max-w-2xl rounded-lg border border-outline-variant"
           />
         )}
 

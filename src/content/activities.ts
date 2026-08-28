@@ -12,9 +12,16 @@ import type { Activity } from '@/types/festival';
  * Cada sessão é uma atividade: "O Corpo Que Eu Habito" aparece duas vezes
  * porque foi apresentado em dois dias, como o programa o lista.
  *
- * As capas são extrações de baixa resolução do programa impresso — nenhuma
- * passa de 270px de largura. É o que `isLowResolution` registra, e é por isso
- * que nenhuma delas é apresentada em largura de viewport.
+ * **A fotografia mora na atividade, e é por isso que ela é a mesma em toda
+ * parte.** Home, programação, grade diária e página de detalhe leem este mesmo
+ * objeto; nenhuma tela escolhe imagem por conta própria, e por isso nenhuma
+ * pode atribuir a fotografia de um espetáculo a outro.
+ *
+ * Quase todas as fotografias são versões restauradas em alta resolução, em
+ * `public/imagens/2024`. As duas que ainda são extração do programa impresso
+ * — "Meus Olhos Verdes" e "O Corpo Que Eu Habito" — declaram
+ * `isLowResolution`, e é isso que impede que sejam ampliadas além do que o
+ * arquivo sustenta.
  */
 interface FestivalActivity extends Activity {
   readonly venueId: VenueId;
@@ -22,8 +29,18 @@ interface FestivalActivity extends Activity {
 
 const IMAGE_BASE = '/imagens/2024';
 
-/** Capa de espetáculo extraída do programa impresso de 2024. */
-function cover(file: string, altKey: string) {
+/** Fotografia de cena restaurada, em resolução que sustenta qualquer moldura. */
+function photo(file: string, altKey: string) {
+  return {
+    src: `${IMAGE_BASE}/${file}`,
+    altKey,
+    provenance: 'registro-original',
+    isLowResolution: false,
+  } as const;
+}
+
+/** Extração de baixa resolução do programa impresso — ainda sem original. */
+function printExtract(file: string, altKey: string) {
   return {
     src: `${IMAGE_BASE}/${file}`,
     altKey,
@@ -54,7 +71,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: 'Abertura oficial do festival às 19h.',
     accessibility: [],
-    image: cover('lenda-homem-sem-nome.png', 'lenda'),
+    image: photo('lenda-homem-sem-nome.png', 'lenda'),
   },
   {
     id: 'violeta',
@@ -80,7 +97,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('violeta-los-andes.png', 'violeta'),
+    image: photo('violeta-los-andes.png', 'violeta'),
   },
   {
     id: 'corpus',
@@ -112,7 +129,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('corpus-em-vidas.png', 'corpus'),
+    image: photo('corpus-em-vidas.png', 'corpus'),
   },
   {
     id: 'olhos',
@@ -139,7 +156,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('meus-olhos-verdes.png', 'olhos'),
+    image: printExtract('meus-olhos-verdes.png', 'olhos'),
   },
   {
     id: 'corpo16',
@@ -177,7 +194,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: 'Patrocínio Instituto Cultural Vale, via Lei Federal de Incentivo à Cultura / Lei Rouanet.',
     accessibility: ['signLanguage', 'audioDescription'],
-    image: cover('corpo-que-eu-habito.png', 'corpo'),
+    image: printExtract('corpo-que-eu-habito.png', 'corpo'),
   },
   {
     id: 'corpo17',
@@ -200,7 +217,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: ['signLanguage', 'audioDescription'],
-    image: cover('corpo-que-eu-habito-2.png', 'corpo2'),
+    image: photo('corpo-que-eu-habito-2.png', 'corpo2'),
   },
   {
     id: 'charanga',
@@ -229,7 +246,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('charanga-dos-proscritos.png', 'charanga'),
+    image: photo('charanga-dos-proscritos.png', 'charanga'),
   },
   {
     id: 'dona',
@@ -261,7 +278,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('dona-rua-gentileza.png', 'dona'),
+    image: photo('dona-rua-gentileza.png', 'dona'),
   },
   {
     id: 'saga',
@@ -284,7 +301,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('saga-povo-preto.png', 'saga'),
+    image: photo('saga-povo-preto.png', 'saga'),
   },
   {
     id: 'homembanda',
@@ -311,7 +328,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('homem-banda.png', 'homembanda'),
+    image: photo('homem-banda.png', 'homembanda'),
   },
   {
     id: 'metamorfose',
@@ -340,7 +357,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('a-metamorfose.png', 'metamorfose'),
+    image: photo('a-metamorfose.png', 'metamorfose'),
   },
   {
     id: 'carambolas',
@@ -374,7 +391,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('carambolas.png', 'carambolas'),
+    image: photo('carambolas.png', 'carambolas'),
   },
   {
     id: 'kala',
@@ -406,7 +423,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('maldicao-kala.png', 'kala'),
+    image: photo('maldicao-kala.png', 'kala'),
   },
   {
     id: 'calunga',
@@ -432,7 +449,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('calunga.png', 'calunga'),
+    image: photo('calunga.png', 'calunga'),
   },
   {
     id: 'divertida',
@@ -455,7 +472,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('divertida-mente.png', 'divertida'),
+    image: photo('divertida-mente.png', 'divertida'),
   },
   {
     id: 'boi',
@@ -482,7 +499,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('boi-de-sol.png', 'boi'),
+    image: photo('boi-de-sol.png', 'boi'),
   },
   {
     id: 'cabrabo',
@@ -510,7 +527,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('auto-de-cabrabo.png', 'cabrabo'),
+    image: photo('auto-de-cabrabo.png', 'cabrabo'),
   },
   {
     id: 'couro',
@@ -540,7 +557,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('couro-de-cabra.png', 'couro'),
+    image: photo('couro-de-cabra.png', 'couro'),
   },
   {
     id: 'avarento',
@@ -570,7 +587,7 @@ export const activities: readonly FestivalActivity[] = [
     ],
     note: null,
     accessibility: [],
-    image: cover('o-avarento.png', 'avarento'),
+    image: photo('o-avarento.png', 'avarento'),
   },
   {
     id: 'livros',

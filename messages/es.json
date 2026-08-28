@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "FENATEVI — Festival Nacional de Teatro de Vitória",
-    "description": "El Festival Nacional de Teatro de Vitória reúne espectáculos, encuentros y formación en los teatros y plazas de la ciudad.",
+    "title": "FENATEVI {year} — Festival Nacional de Teatro Ciudad de Vitória",
+    "description": "{edition}ª edición del Festival Nacional de Teatro Ciudad de Vitória, del {start} al {end}, en Vitória (ES). Entrada libre en toda la programación.",
     "localeLabel": "Español",
     "ogImageLocation": "Vitória · Espírito Santo · Brasil"
   },
@@ -9,7 +9,7 @@
     "skipToContent": "Saltar al contenido",
     "backToTop": "Volver arriba",
     "festivalName": "FENATEVI",
-    "festivalFullName": "Festival Nacional de Teatro de Vitória",
+    "festivalFullName": "Festival Nacional de Teatro Ciudad de Vitória",
     "freeEntry": "Entrada libre",
     "at": "en",
     "close": "Cerrar",
@@ -31,27 +31,43 @@
     "wheelchairAccess": "Acceso para sillas de ruedas",
     "relaxedPerformance": "Función relajada"
   },
+  "acessibilidade": {
+    "trigger": "Accesibilidad",
+    "title": "Accesibilidad",
+    "description": "Estas tres preferencias valen para todo el sitio y quedan guardadas en este navegador. Se suman a lo que tu sistema ya pide: ninguna de ellas desactiva un recurso de accesibilidad.",
+    "close": "Cerrar",
+    "reset": "Restaurar las preferencias predeterminadas",
+    "activeNotice": "hay preferencias de accesibilidad activas",
+    "contrast": {
+      "label": "Contraste",
+      "hint": "Aumenta el contraste del texto y de los bordes, y asienta la cabecera y la fotografía de apertura.",
+      "padrao": "Predeterminado",
+      "alto": "Alto contraste"
+    },
+    "textSize": {
+      "label": "Tamaño del texto",
+      "hint": "Aumenta la base tipográfica del sitio. Para ampliaciones mayores, el zoom del navegador sigue funcionando sobre esta elección.",
+      "padrao": "Predeterminado",
+      "grande": "Texto más grande"
+    },
+    "motion": {
+      "label": "Movimiento",
+      "hint": "Desactiva la apertura teatral, el telón entre páginas, el desplazamiento suave y las revelaciones al desplazar.",
+      "sistema": "Seguir el sistema",
+      "reduzido": "Reducir movimiento"
+    },
+    "sessionsNotice": "La lengua de señas brasileña y la audiodescripción no son ajustes del sitio: son recursos ofrecidos en funciones concretas del festival. La programación indica cuáles.",
+    "sessionsCta": "Ver las funciones con lengua de señas"
+  },
   "nav": {
     "primaryLabel": "Navegación principal",
     "mobileLabel": "Navegación rápida",
-    "openAreas": "Áreas del sitio",
-    "closeAreas": "Cerrar las áreas",
-    "areasTitle": "Áreas del sitio",
-    "areasDescription": "Todo lo que este sitio ofrece sobre el festival.",
     "home": "Inicio",
     "programacao": "Programación",
     "grade": "Grilla diaria",
     "espacos": "Espacios",
     "memoria": "Memoria",
     "noticias": "Noticias",
-    "areaDescriptions": {
-      "home": "La edición vigente, lo que está en escena y la entrada al acervo.",
-      "programacao": "Descubre lo que presenta la edición, sección por sección.",
-      "grade": "El día entero en tres vistas: por espacio, por horario y la semana.",
-      "espacos": "Los espacios del festival en la ciudad, con dirección y programación.",
-      "memoria": "La línea de tiempo de las ediciones y el estado de cada acervo.",
-      "noticias": "Avisos, bastidores y convocatorias publicados por la organización."
-    },
     "backToProgramacao": "Volver a la programación",
     "backToEspacos": "Volver a los espacios",
     "backToMemoria": "Volver a la línea de tiempo"
@@ -60,7 +76,7 @@
     "navigationLabel": "Navegación principal"
   },
   "footer": {
-    "identification": "Festival Nacional de Teatro de Vitória",
+    "identification": "Festival Nacional de Teatro Ciudad de Vitória",
     "navigationLabel": "Navegación del pie de página",
     "contactTitle": "Contacto",
     "city": "Vitória, Espírito Santo, Brasil",
@@ -104,8 +120,8 @@
   "home": {
     "eyebrow": "{edition}ª edición · {year}",
     "title": "FENATEVI",
-    "subtitle": "Festival Nacional de Teatro de Vitória",
-    "signature": "Nueve días de teatro en los escenarios y plazas de la ciudad.",
+    "subtitle": "Festival Nacional de Teatro Ciudad de Vitória",
+    "signature": "Ocho días de teatro en los escenarios, salas y plazas de la ciudad — con entrada libre de principio a fin.",
     "dates": "Del {start} al {end}",
     "city": "Vitória, Espírito Santo",
     "ctaProgramacao": "Ver la programación",
@@ -132,10 +148,19 @@
     "cityCta": "Ver todos los espacios",
     "memoriaTitle": "La memoria del festival",
     "memoriaBody": "Dos décadas de ediciones, con el acervo digitalizándose y publicándose poco a poco.",
+    "memoriaEditions": "Ediciones realizadas",
+    "memoriaPublished": "Con acervo publicado",
+    "memoriaDigitising": "En digitalización",
     "memoriaCta": "Ver la línea de tiempo",
     "noticiasTitle": "Noticias",
     "noticiasCta": "Ver todas las noticias",
-    "partnersTitle": "Realización y socios"
+    "partnersTitle": "Realización y socios",
+    "nowEmptyBody": "El festival continúa: mira lo que aún sucede hoy y en los próximos días.",
+    "nowLiveVenue": "Ahora en {venue}",
+    "editionTitle": "La {edition}ª edición",
+    "editionCta": "Conocer la edición completa",
+    "honoreesTitle": "Homenajeados de {year}",
+    "honoreesBody": "La edición reconoce a dos técnicos que sostienen los escenarios de Espírito Santo desde hace cuatro décadas."
   },
   "programacao": {
     "title": "Programación",
@@ -238,8 +263,13 @@
   "espacos": {
     "title": "Espacios culturales",
     "description": "Los espacios que reciben el festival, repartidos por la ciudad.",
-    "schemaLabel": "Esquema de los espacios del festival en la ciudad",
-    "schemaNotice": "El esquema muestra la posición relativa de los espacios, no su ubicación geográfica. Cada espacio de la lista indica su dirección.",
+    "mapLabel": "Mapa de Vitória con los espacios del festival numerados",
+    "mapInsetTitle": "Detalle: el Centro",
+    "mapInsetLabel": "Mapa ampliado del Centro de Vitória con los espacios numerados",
+    "scaleBarMeters": "{m} m",
+    "mapNotice": "Los marcadores siguen la dirección que publica el programa. Donde el equipamiento no está mapeado, el marcador queda en la calle o la plaza de esa dirección: la lista al lado trae la dirección completa de cada espacio.",
+    "mapAttribution": "Datos del mapa © colaboradores de OpenStreetMap",
+    "scaleBar": "{km} km",
     "listTitle": "Todos los espacios",
     "activityCount": "{count, plural, =0 {sin actividades} one {# actividad} other {# actividades}}",
     "insideOf": "Dentro de {venue}",
@@ -259,7 +289,8 @@
     "addressLabel": "Dirección",
     "kindLabel": "Tipo de espacio",
     "parentLabel": "Dentro de",
-    "activitiesLabel": "Actividades en esta edición"
+    "activitiesLabel": "Actividades en esta edición",
+    "workshopsTitle": "Acciones formativas en este espacio"
   },
   "memoria": {
     "title": "Memoria del festival",
@@ -276,9 +307,7 @@
       "em-digitalizacao": "En digitalización"
     },
     "entries": {
-      "2026": "Curaduría en curso. Programación, espectáculos y homenajeados serán publicados por la organización.",
-      "2025": "Registros, programación y fotografías por incorporar al acervo digital.",
-      "2024": "Muestra Oficial, muestra paralela, talleres, lanzamientos de libros, procesos creativos y dos homenajeados.",
+      "2024": "Edición vigente. Muestra Oficial, 7ª Muestra Paralela Vera Viana, acciones formativas, lanzamientos de libros, procesos creativos y dos homenajeados.",
       "2004-2023": "Programas impresos, carteles, fotografías y registros en vídeo por digitalizar y publicar progresivamente."
     },
     "actions": {
@@ -288,8 +317,6 @@
     "noPageNotice": "Esta edición aún no tiene página propia.",
     "scopeNote": "Cada edición publicada podrá incluir identidad visual, resumen, programación completa, espectáculos, fotografías, homenajeados, noticias, materiales gráficos, documentos, participantes y patrocinadores.",
     "preview": {
-      "noticeTitle": "Vista previa de diseño",
-      "noticeBody": "Las ediciones de 2005 a 2023 están aquí para evaluar la línea de tiempo: las fotografías son ilustrativas y no retratan el festival, y el porcentaje de acervo es estimado. Las ediciones de 2024, 2025 y 2026 son datos reales.",
       "summaries": {
         "0": "Programas impresos y carteles de la {edition}ª edición esperan digitalización.",
         "1": "Los registros fotográficos de {year} aún no se han incorporado al acervo digital.",
@@ -300,7 +327,7 @@
     "axisLabel": "Ir a una edición"
   },
   "edicao": {
-    "kicker": "Acervo · edición finalizada",
+    "kicker": "La edición vigente",
     "headline": "{edition}ª edición · del {start} al {end}",
     "statementTitle": "La edición",
     "strandsTitle": "Núcleos de esta edición",
@@ -317,8 +344,8 @@
   "noticias": {
     "title": "Noticias",
     "description": "Avisos de programación, bastidores y convocatorias publicados por la organización durante el festival.",
-    "emptyTitle": "Aún no hay noticias publicadas",
-    "emptyBody": "Cuando la organización publique la primera noticia, aparecerá aquí.",
+    "emptyTitle": "Ningún aviso publicado hasta ahora",
+    "emptyBody": "Cambios de horario, funciones extra y avisos de última hora se publican aquí durante los ocho días del festival.",
     "listLabel": "Noticias, de la más reciente a la más antigua",
     "categories": {
       "alteracao": "Cambio de programación",
@@ -353,25 +380,25 @@
     "retry": "Intentar de nuevo"
   },
   "imagens": {
-    "lenda": "Cartel del espectáculo: un hombre con sombrero ante una roca oscura, en tonos tierra.",
-    "violeta": "Cartel del espectáculo: una mujer con guitarra sobre un fondo de montañas andinas.",
-    "corpus": "Cartel del espectáculo: cuerpos en performance colectiva, superpuestos en rojo y negro.",
-    "olhos": "Cartel del espectáculo: un rostro masculino en primer plano, iluminado de lado.",
-    "corpo": "Cartel del espectáculo: bailarines en movimiento, siluetas sobre fondo claro.",
-    "corpo2": "Cartel de la segunda función: un dúo de bailarines en contacto, visto de cerca.",
-    "charanga": "Cartel del espectáculo: dos artistas con instrumentos de viento junto a un escarabajo.",
-    "dona": "Cartel del espectáculo: personajes coloridos alrededor de un paso de peatones.",
-    "saga": "Cartel del espectáculo: dos actores negros en escena, iluminados en tonos cálidos.",
-    "homembanda": "Cartel del espectáculo: un músico rodeado de instrumentos unidos por cuerdas y poleas.",
-    "metamorfose": "Cartel del espectáculo: una figura encogida en un cuarto oscuro, vista desde arriba.",
-    "carambolas": "Cartel del espectáculo: mujeres en escena ante una chimenea de fábrica al fondo.",
-    "kala": "Cartel del espectáculo: figuras con máscaras balinesas, en tonos rojo y oro.",
-    "calunga": "Cartel del espectáculo: una muñeca de trapo junto a una narradora.",
-    "divertida": "Cartel del espectáculo: un artista de traje ante un público iluminado.",
-    "boi": "Cartel del espectáculo: una figura de buey adornada, típica de las fiestas populares.",
-    "cabrabo": "Cartel del espectáculo: un elenco numeroso en escena, con vestuario colorido.",
-    "couro": "Cartel del espectáculo: personajes con ropa de cuero bajo un sol del nordeste.",
-    "avarento": "Cartel del espectáculo: un hombre mayor abrazado a una caja fuerte, en escena cómica.",
+    "lenda": "El elenco de “A Lenda de Um Homem Sem Nome” reunido en el escenario bajo una guirnalda de bombillas; al centro, una actriz con vestido rosa de encaje.",
+    "violeta": "La actriz que interpreta a Violeta Parra, de cabello verde, sentada y envuelta en un chal bordado en rojo y rosa.",
+    "corpus": "Performers de “Corpus Em Vidas” sostienen una larga tela blanca sobre la escena, bajo luz violeta.",
+    "olhos": "Rostro masculino boca abajo, iluminado por la llama de una vela, en “Meus Olhos Verdes”.",
+    "corpo": "Bailarín de “O Corpo Que Eu Habito” en escena ante un telón rojo atravesado por cintas.",
+    "corpo2": "Intérprete de “O Corpo Que Eu Habito” toca el saxofón en el centro del escenario, con otros bailarines al fondo.",
+    "charanga": "Fotografía en blanco y negro: dos artistas enmascarados de “A Charanga dos Proscritos” tras una mesa iluminada, al aire libre.",
+    "dona": "Cuatro payasos de “Dona Rua Gentileza” posan ante señales de tránsito coloridas; uno viste camiseta roja con el número 88.",
+    "saga": "Un actor de “SAGA” abre los brazos en escena, con manto de paja y abalorios; detrás, otro actor lleva una máscara blanca.",
+    "homembanda": "André Forecchi toca el saxofón con sombrero y un bombo sujeto a la espalda, en “Homem Banda, O Show”.",
+    "metamorfose": "Rostro masculino que asoma por una rendija entre telas estampadas, en tono sepia, en “A Metamorfose”.",
+    "carambolas": "Dos actrices de “Carambolas” sentadas a una mesa bajo luz azulada; una de ellas lee un libro.",
+    "kala": "Dos actores de “A Maldição e o Mistério de Kalá” en escena ante una pared de madera: él con chaqueta azul, ella con chaleco bordado.",
+    "calunga": "Un actor levanta una muñeca iluminada ante una actriz de vestido amarillo, en la oscuridad, en “Calunga”.",
+    "divertida": "El actor e hipnólogo de “Divertida Mente”, de traje oscuro, sonríe ante un telón rojo con un cerebro luminoso en la palma.",
+    "boi": "El elenco de “A História do Boi de Sol” posa con una cabeza de buey adornada, con vestuario dorado y sombreros de paja.",
+    "cabrabo": "El numeroso elenco de “O Auto de Cabrabó” en escena ante las fachadas de una ciudad escenográfica, con carteles en alto.",
+    "couro": "La pareja de “Couro de Cabra e a Promessa” de perfil, frente contra frente; ella de vestido blanco, él con chaleco bordado.",
+    "avarento": "El elenco de “O Avarento” con vestuario de época y pelucas empolvadas, alrededor de un hombre sentado con bastón.",
     "homenageadoBere": "Retrato de Bere, Luiz Carlos Siqueira, homenajeado de la edición de 2024.",
     "homenageadoAlcides": "Retrato de Alcides Luiz Rodrigues Pereira, homenajeado de la edición de 2024.",
     "capa2024": "Portada del programa impreso de 2024, con máscaras teatrales y el nombre del festival.",
@@ -381,6 +408,8 @@
     "previaTeatroHistorico": "Fotografía ilustrativa: el interior de un teatro histórico, con palcos dorados y telón rojo.",
     "previaPlateiaDoPalco": "Fotografía ilustrativa: un público lleno visto desde el escenario, durante una función.",
     "previaCasaCheia": "Fotografía ilustrativa: una sala de espectáculos abarrotada, con palcos en varios niveles.",
-    "previaCorpoEmCena": "Fotografía ilustrativa: una bailarina en movimiento, iluminada sobre fondo oscuro."
+    "previaCorpoEmCena": "Fotografía ilustrativa: una bailarina en movimiento, iluminada sobre fondo oscuro.",
+    "oficinaDissociando": "André Forecchi toca el saxofón con bombo y platillos acoplados al cuerpo, en el taller “Dissociando o Corpo”.",
+    "bethCaser": "Retrato de Beth Caser, actriz, gestora e idealizadora del festival."
   }
 }

@@ -14,21 +14,21 @@ import {
  * fosse marcada como prévia, seria o portal mentindo sobre o próprio arquivo.
  */
 describe('previewStations', () => {
-  it('cobre as 22 edições, da 1ª à vigente', () => {
-    expect(previewStations).toHaveLength(22);
+  it('cobre as 20 edições, da 1ª à vigente', () => {
+    expect(previewStations).toHaveLength(20);
 
     const editions = previewStations.map((station) => station.edition).sort((a, b) => a! - b!);
 
-    expect(editions).toEqual(Array.from({ length: 22 }, (_, index) => index + 1));
+    expect(editions).toEqual(Array.from({ length: 20 }, (_, index) => index + 1));
   });
 
-  it('usa a grade derivada — 1ª em 2005, 20ª em 2024, 22ª em 2026', () => {
+  it('usa a grade derivada — 1ª em 2005, 19ª em 2023, 20ª em 2024', () => {
     const yearOf = (edition: number) =>
       previewStations.find((station) => station.edition === edition)?.firstYear;
 
     expect(yearOf(1)).toBe(2005);
+    expect(yearOf(19)).toBe(2023);
     expect(yearOf(20)).toBe(2024);
-    expect(yearOf(22)).toBe(2026);
   });
 
   it('lista da edição mais recente para a mais antiga', () => {

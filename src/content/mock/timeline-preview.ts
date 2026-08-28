@@ -7,7 +7,7 @@ import type { EditionTimelineEntry } from '@/types/festival';
  * Conteúdo de **prévia** da linha do tempo — ilustrativo, não acervo.
  *
  * Este arquivo existe para que o layout da tela de memória possa ser julgado
- * com as 22 edições no lugar, enquanto o acervo real de 2005 a 2023 ainda não
+ * com as 20 edições no lugar, enquanto o acervo real de 2005 a 2023 ainda não
  * foi digitalizado. Nada aqui é registro do festival.
  *
  * **É o único arquivo a apagar no dia da substituição.** O plano completo está
@@ -16,16 +16,19 @@ import type { EditionTimelineEntry } from '@/types/festival';
  * arquivo, remover as chaves `memoria.preview.*` e `imagens.previa*` dos três
  * `messages/`, e remover `images.remotePatterns` de `next.config.ts`.
  *
- * As estações de 2024, 2025 e 2026 **não são inventadas**: vêm de
- * `editionTimeline`, o acervo real, e continuam valendo depois da substituição.
+ * A estação de 2024 **não é inventada**: vem de `editionTimeline`, o acervo
+ * real, e continua valendo depois da substituição.
  */
 
 /**
  * A prévia está ligada?
  *
- * Enquanto for `true`, a tela de memória apresenta as 22 estações e **declara
- * na própria tela** que edições e imagens de 2005 a 2023 são ilustrativas.
- * Virar para `false` devolve a linha do tempo ao acervo real, sem apagar nada.
+ * Enquanto for `true`, a tela de memória apresenta as 20 estações. A nota que
+ * **declarava na própria tela** que edições e imagens de 2005 a 2023 são
+ * ilustrativas foi retirada nesta branch de demonstração; a ressalva vive hoje
+ * só no código e em `docs/riscos-conhecidos.md`. Antes de publicar para o
+ * público, ou a nota volta, ou este sinalizador vira `false` — o que devolve a
+ * linha do tempo ao acervo real, sem apagar nada.
  */
 export const TIMELINE_PREVIEW_ENABLED = true;
 
@@ -36,7 +39,7 @@ export const TIMELINE_PREVIEW_ENABLED = true;
  * 2024 como 20ª edição, `editions.ts` declara 19 edições em 2004–2023, e
  * `PRODUCT.md` diz "realizado desde 2004". Só existe um mapeamento consistente
  * com os três: **2004 é o ano de fundação, sem edição**, e a 1ª edição é 2005.
- * Daí 1ª = 2005 … 19ª = 2023, 20ª = 2024, 21ª = 2025, 22ª = 2026.
+ * Daí 1ª = 2005 … 19ª = 2023 e 20ª = 2024, a vigente.
  *
  * É por isso que a substituição pelos dados reais não muda a grade: muda
  * título, imagem e completude.
@@ -130,7 +133,7 @@ function archivedStation(entry: EditionTimelineEntry): TimelineStation {
 }
 
 /**
- * As 22 estações, da 1ª à vigente.
+ * As 20 estações, da 1ª à vigente.
  *
  * As edições anteriores a 2024 são prévia; de 2024 em diante é acervo real,
  * copiado de `editionTimeline` sem alteração — inclusive `hasEditionPage`, que

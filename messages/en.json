@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "FENATEVI — Vitória National Theatre Festival",
-    "description": "The Vitória National Theatre Festival brings performances, encounters and training to the city's theatres and squares.",
+    "title": "FENATEVI {year} — Vitória City National Theatre Festival",
+    "description": "The {edition}th edition of the Vitória City National Theatre Festival, from {start} to {end}, in Vitória, Brazil. Free admission throughout.",
     "localeLabel": "English",
     "ogImageLocation": "Vitória · Espírito Santo · Brazil"
   },
@@ -9,7 +9,7 @@
     "skipToContent": "Skip to content",
     "backToTop": "Back to top",
     "festivalName": "FENATEVI",
-    "festivalFullName": "Vitória National Theatre Festival",
+    "festivalFullName": "Vitória City National Theatre Festival",
     "freeEntry": "Free admission",
     "at": "at",
     "close": "Close",
@@ -31,27 +31,43 @@
     "wheelchairAccess": "Wheelchair access",
     "relaxedPerformance": "Relaxed performance"
   },
+  "acessibilidade": {
+    "trigger": "Accessibility",
+    "title": "Accessibility",
+    "description": "These three preferences apply across the site and are kept in this browser. They add to whatever your system already asks for — none of them turns an accessibility feature off.",
+    "close": "Close",
+    "reset": "Restore default preferences",
+    "activeNotice": "accessibility preferences are active",
+    "contrast": {
+      "label": "Contrast",
+      "hint": "Raises the contrast of text and borders, and settles the header and the opening photograph.",
+      "padrao": "Default",
+      "alto": "High contrast"
+    },
+    "textSize": {
+      "label": "Text size",
+      "hint": "Raises the typographic base of the site. For larger magnification, your browser zoom still works on top of this choice.",
+      "padrao": "Default",
+      "grande": "Larger text"
+    },
+    "motion": {
+      "label": "Motion",
+      "hint": "Turns off the theatrical opening, the curtain between pages, smooth scrolling and the scroll reveals.",
+      "sistema": "Follow the system",
+      "reduzido": "Reduce motion"
+    },
+    "sessionsNotice": "Brazilian Sign Language and audio description are not site settings: they are offered at specific festival sessions. The programme says which ones.",
+    "sessionsCta": "See sessions with sign language"
+  },
   "nav": {
     "primaryLabel": "Main navigation",
     "mobileLabel": "Quick navigation",
-    "openAreas": "Site areas",
-    "closeAreas": "Close site areas",
-    "areasTitle": "Site areas",
-    "areasDescription": "Everything this site offers about the festival.",
     "home": "Home",
     "programacao": "Programme",
     "grade": "Daily grid",
     "espacos": "Venues",
     "memoria": "Memory",
     "noticias": "News",
-    "areaDescriptions": {
-      "home": "The current edition, what is on stage and the way into the archive.",
-      "programacao": "Discover what the edition presents, strand by strand.",
-      "grade": "A whole day in three views: by venue, by time and the full week.",
-      "espacos": "The festival venues across the city, with address and programme.",
-      "memoria": "The timeline of editions and the state of each archive.",
-      "noticias": "Notices, backstage and calls published by the organisers."
-    },
     "backToProgramacao": "Back to the programme",
     "backToEspacos": "Back to venues",
     "backToMemoria": "Back to the timeline"
@@ -60,7 +76,7 @@
     "navigationLabel": "Main navigation"
   },
   "footer": {
-    "identification": "Vitória National Theatre Festival",
+    "identification": "Vitória City National Theatre Festival",
     "navigationLabel": "Footer navigation",
     "contactTitle": "Contact",
     "city": "Vitória, Espírito Santo, Brazil",
@@ -104,8 +120,8 @@
   "home": {
     "eyebrow": "{edition}th edition · {year}",
     "title": "FENATEVI",
-    "subtitle": "Vitória National Theatre Festival",
-    "signature": "Nine days of theatre on the city's stages and squares.",
+    "subtitle": "Vitória City National Theatre Festival",
+    "signature": "Eight days of theatre on the city's stages, halls and squares — free admission from start to finish.",
     "dates": "From {start} to {end}",
     "city": "Vitória, Espírito Santo",
     "ctaProgramacao": "See the programme",
@@ -132,10 +148,19 @@
     "cityCta": "See all venues",
     "memoriaTitle": "The festival's memory",
     "memoriaBody": "Two decades of editions, with the archive being digitised and published step by step.",
+    "memoriaEditions": "Editions held",
+    "memoriaPublished": "With published archive",
+    "memoriaDigitising": "Being digitised",
     "memoriaCta": "See the timeline",
     "noticiasTitle": "News",
     "noticiasCta": "See all news",
-    "partnersTitle": "Presented by and partners"
+    "partnersTitle": "Presented by and partners",
+    "nowEmptyBody": "The festival continues: see what is still on today and in the days ahead.",
+    "nowLiveVenue": "Now at {venue}",
+    "editionTitle": "The {edition}th edition",
+    "editionCta": "Explore the whole edition",
+    "honoreesTitle": "{year} honourees",
+    "honoreesBody": "This edition honours two technicians who have kept the stages of Espírito Santo running for four decades."
   },
   "programacao": {
     "title": "Programme",
@@ -238,8 +263,13 @@
   "espacos": {
     "title": "Cultural venues",
     "description": "The venues that host the festival, spread across the city.",
-    "schemaLabel": "Schematic of the festival venues across the city",
-    "schemaNotice": "The schematic shows the venues' relative position, not their geographic location. Each venue in the list gives its address.",
+    "mapLabel": "Map of Vitória with the festival venues numbered",
+    "mapInsetTitle": "Detail: the city centre",
+    "mapInsetLabel": "Enlarged map of central Vitória with the venues numbered",
+    "scaleBarMeters": "{m} m",
+    "mapNotice": "Markers follow the address published in the programme. Where the venue itself is not mapped, the marker sits on the street or square of that address — the list alongside gives each venue’s full address.",
+    "mapAttribution": "Map data © OpenStreetMap contributors",
+    "scaleBar": "{km} km",
     "listTitle": "All venues",
     "activityCount": "{count, plural, =0 {no activities} one {# activity} other {# activities}}",
     "insideOf": "Inside {venue}",
@@ -259,7 +289,8 @@
     "addressLabel": "Address",
     "kindLabel": "Venue type",
     "parentLabel": "Inside",
-    "activitiesLabel": "Activities in this edition"
+    "activitiesLabel": "Activities in this edition",
+    "workshopsTitle": "Training activities at this venue"
   },
   "memoria": {
     "title": "The festival's memory",
@@ -276,9 +307,7 @@
       "em-digitalizacao": "Being digitised"
     },
     "entries": {
-      "2026": "Curation under way. Programme, performances and honourees will be published by the organisers.",
-      "2025": "Records, programme and photographs still to be added to the digital archive.",
-      "2024": "Official Showcase, parallel showcase, workshops, book launches, creative processes and two honourees.",
+      "2024": "Current edition. Official Showcase, 7th Vera Viana Parallel Showcase, training activities, book launches, creative processes and two honourees.",
       "2004-2023": "Printed programmes, posters, photographs and video records to be digitised and published progressively."
     },
     "actions": {
@@ -288,8 +317,6 @@
     "noPageNotice": "This edition does not have its own page yet.",
     "scopeNote": "Each published edition may include visual identity, summary, complete programme, performances, photographs, honourees, news, graphic materials, documents, participants and sponsors.",
     "preview": {
-      "noticeTitle": "Layout preview",
-      "noticeBody": "The 2005–2023 editions are here so the timeline can be evaluated: the photographs are illustrative and do not depict the festival, and the archive percentage is an estimate. The 2024, 2025 and 2026 editions are real data.",
       "summaries": {
         "0": "Printed programmes and posters from the {edition}th edition await digitisation.",
         "1": "Photographic records from {year} have not yet been added to the digital archive.",
@@ -300,7 +327,7 @@
     "axisLabel": "Jump to an edition"
   },
   "edicao": {
-    "kicker": "Archive · edition ended",
+    "kicker": "The current edition",
     "headline": "{edition}th edition · from {start} to {end}",
     "statementTitle": "The edition",
     "strandsTitle": "Strands of this edition",
@@ -317,8 +344,8 @@
   "noticias": {
     "title": "News",
     "description": "Programme notices, backstage reports and calls published by the organisers during the festival.",
-    "emptyTitle": "No news published yet",
-    "emptyBody": "When the organisers publish the first item, it will appear here.",
+    "emptyTitle": "No notices published so far",
+    "emptyBody": "Schedule changes, extra sessions and last-minute notices are published here during the festival's eight days.",
     "listLabel": "News, newest first",
     "categories": {
       "alteracao": "Programme change",
@@ -353,25 +380,25 @@
     "retry": "Try again"
   },
   "imagens": {
-    "lenda": "Performance poster: a man in a hat before a dark rock, in earth tones.",
-    "violeta": "Performance poster: a woman with a guitar against a backdrop of Andean mountains.",
-    "corpus": "Performance poster: bodies in collective performance, overlaid in red and black.",
-    "olhos": "Performance poster: a man's face in close-up, lit from the side.",
-    "corpo": "Performance poster: dancers in motion, silhouettes against a light background.",
-    "corpo2": "Poster for the second performance: a duo of dancers in contact, seen close up.",
-    "charanga": "Performance poster: two performers with brass instruments beside an old Beetle car.",
-    "dona": "Performance poster: colourful characters around a pedestrian crossing.",
-    "saga": "Performance poster: two Black actors on stage, lit in warm tones.",
-    "homembanda": "Performance poster: a musician surrounded by instruments linked by strings and pulleys.",
-    "metamorfose": "Performance poster: a hunched figure in a dark room, seen from above.",
-    "carambolas": "Performance poster: women on stage before a factory chimney in the background.",
-    "kala": "Performance poster: figures wearing Balinese masks, in shades of red and gold.",
-    "calunga": "Performance poster: a cloth doll beside a storyteller.",
-    "divertida": "Performance poster: a performer in a suit before a lit audience.",
-    "boi": "Performance poster: a decorated ox figure, typical of popular festivities.",
-    "cabrabo": "Performance poster: a large cast on stage, in colourful costumes.",
-    "couro": "Performance poster: characters in leather clothing under a north-eastern sun.",
-    "avarento": "Performance poster: an elderly man clutching a strongbox, in a comic scene.",
+    "lenda": "The cast of “A Lenda de Um Homem Sem Nome” gathered on stage under a string of lights; at the centre, an actress in a pink lace dress.",
+    "violeta": "The actress playing Violeta Parra, with green hair, seated and wrapped in a shawl embroidered in red and pink.",
+    "corpus": "Performers in “Corpus Em Vidas” hold a long white cloth above the stage under violet light.",
+    "olhos": "A man’s face upside down, lit by a candle flame, in “Meus Olhos Verdes”.",
+    "corpo": "A dancer from “O Corpo Que Eu Habito” on stage before a red curtain crossed by ribbons.",
+    "corpo2": "A performer in “O Corpo Que Eu Habito” plays the saxophone centre stage, with other dancers behind her.",
+    "charanga": "Black-and-white photograph: two masked performers from “A Charanga dos Proscritos” behind a lit table, outdoors.",
+    "dona": "Four clowns from “Dona Rua Gentileza” pose before colourful traffic signs; one wears a red shirt with the number 88.",
+    "saga": "An actor in “SAGA” opens his arms on stage, wearing a straw and beaded cloak; behind him, another actor wears a white mask.",
+    "homembanda": "André Forecchi plays the saxophone in a hat, a bass drum strapped to his back, in “Homem Banda, O Show”.",
+    "metamorfose": "A man’s face peers through a gap between patterned fabrics, in sepia, in “A Metamorfose”.",
+    "carambolas": "Two actresses from “Carambolas” seated at a table under blue light; one of them is reading a book.",
+    "kala": "Two actors from “A Maldição e o Mistério de Kalá” on stage before a wooden wall: he in a blue jacket, she in an embroidered vest.",
+    "calunga": "An actor raises a lit puppet before an actress in a yellow dress, in the dark, in “Calunga”.",
+    "divertida": "The actor and hypnotist of “Divertida Mente”, in a dark suit, smiles before a red curtain with a glowing brain in his palm.",
+    "boi": "The cast of “A História do Boi de Sol” poses with a decorated ox head, in golden costumes and straw hats.",
+    "cabrabo": "The large cast of “O Auto de Cabrabó” on stage before the façades of a scenic town, holding up placards.",
+    "couro": "The couple in “Couro de Cabra e a Promessa” in profile, forehead to forehead; she in a white dress, he in an embroidered vest.",
+    "avarento": "The cast of “O Avarento” in period costume and powdered wigs, around a seated man with a cane.",
     "homenageadoBere": "Portrait of Bere, Luiz Carlos Siqueira, honouree of the 2024 edition.",
     "homenageadoAlcides": "Portrait of Alcides Luiz Rodrigues Pereira, honouree of the 2024 edition.",
     "capa2024": "Cover of the 2024 printed programme, with theatrical masks and the festival name.",
@@ -381,6 +408,8 @@
     "previaTeatroHistorico": "Illustrative photograph: the interior of a historic theatre, with gilded boxes and a red curtain.",
     "previaPlateiaDoPalco": "Illustrative photograph: a full audience seen from the stage during a performance.",
     "previaCasaCheia": "Illustrative photograph: a packed theatre with boxes on several levels.",
-    "previaCorpoEmCena": "Illustrative photograph: a dancer in motion, lit against a dark background."
+    "previaCorpoEmCena": "Illustrative photograph: a dancer in motion, lit against a dark background.",
+    "oficinaDissociando": "André Forecchi plays the saxophone with a bass drum and cymbals mounted on his body, at the “Dissociando o Corpo” workshop.",
+    "bethCaser": "Portrait of Beth Caser, actress, manager and founder of the festival."
   }
 }
